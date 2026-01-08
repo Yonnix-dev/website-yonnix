@@ -1,6 +1,27 @@
 <!DOCTYPE html>
 <html lang="fr">
-<script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+<script>
+    function trackPageView() {
+        const stats = JSON.parse(localStorage.getItem('siteStats') || '{"sessions":0,"views":0,"lastVisit":"","todayViews":0}');
+        
+        const today = new Date().toLocaleDateString('fr-FR');
+        const lastVisitDate = stats.lastVisit.split(' ')[0];
+        
+        if (lastVisitDate !== today) {
+            stats.todayViews = 1;
+        } else {
+            stats.todayViews++;
+        }
+        
+        stats.sessions++;
+        stats.views++;
+        stats.lastVisit = new Date().toLocaleString('fr-FR');
+        
+        localStorage.setItem('siteStats', JSON.stringify(stats));
+    }
+    
+    trackPageView();
+</script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
