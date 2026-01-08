@@ -1,0 +1,7 @@
+{
+  "buildCommand": "exit 0",
+  "outputDirectory": ".",
+  "routes": [
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}
