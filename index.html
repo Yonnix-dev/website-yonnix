@@ -1,9 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>yonn_ix - Services & Réseaux</title>
+    <title>yonn_ix - Portfolio & Réseaux</title>
+
+    <!-- Open Graph pour Discord embed -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="yonn_ix" />
+    <meta property="og:description" content="Portfolio & Réseaux — Creator • Developer • Community Builder" />
+    <meta property="og:url" content="https://website-yonnix.vercel.app/" />
+    <meta property="og:image" content="https://website-yonnix.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="yonn_ix" />
+    <meta name="twitter:description" content="Portfolio & Réseaux — Creator • Developer • Community Builder" />
+    <meta name="twitter:image" content="https://website-yonnix.vercel.app/og-image.png" />
+
     <style>
         * {
             margin: 0;
@@ -87,6 +104,32 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 0 20px;
+        }
+
+        /* Admin Link */
+        .admin-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            padding: 8px 16px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            color: var(--color-accent);
+            text-decoration: none;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            transition: all var(--duration-normal) var(--ease);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .admin-link:hover {
+            opacity: 1;
+            border-color: var(--color-accent);
+            background: rgba(251, 191, 36, 0.05);
         }
 
         /* Header */
@@ -490,20 +533,6 @@
             }
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-                box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7);
-            }
-            50% {
-                opacity: 0.8;
-            }
-            100% {
-                opacity: 1;
-                box-shadow: 0 0 0 8px rgba(0, 212, 255, 0);
-            }
-        }
-
         @keyframes bounce {
             0%, 100% {
                 transform: translateY(0);
@@ -544,6 +573,13 @@
             header {
                 padding: 40px 20px;
             }
+
+            .admin-link {
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.75rem;
+                padding: 6px 12px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -557,17 +593,6 @@
 
             .socials-grid {
                 gap: 12px;
-            }
-        }
-    </style>
-    
-    <style>
-        @keyframes gridFlow {
-            0% {
-                background-position: 0 0, 0 0;
-            }
-            100% {
-                background-position: 50px 50px, 50px 50px;
             }
         }
     </style>
@@ -588,7 +613,7 @@
 
         <!-- Social Networks Section -->
         <section class="socials-section">
-            <h2 class="section-title">Réseaux</h2>
+            <h2 class="section-title">Mes Réseaux</h2>
             <div class="socials-grid">
                 <a href="https://www.instagram.com/yonn_ix/" target="_blank" rel="noopener noreferrer" class="social-card">
                     <span class="social-icon">📸</span>
@@ -671,8 +696,11 @@
         </section>
     </div>
 
+    <!-- Admin Link (discret) -->
+    <a href="/admin" class="admin-link">⚙️ Admin</a>
+
     <footer>
-        <p>© 2026 yonn_ix • Services & Réseaux Sociaux</p>
+        <p>© 2026 yonn_ix • Portfolio & Réseaux Sociaux</p>
     </footer>
 
     <script>
@@ -684,22 +712,22 @@
 
         // Fetch Discord status from Lanyard
         const DISCORD_USER_ID = '964542992641818624'; // ID Discord
-        
+
         async function fetchDiscordStatus() {
             try {
-                const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
+                const response = await fetch(\`https://api.lanyard.rest/v1/users/\${DISCORD_USER_ID}\`);
                 const data = await response.json();
-                
+
                 if (data.success && data.data) {
                     const user = data.data;
                     const container = document.getElementById('discord-status-container');
-                    
+
                     let statusEmoji = '⚫';
                     if (user.discord_status === 'online') statusEmoji = '🟢';
                     else if (user.discord_status === 'idle') statusEmoji = '🟡';
                     else if (user.discord_status === 'dnd') statusEmoji = '🔴';
-                    
-                    let html = `
+
+                    let html = \`
                         <div style="
                             display: inline-flex;
                             align-items: center;
@@ -710,26 +738,26 @@
                             border-radius: 10px;
                             animation: fadeInDown 0.8s var(--ease);
                         ">
-                            <img src="https://cdn.discordapp.com/avatars/${user.discord_user.id}/${user.discord_user.avatar}.png" 
+                            <img src="https://cdn.discordapp.com/avatars/\${user.discord_user.id}/\${user.discord_user.avatar}.png" 
                                  alt="Discord Avatar" 
                                  style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--color-accent);">
                             <div style="text-align: left;">
-                                <div style="font-weight: 600; color: var(--color-text);">${user.discord_user.username}</div>
+                                <div style="font-weight: 600; color: var(--color-text);">\${user.discord_user.username}</div>
                                 <div style="font-size: 0.8rem; color: var(--color-accent); display: flex; align-items: center; gap: 6px;">
-                                    <span>${statusEmoji}</span>
-                                    <span>${user.discord_status.charAt(0).toUpperCase() + user.discord_status.slice(1)}</span>
+                                    <span>\${statusEmoji}</span>
+                                    <span>\${user.discord_status.charAt(0).toUpperCase() + user.discord_status.slice(1)}</span>
                                 </div>
                             </div>
                         </div>
-                    `;
-                    
+                    \`;
+
                     container.innerHTML = html;
                 }
             } catch (error) {
                 console.log('Discord status not configured or unavailable');
             }
         }
-        
+
         // Fetch on page load
         fetchDiscordStatus();
         // Refresh every 10 seconds
@@ -764,17 +792,17 @@
                 const x = e.clientX - rect.left - size / 2;
                 const y = e.clientY - rect.top - size / 2;
 
-                ripple.style.cssText = `
+                ripple.style.cssText = \`
                     position: absolute;
-                    width: ${size}px;
-                    height: ${size}px;
+                    width: \${size}px;
+                    height: \${size}px;
                     border-radius: 50%;
                     background: rgba(255, 255, 255, 0.5);
-                    left: ${x}px;
-                    top: ${y}px;
+                    left: \${x}px;
+                    top: \${y}px;
                     pointer-events: none;
                     animation: ripple 0.6s ease-out;
-                `;
+                \`;
 
                 this.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 600);
@@ -783,14 +811,14 @@
 
         // Add ripple animation
         const style = document.createElement('style');
-        style.textContent = `
+        style.textContent = \`
             @keyframes ripple {
                 to {
                     transform: scale(4);
                     opacity: 0;
                 }
             }
-        `;
+        \`;
         document.head.appendChild(style);
     </script>
 </body>
