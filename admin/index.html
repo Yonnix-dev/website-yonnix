@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-<script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -226,6 +225,16 @@
             text-decoration: none;
             font-size: 0.9rem;
         }
+
+        .info-box {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid var(--color-accent);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--color-text);
+        }
     </style>
 </head>
 <body>
@@ -254,27 +263,65 @@
             <button class="back-btn" onclick="logout()">← Déconnexion</button>
             <div class="stats-header">
                 <h2>Statistiques</h2>
-                <p>Données Vercel Web Analytics</p>
+                <p>Données locales du site</p>
             </div>
-            <div id="statsContainer">
-                <div style="text-align: center; padding: 40px;">
-                    <p>Stats en cours de chargement...</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Sessions</div>
+                    <div class="stat-value" id="sessionsCount">0</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-label">Dernière visite</div>
+                    <div class="stat-value" id="lastVisit">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Aujourd'hui</div>
+                    <div class="stat-value" id="todayCount">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Vues</div>
+                    <div class="stat-value" id="totalViews">0</div>
+                </div>
+            </div>
+            <div class="info-box">
+                💡 <strong>Note:</strong> Ces stats sont basées sur le localStorage local. Pour des stats complètes, active Web Analytics sur Vercel.
             </div>
         </div>
     </div>
 
     <script>
         const ADMIN_PASSWORD = "135975";
-        const VERCEL_TOKEN = "lmv6x0dFt1EegVGw87hFPocn";
-        const PROJECT_ID = "prj_OWVGeh9fxLPNMz0MOkleMaUsfj7A";
 
         window.addEventListener('load', () => {
             const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
             if (isLoggedIn === 'true') {
                 showStats();
             }
+
+            // Track page view on main site
+            if (!window.location.pathname.includes('/admin')) {
+                trackPageView();
+            }
         });
+
+        function trackPageView() {
+            const stats = JSON.parse(localStorage.getItem('siteStats') || '{"sessions":0,"views":0,"lastVisit":"","todayViews":0}');
+
+            const today = new Date().toLocaleDateString('fr-FR');
+            const lastVisitDate = stats.lastVisit.split(' ')[0];
+
+            if (lastVisitDate !== today) {
+                stats.todayViews = 1;
+            } else {
+                stats.todayViews++;
+            }
+
+            stats.sessions++;
+            stats.views++;
+            stats.lastVisit = new Date().toLocaleString('fr-FR');
+
+            localStorage.setItem('siteStats', JSON.stringify(stats));
+        }
 
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -294,7 +341,7 @@
         function showStats() {
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('statsSection').classList.add('show');
-            fetchStats();
+            displayStats();
         }
 
         function logout() {
@@ -304,61 +351,13 @@
             document.getElementById('password').value = '';
         }
 
-        async function fetchStats() {
-            try {
-                const response = await fetch(
-                    `https://api.vercel.com/v1/analytics/timeseries?projectId=${PROJECT_ID}&limit=30`,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${VERCEL_TOKEN}`,
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                );
+        function displayStats() {
+            const stats = JSON.parse(localStorage.getItem('siteStats') || '{"sessions":0,"views":0,"lastVisit":"","todayViews":0}');
 
-                if (!response.ok) {
-                    throw new Error(`Erreur: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const timeseries = data.timeseries || [];
-                let totalVisitors = 0;
-                let totalPageViews = 0;
-
-                timeseries.forEach(point => {
-                    totalVisitors += point.visitors || 0;
-                    totalPageViews += point.pageviews || 0;
-                });
-
-                const bounceRate = totalPageViews > 0 ? Math.round((totalVisitors / totalPageViews) * 100) : 0;
-
-                document.getElementById('statsContainer').innerHTML = `
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-label">Visiteurs</div>
-                            <div class="stat-value">${totalVisitors}</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Pages Vues</div>
-                            <div class="stat-value">${totalPageViews}</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Taux de Rebond</div>
-                            <div class="stat-value">${bounceRate}%</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Données</div>
-                            <div class="stat-value">${timeseries.length} jours</div>
-                        </div>
-                    </div>
-                `;
-            } catch (error) {
-                document.getElementById('statsContainer').innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #ff5459;">
-                        ⚠️ Erreur: ${error.message}
-                    </div>
-                `;
-            }
+            document.getElementById('sessionsCount').textContent = stats.sessions;
+            document.getElementById('lastVisit').textContent = stats.lastVisit || '-';
+            document.getElementById('todayCount').textContent = stats.todayViews;
+            document.getElementById('totalViews').textContent = stats.views;
         }
     </script>
 </body>
