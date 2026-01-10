@@ -691,6 +691,37 @@
                 </div>
             </div>
         </section>
+<section class="services-section">
+    <!-- ... tes cartes de services ... -->
+</section>
+
+<section class="contact-info" style="margin-top:40px;">
+    <h3 class="contact-title">🎫 Ouvrir un ticket</h3>
+    <form id="ticketForm" class="contact-details">
+        <input type="text" id="ticketName" placeholder="Ton pseudo / nom" required
+               style="width:100%;max-width:400px;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);">
+        <input type="text" id="ticketDiscord" placeholder="Ton Discord (ex: yonn_ix)" required
+               style="width:100%;max-width:400px;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);">
+        <input type="email" id="ticketEmail" placeholder="Ton email (optionnel)"
+               style="width:100%;max-width:400px;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);">
+        <select id="ticketType"
+                style="width:100%;max-width:400px;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);">
+            <option value="Site web">Site web</option>
+            <option value="Bot Discord">Bot Discord</option>
+            <option value="Autre">Autre</option>
+        </select>
+        <textarea id="ticketMessage" placeholder="Décris ton projet / ta question" required
+                  rows="4"
+                  style="width:100%;max-width:400px;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);resize:vertical;"></textarea>
+
+        <button type="submit" class="contact-link" style="margin-top:10px;">
+            <span class="contact-icon">🎫</span>
+            <span>Envoyer le ticket</span>
+        </button>
+
+        <p id="ticketStatus" style="font-size:0.85rem;opacity:0.8;"></p>
+    </form>
+</section>
 
         <!-- Discord Server Section -->
         <section class="discord-section">
@@ -832,6 +863,54 @@
             }
         `;
         document.head.appendChild(style);
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1459665542863392890/3fiB5IFeLYs88ToLR6__PJYvc9Q5JNjepeywfYrlgYBXVi_grkDdlS4eLy5qWB0nKi0b";
+
+document.getElementById('ticketForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const statusEl = document.getElementById('ticketStatus');
+    statusEl.textContent = "Envoi du ticket...";
+    
+    const name = document.getElementById('ticketName').value.trim();
+    const discord = document.getElementById('ticketDiscord').value.trim();
+    const email = document.getElementById('ticketEmail').value.trim();
+    const type = document.getElementById('ticketType').value;
+    const message = document.getElementById('ticketMessage').value.trim();
+
+    const payload = {
+        content: null,
+        embeds: [
+            {
+                title: "🎫 Nouveau ticket depuis le site",
+                color: 0xfbbf24,
+                fields: [
+                    { name: "Nom / Pseudo", value: name || "Non fourni", inline: true },
+                    { name: "Discord", value: discord || "Non fourni", inline: true },
+                    { name: "Email", value: email || "Non fourni", inline: false },
+                    { name: "Type", value: type, inline: true },
+                    { name: "Message", value: message || "—", inline: false }
+                ],
+                timestamp: new Date().toISOString()
+            }
+        ]
+    };
+
+    try {
+        const res = await fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error("Erreur " + res.status);
+
+        statusEl.textContent = "✅ Ticket envoyé ! Je te réponds sur Discord / email.";
+        document.getElementById('ticketForm').reset();
+    } catch (err) {
+        console.error(err);
+        statusEl.textContent = "❌ Impossible d'envoyer le ticket. Réessaie plus tard.";
+    }
+});
+
     </script>
 </body>
 </html>
