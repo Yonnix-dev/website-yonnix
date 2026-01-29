@@ -26,8 +26,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>yonn_ix - Services & Réseaux</title>
-    <link rel="icon" href="/logo-site.jpg" type="image/jpeg">
-<link rel="apple-touch-icon" href="/logo-site.jpg">
+    <link rel="icon" href="/logo.jpg" type="image/jpeg">
+<link rel="apple-touch-icon" href="/logo.jpg">
     <style>
         * {
             margin: 0;
@@ -118,14 +118,6 @@
             padding: 60px 20px;
             text-align: center;
             animation: fadeInDown 0.8s var(--ease);
-        }
-
-        .header-logo {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 24px;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.5));
         }
 
         .header-content h1 {
@@ -563,20 +555,15 @@
 
         @keyframes float {
             0%, 100% {
-                transform: translateY(0);
+                transform: translate(0, 0) rotate(0deg);
             }
             50% {
-                transform: translateY(-15px);
+                transform: translate(30px, 30px) rotate(180deg);
             }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .header-logo {
-                width: 80px;
-                height: 80px;
-            }
-
             .header-content h1 {
                 font-size: 2.5rem;
             }
@@ -607,11 +594,6 @@
         }
 
         @media (max-width: 480px) {
-            .header-logo {
-                width: 70px;
-                height: 70px;
-            }
-
             .header-content h1 {
                 font-size: 2rem;
             }
@@ -631,7 +613,6 @@
         <header>
             <div id="discord-status-container" style="margin-bottom: 30px;"></div>
             <div class="header-content">
-                <img src="/logo-site.jpg" alt="Logo yonn_ix" class="header-logo">
                 <h1>yonn_ix</h1>
                 <p>Creator • Developer • Community Builder</p>
                 <div class="status-badge">
