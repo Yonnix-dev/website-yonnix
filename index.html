@@ -1,926 +1,952 @@
 <!DOCTYPE html>
-<html lang="fr">
-<script>
-    function trackPageView() {
-        const stats = JSON.parse(localStorage.getItem('siteStats') || '{"sessions":0,"views":0,"lastVisit":"","todayViews":0}');
-        
-        const today = new Date().toLocaleDateString('fr-FR');
-        const lastVisitDate = stats.lastVisit.split(' ')[0];
-        
-        if (lastVisitDate !== today) {
-            stats.todayViews = 1;
-        } else {
-            stats.todayViews++;
-        }
-        
-        stats.sessions++;
-        stats.views++;
-        stats.lastVisit = new Date().toLocaleString('fr-FR');
-        
-        localStorage.setItem('siteStats', JSON.stringify(stats));
-    }
-    
-    trackPageView();
-</script>
+<html lang="fr" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>yonn_ix - Services & Réseaux</title>
-    <link rel="icon" href="/logo.jpg" type="image/jpeg">
-<link rel="apple-touch-icon" href="/logo.jpg">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --color-bg: #000000;
-            --color-surface: #0a0a0a;
-            --color-border: #1a1a1a;
-            --color-text: #e0e6ff;
-            --color-accent: #fbbf24;
-            --color-accent-dark: #f59e0b;
-            --color-accent-light: #fcd34d;
-            --duration-fast: 150ms;
-            --duration-normal: 300ms;
-            --ease: cubic-bezier(0.16, 1, 0.3, 1);
-            --mouse-x: 50%;
-            --mouse-y: 50%;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #000000;
-            color: var(--color-text);
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* Interactive animated grid background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(251, 191, 36, 0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(251, 191, 36, 0.2) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 1;
-            animation: gridFlow 8s linear infinite;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle 400px at var(--mouse-x) var(--mouse-y), 
-                rgba(251, 191, 36, 0.15) 0%, 
-                rgba(245, 158, 11, 0.08) 30%,
-                transparent 70%);
-            pointer-events: none;
-            z-index: 1;
-            transition: background 0.1s ease-out;
-        }
-
-        @keyframes gridFlow {
-            0% {
-                background-position: 0 0, 0 0;
-            }
-            100% {
-                background-position: 50px 50px, 50px 50px;
-            }
-        }
-
-        .container {
-            position: relative;
-            z-index: 2;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            padding: 60px 20px;
-            text-align: center;
-            animation: fadeInDown 0.8s var(--ease);
-        }
-
-        .header-content h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-            letter-spacing: -2px;
-            background: linear-gradient(135deg, var(--color-text) 0%, var(--color-accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header-content p {
-            font-size: 1.1rem;
-            color: var(--color-text);
-            opacity: 0.8;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            margin-top: 20px;
-            animation: fadeInUp 0.8s var(--ease);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--color-accent);
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-                box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
-            }
-            50% {
-                opacity: 0.8;
-            }
-            100% {
-                opacity: 1;
-                box-shadow: 0 0 0 8px rgba(251, 191, 36, 0);
-            }
-        }
-
-        /* Social Section */
-        .socials-section {
-            margin: 80px 0;
-            animation: fadeInUp 1s var(--ease) 0.2s both;
-        }
-
-        .section-title {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--color-accent);
-            margin-bottom: 32px;
-            text-align: center;
-            opacity: 0.8;
-        }
-
-        .socials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-        }
-
-        .social-card {
-            group: 'social';
-            position: relative;
-            padding: 28px;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all var(--duration-normal) var(--ease);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            text-decoration: none;
-            overflow: hidden;
-        }
-
-        .social-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
-            transition: left var(--duration-normal) var(--ease);
-        }
-
-        .social-card:hover {
-            border-color: var(--color-accent);
-            background: linear-gradient(135deg, var(--color-surface) 0%, rgba(251, 191, 36, 0.05) 100%);
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.15);
-        }
-
-        .social-card:hover::before {
-            left: 100%;
-        }
-
-        .social-icon {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-            transition: transform var(--duration-normal) var(--ease);
-            width: 48px !important;
-            height: 48px !important;
-            object-fit: contain !important;
-        }
-
-
-        .social-card:hover .social-icon {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .social-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--color-text);
-        }
-
-        .social-handle {
-            font-size: 0.9rem;
-            color: var(--color-text);
-            opacity: 0.6;
-        }
-
-        /* Services Section */
-        .services-section {
-            margin: 80px 0;
-            animation: fadeInUp 1s var(--ease) 0.3s both;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 60px;
-        }
-
-        .service-card {
-            position: relative;
-            padding: 32px;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            transition: all var(--duration-normal) var(--ease);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
-            transition: left var(--duration-normal) var(--ease);
-        }
-
-        .service-card:hover {
-            border-color: var(--color-accent);
-            background: linear-gradient(135deg, var(--color-surface) 0%, rgba(251, 191, 36, 0.05) 100%);
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(251, 191, 36, 0.15);
-        }
-
-        .service-card:hover::before {
-            left: 100%;
-        }
-
-        .service-icon {
-            font-size: 2.8rem;
-            margin-bottom: 16px;
-            transition: transform var(--duration-normal) var(--ease);
-        }
-
-        .service-card:hover .service-icon {
-            transform: scale(1.15) rotate(-5deg);
-        }
-
-        .service-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--color-text);
-        }
-
-        .service-description {
-            font-size: 0.95rem;
-            color: var(--color-text);
-            opacity: 0.7;
-            line-height: 1.6;
-        }
-
-        /* Contact Info */
-        .contact-info {
-            background: linear-gradient(135deg, var(--color-surface) 0%, rgba(251, 191, 36, 0.08) 100%);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: 32px;
-            text-align: center;
-            animation: fadeInUp 1s var(--ease) 0.4s both;
-        }
-
-        .contact-title {
-            font-size: 1.3rem;
-            margin-bottom: 24px;
-            color: var(--color-text);
-        }
-
-        .contact-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .contact-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 24px;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            color: var(--color-accent);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all var(--duration-normal) var(--ease);
-        }
-
-        .contact-link:hover {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
-            border-color: var(--color-accent);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(251, 191, 36, 0.1);
-        }
-
-        .contact-icon {
-            font-size: 1.2rem;
-        }
-
-        .contact-separator {
-            color: var(--color-text);
-            opacity: 0.5;
-            font-size: 0.9rem;
-            margin: 8px 0;
-        }
-
-        /* Discord Server Section */
-        .discord-section {
-            margin: 80px 0;
-            animation: fadeInUp 1s var(--ease) 0.4s both;
-        }
-
-        .discord-card {
-            position: relative;
-            padding: 40px;
-            background: linear-gradient(135deg, var(--color-surface) 0%, rgba(251, 191, 36, 0.08) 100%);
-            border: 1px solid var(--color-border);
-            border-radius: 16px;
-            text-align: center;
-            overflow: hidden;
-            transition: all var(--duration-normal) var(--ease);
-        }
-
-        .discord-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(251, 191, 36, 0.2) 0%, transparent 70%);
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .discord-card:hover {
-            border-color: var(--color-accent);
-            transform: translateY(-4px);
-            box-shadow: 0 30px 60px rgba(251, 191, 36, 0.2);
-        }
-
-        .discord-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .discord-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        .discord-card h2 {
-            font-size: 1.8rem;
-            margin-bottom: 12px;
-            color: var(--color-text);
-        }
-
-        .discord-card p {
-            font-size: 1rem;
-            color: var(--color-text);
-            opacity: 0.7;
-            margin-bottom: 28px;
-        }
-
-        .btn-discord {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 32px;
-            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
-            color: var(--color-bg);
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--duration-normal) var(--ease);
-            text-decoration: none;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-discord:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.3);
-        }
-
-        .btn-discord:active {
-            transform: translateY(-1px);
-        }
-
-        /* Admin Link */
-        .admin-link {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 999;
-            padding: 8px 16px;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            color: var(--color-accent);
-            text-decoration: none;
-            font-size: 0.8rem;
-            opacity: 0.6;
-            transition: all var(--duration-normal) var(--ease);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-
-        .admin-link:hover {
-            opacity: 1;
-            border-color: var(--color-accent);
-            background: rgba(251, 191, 36, 0.05);
-        }
-
-        /* Footer */
-        footer {
-            margin-top: 100px;
-            padding: 40px 20px;
-            text-align: center;
-            border-top: 1px solid var(--color-border);
-            color: var(--color-text);
-            opacity: 0.6;
-            font-size: 0.9rem;
-            animation: fadeIn 1s var(--ease) 0.6s both;
-        }
-
-        /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-            50% {
-                transform: translate(30px, 30px) rotate(180deg);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .socials-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
-            .social-card {
-                padding: 24px;
-            }
-
-            .discord-card {
-                padding: 32px 24px;
-            }
-
-            header {
-                padding: 40px 20px;
-            }
-
-            .admin-link {
-                bottom: 10px;
-                left: 10px;
-                font-size: 0.75rem;
-                padding: 6px 12px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header-content h1 {
-                font-size: 2rem;
-            }
-
-            .header-content p {
-                font-size: 1rem;
-            }
-
-            .socials-grid {
-                gap: 12px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>yonn_ix — Creator & Developer</title>
+<link rel="icon" href="/logo.jpg" type="image/jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --bg:         #000000;
+  --surface:    #0c0c0c;
+  --border:     rgba(251,191,36,.12);
+  --text:       #e8e4d4;
+  --muted:      rgba(232,228,212,.5);
+  --accent:     #fbbf24;
+  --accent2:    #f59e0b;
+  --ease:       cubic-bezier(0.16,1,0.3,1);
+  --ease-out:   cubic-bezier(0.4,0,1,1);
+}
+
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  cursor:none;
+}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+#cursor{
+  position:fixed;top:0;left:0;
+  width:12px;height:12px;
+  background:var(--accent);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .3s var(--ease),height .3s var(--ease),background .3s;
+  mix-blend-mode:difference;
+}
+#cursor-ring{
+  position:fixed;top:0;left:0;
+  width:36px;height:36px;
+  border:1.5px solid rgba(251,191,36,.6);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:width .3s var(--ease),height .3s var(--ease),opacity .3s;
+}
+
+/* ============================================================
+   NOISE OVERLAY
+   ============================================================ */
+.noise{
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;opacity:.4;
+}
+
+/* ============================================================
+   AURORA BACKGROUND
+   ============================================================ */
+.aurora{
+  position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+}
+.aurora-orb{
+  position:absolute;border-radius:50%;
+  filter:blur(120px);opacity:.18;
+  animation:drift 18s ease-in-out infinite;
+}
+.aurora-orb:nth-child(1){
+  width:70vw;height:70vw;top:-20%;left:-20%;
+  background:radial-gradient(circle,#fbbf24 0%,transparent 70%);
+  animation-duration:22s;
+}
+.aurora-orb:nth-child(2){
+  width:50vw;height:50vw;bottom:-10%;right:-10%;
+  background:radial-gradient(circle,#f59e0b 0%,transparent 70%);
+  animation-duration:18s;animation-delay:-9s;
+}
+.aurora-orb:nth-child(3){
+  width:40vw;height:40vw;top:40%;left:60%;
+  background:radial-gradient(circle,rgba(251,191,36,.6) 0%,transparent 70%);
+  animation-duration:25s;animation-delay:-4s;
+}
+@keyframes drift{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(4vw,3vh) scale(1.08)}
+  66%{transform:translate(-3vw,5vh) scale(.96)}
+}
+
+/* ============================================================
+   GRID PATTERN
+   ============================================================ */
+.grid-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(251,191,36,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(251,191,36,.06) 1px,transparent 1px);
+  background-size:60px 60px;
+  animation:grid-move 12s linear infinite;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
+}
+@keyframes grid-move{
+  from{background-position:0 0,0 0}
+  to{background-position:60px 60px,60px 60px}
+}
+
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
+#progress{
+  position:fixed;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transform-origin:left;transform:scaleX(0);
+  z-index:999;transition:transform .1s linear;
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:20px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  background:rgba(0,0,0,.4);
+  border-bottom:1px solid var(--border);
+  transform:translateY(-100%);
+  animation:nav-in .8s var(--ease) .2s forwards;
+}
+@keyframes nav-in{to{transform:translateY(0)}}
+.nav-logo{
+  font-family:'Space Mono',monospace;
+  font-size:1.1rem;font-weight:700;
+  color:var(--accent);letter-spacing:-.03em;
+}
+.nav-links{display:flex;gap:32px}
+.nav-links a{
+  font-size:.8rem;text-transform:uppercase;letter-spacing:.15em;
+  color:var(--muted);position:relative;
+  transition:color .2s var(--ease);
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .3s var(--ease);
+}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{transform:scaleX(1)}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative;z-index:2;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:120px 20px 80px;
+  overflow:hidden;
+}
+.hero-eyebrow{
+  font-family:'Space Mono',monospace;
+  font-size:.75rem;text-transform:uppercase;letter-spacing:.3em;
+  color:var(--accent);margin-bottom:32px;
+  opacity:0;animation:fade-up .8s var(--ease) .6s forwards;
+}
+.hero-title{
+  font-size:clamp(4rem,14vw,12rem);
+  font-weight:700;line-height:.9;letter-spacing:-.04em;
+  margin-bottom:40px;
+  overflow:hidden;
+}
+.hero-title .line{
+  display:block;overflow:hidden;
+}
+.hero-title .line span{
+  display:block;
+  opacity:0;transform:translateY(110%);
+  animation:line-in .9s var(--ease) forwards;
+}
+.hero-title .line:nth-child(1) span{animation-delay:.5s}
+.hero-title .line:nth-child(2) span{
+  animation-delay:.65s;
+  background:linear-gradient(135deg,var(--accent) 0%,#fff 60%,var(--accent2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+@keyframes line-in{
+  to{opacity:1;transform:translateY(0)}
+}
+.hero-sub{
+  font-size:clamp(1rem,2vw,1.2rem);
+  color:var(--muted);max-width:480px;line-height:1.8;
+  opacity:0;animation:fade-up .8s var(--ease) 1s forwards;
+}
+.hero-cta{
+  margin-top:48px;
+  display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
+  opacity:0;animation:fade-up .8s var(--ease) 1.15s forwards;
+}
+.btn-primary{
+  padding:14px 36px;
+  background:var(--accent);color:#000;
+  border-radius:4px;font-weight:700;font-size:.9rem;letter-spacing:.05em;
+  border:2px solid var(--accent);
+  transition:background .2s,transform .2s,box-shadow .2s;
+  cursor:none;
+}
+.btn-primary:hover{
+  background:transparent;color:var(--accent);
+  transform:translateY(-3px);
+  box-shadow:0 20px 40px rgba(251,191,36,.25);
+}
+.btn-ghost{
+  padding:14px 36px;
+  background:transparent;color:var(--text);
+  border-radius:4px;font-weight:600;font-size:.9rem;letter-spacing:.05em;
+  border:1px solid var(--border);
+  transition:border-color .2s,transform .2s;cursor:none;
+}
+.btn-ghost:hover{border-color:var(--accent);transform:translateY(-3px)}
+
+.hero-scroll{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:fade-up .8s var(--ease) 1.5s forwards;
+  color:var(--muted);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+}
+.scroll-line{
+  width:1px;height:60px;background:linear-gradient(var(--accent),transparent);
+  animation:scroll-grow 2s ease-in-out infinite;
+}
+@keyframes scroll-grow{
+  0%,100%{transform:scaleY(1);opacity:.6}
+  50%{transform:scaleY(1.3);opacity:1}
+}
+
+/* Discord status */
+.discord-status-hero{
+  margin-bottom:28px;
+  opacity:0;animation:fade-up .8s var(--ease) .4s forwards;
+}
+.discord-pill{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 16px 8px 8px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);border-radius:100px;
+  font-size:.8rem;color:var(--muted);
+}
+.discord-pill img{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--accent)}
+@keyframes pulse-dot{
+  0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}
+  50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}
+}
+
+/* ============================================================
+   SECTION WRAPPER
+   ============================================================ */
+section{position:relative;z-index:2;padding:120px 20px}
+.container{max-width:1100px;margin:0 auto}
+.section-label{
+  font-family:'Space Mono',monospace;
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.3em;
+  color:var(--accent);margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::before{
+  content:'';display:block;width:40px;height:1px;background:var(--accent);
+}
+.section-title{
+  font-size:clamp(2rem,5vw,4rem);font-weight:700;letter-spacing:-.03em;
+  line-height:1.05;margin-bottom:60px;
+}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{
+  opacity:0;
+  clip-path:inset(20px 0 0 0);
+  transition:opacity .9s var(--ease),clip-path .9s var(--ease);
+}
+.reveal.visible{
+  opacity:1;clip-path:inset(0 0 0 0);
+}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+.reveal-delay-5{transition-delay:.5s}
+
+/* ============================================================
+   SOCIALS SECTION — Marquee + Cards
+   ============================================================ */
+.marquee-wrap{overflow:hidden;margin-bottom:80px;mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent)}
+.marquee-track{
+  display:flex;gap:24px;width:max-content;
+  animation:marquee 18s linear infinite;
+}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  font-family:'Space Mono',monospace;
+  font-size:1.1rem;color:rgba(251,191,36,.2);
+  padding:0 8px;white-space:nowrap;
+}
+.marquee-item.accent{color:var(--accent)}
+
+.socials-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:2px;
+}
+.social-card{
+  position:relative;overflow:hidden;
+  padding:36px 28px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:flex-start;
+  text-decoration:none;
+  transition:border-color .3s var(--ease),background .3s;
+  cursor:none;
+}
+.social-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(251,191,36,.1) 0%,transparent 60%);
+  opacity:0;transition:opacity .4s;
+}
+.social-card:hover::before{opacity:1}
+.social-card:hover{border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.03)}
+.s-icon{
+  width:44px;height:44px;margin-bottom:20px;
+  transition:transform .4s var(--ease);
+  object-fit:contain;
+}
+.social-card:hover .s-icon{transform:scale(1.15) rotate(-6deg)}
+.s-name{font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.s-handle{font-size:.85rem;color:var(--muted)}
+.s-arrow{
+  position:absolute;top:28px;right:28px;
+  font-size:1.4rem;color:var(--accent);
+  opacity:0;transform:translate(-6px,6px);
+  transition:opacity .3s,transform .3s var(--ease);
+}
+.social-card:hover .s-arrow{opacity:1;transform:translate(0,0)}
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.services-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:2px;margin-bottom:2px;
+}
+.service-card{
+  position:relative;overflow:hidden;padding:48px 36px;
+  background:var(--surface);border:1px solid var(--border);
+  transition:border-color .3s,background .3s;
+}
+.service-card::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),transparent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--ease);
+}
+.service-card:hover::after{transform:scaleX(1)}
+.service-card:hover{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.02)}
+.svc-number{
+  font-family:'Space Mono',monospace;
+  font-size:.7rem;letter-spacing:.2em;color:var(--accent);
+  margin-bottom:24px;
+}
+.svc-emoji{font-size:2.4rem;margin-bottom:20px;display:block}
+.svc-title{font-size:1.5rem;font-weight:700;margin-bottom:12px}
+.svc-desc{font-size:.95rem;color:var(--muted);line-height:1.7;max-width:36ch}
+
+/* ============================================================
+   TICKET FORM
+   ============================================================ */
+.form-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  padding:60px;margin-top:2px;
+}
+.form-title{font-size:1.8rem;font-weight:700;margin-bottom:40px}
+.form-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+.form-group{display:flex;flex-direction:column;gap:8px}
+.form-group.full{grid-column:1/-1}
+.form-group label{
+  font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);
+  font-family:'Space Mono',monospace;
+}
+.form-group input,
+.form-group select,
+.form-group textarea{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:4px;
+  color:var(--text);
+  padding:14px 16px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.95rem;
+  transition:border-color .2s,box-shadow .2s;
+  appearance:none;
+  cursor:none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(251,191,36,.1);
+}
+.form-group textarea{resize:vertical;min-height:130px}
+.form-group select option{background:#0c0c0c}
+.form-submit{
+  margin-top:28px;
+  padding:16px 48px;
+  background:var(--accent);color:#000;
+  border:none;border-radius:4px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.95rem;font-weight:700;letter-spacing:.05em;
+  cursor:none;
+  transition:transform .2s,box-shadow .2s,background .2s;
+  position:relative;overflow:hidden;
+}
+.form-submit::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+  transform:translateX(-100%);transition:transform .5s;
+}
+.form-submit:hover::before{transform:translateX(100%)}
+.form-submit:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 40px rgba(251,191,36,.3);
+}
+#ticketStatus{
+  margin-top:12px;font-size:.85rem;
+  padding:10px 14px;border-radius:4px;
+  display:none;
+}
+#ticketStatus.success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac;display:block}
+#ticketStatus.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;display:block}
+
+/* ============================================================
+   DISCORD COMMUNITY BANNER
+   ============================================================ */
+.discord-banner{
+  margin:2px 0;
+  background:var(--surface);border:1px solid var(--border);
+  padding:80px 60px;
+  display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;
+  overflow:hidden;position:relative;
+  transition:border-color .3s;
+}
+.discord-banner:hover{border-color:rgba(251,191,36,.3)}
+.discord-banner::before{
+  content:'';position:absolute;right:-200px;top:-200px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(251,191,36,.08) 0%,transparent 70%);
+  animation:drift 15s ease-in-out infinite;
+}
+.db-label{
+  font-family:'Space Mono',monospace;
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.3em;
+  color:var(--accent);margin-bottom:16px;
+}
+.db-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:700;margin-bottom:12px}
+.db-sub{color:var(--muted);font-size:1rem;max-width:40ch}
+.db-btn{
+  position:relative;z-index:2;
+  display:inline-flex;align-items:center;gap:12px;
+  padding:18px 40px;
+  background:var(--accent);color:#000;
+  border-radius:4px;font-weight:700;font-size:1rem;white-space:nowrap;
+  transition:transform .2s,box-shadow .2s;cursor:none;
+  flex-shrink:0;
+}
+.db-btn:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(251,191,36,.3)}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-row{
+  display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;
+}
+.contact-chip{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 24px;
+  background:var(--surface);border:1px solid var(--border);border-radius:4px;
+  color:var(--accent);font-size:.9rem;font-weight:500;
+  transition:border-color .2s,transform .2s,box-shadow .2s;cursor:none;
+}
+.contact-chip:hover{
+  border-color:var(--accent);transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(251,191,36,.15);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{
+  position:relative;z-index:2;
+  padding:40px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:.8rem;color:var(--muted);
+}
+
+/* ============================================================
+   ADMIN
+   ============================================================ */
+.admin-link{
+  position:fixed;bottom:24px;left:24px;z-index:800;
+  padding:8px 14px;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(10px);
+  border:1px solid var(--border);border-radius:4px;
+  color:var(--muted);font-size:.7rem;letter-spacing:.1em;
+  text-transform:uppercase;font-family:'Space Mono',monospace;
+  transition:all .2s;cursor:none;
+}
+.admin-link:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ============================================================
+   TILT
+   ============================================================ */
+.tilt{transform-style:preserve-3d;perspective:1000px}
+
+/* ============================================================
+   MISC
+   ============================================================ */
+@keyframes fade-up{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  .nav-links{display:none}
+  .hero{padding:100px 20px 60px}
+  .form-grid{grid-template-columns:1fr}
+  .discord-banner{grid-template-columns:1fr;padding:48px 28px}
+  .form-wrap{padding:36px 24px}
+  section{padding:80px 16px}
+  footer{flex-direction:column;gap:12px;text-align:center}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div id="discord-status-container" style="margin-bottom: 30px;"></div>
-            <div class="header-content">
-                <h1>yonn_ix</h1>
-                <p>Creator • Developer • Community Builder</p>
-                <div class="status-badge">
-                    <span class="status-dot"></span>
-                    <span>Online & Active</span>
-                </div>
-            </div>
-        </header>
 
-        <!-- Social Networks Section -->
-        <section class="socials-section">
-            <h2 class="section-title">Mes Réseaux</h2>
-            <div class="socials-grid">
-                <a href="https://www.instagram.com/yonn_ix/" target="_blank" rel="noopener noreferrer" class="social-card">
-                    <img src="/logos/insta.png" alt="Instagram" class="social-icon" loading="lazy">
-                    <div class="social-name">Instagram</div>
-                    <div class="social-handle">@yonn_ix</div>
-                </a>
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-                <a href="https://www.paypal.me/YonnOrsel" target="_blank" rel="noopener noreferrer" class="social-card">
-                    <img src="/logos/paypal.png" alt="PayPal" class="social-icon" loading="lazy">
-                    <div class="social-name">PayPal</div>
-                    <div class="social-handle">YonnOrsel</div>
-                </a>
+<!-- SCROLL PROGRESS -->
+<div id="progress"></div>
 
+<!-- BACKGROUND LAYERS -->
+<div class="noise"></div>
+<div class="aurora">
+  <div class="aurora-orb"></div>
+  <div class="aurora-orb"></div>
+  <div class="aurora-orb"></div>
+</div>
+<div class="grid-bg"></div>
 
-                <a href="https://www.tiktok.com/@yonn_ix" target="_blank" rel="noopener noreferrer" class="social-card">
-                    <img src="/logos/tiktok.png" alt="TikTok" class="social-icon" loading="lazy">
-                    <div class="social-name">TikTok</div>
-                    <div class="social-handle">@yonn_ix</div>
-                </a>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">yonn_ix</div>
+  <div class="nav-links">
+    <a href="#reseaux">Réseaux</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+    <a href="#discord">Discord</a>
+  </div>
+</nav>
 
-                <a href="https://twitch.tv/yonn_ix" target="_blank" rel="noopener noreferrer" class="social-card">
-                    <img src="/logos/twitch.png" alt="Twitch" class="social-icon" loading="lazy">
-                    <div class="social-name">Twitch</div>
-                    <div class="social-handle">yonn_ix</div>
-                </a>
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div id="discord-status-container" class="discord-status-hero"></div>
 
-                <a href="https://github.com/Yonnix-dev" target="_blank" rel="noopener noreferrer" class="social-card">
-                    <img src="/logos/github.png" alt="GitHub" class="social-icon" loading="lazy">
-                    <div class="social-name">GitHub</div>
-                    <div class="social-handle">Yonnix-dev</div>
-                </a>
+  <p class="hero-eyebrow">Creator · Developer · Community Builder</p>
 
-                <a href="https://discord.com/users/yonn_ix" target="_blank" rel="noopener noreferrer" class="social-card">
-                    <img src="/logos/discord.png" alt="Discord" class="social-icon" loading="lazy">
-                    <div class="social-name">Discord</div>
-                    <div class="social-handle">yonn_ix</div>
-                </a>
-            </div>
-        </section>
+  <h1 class="hero-title">
+    <span class="line"><span>YONN</span></span>
+    <span class="line"><span>_IX</span></span>
+  </h1>
 
-        <!-- Services Section -->
-        <section class="services-section">
-            <h2 class="section-title">Services</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">🌐</div>
-                    <h3 class="service-title">Sites Web Sur Mesure</h3>
-                    <p class="service-description">Création de sites web personnalisés et modernes. Hébergement 24h/24 lifetime inclus. Prix variable selon votre demande.</p>
-                </div>
+  <p class="hero-sub">
+    Sites web sur mesure · Bots Discord · Contenu créatif.<br>
+    Basé en France, disponible partout.
+  </p>
 
-                <div class="service-card">
-                    <div class="service-icon">🤖</div>
-                    <h3 class="service-title">Bots Discord Sur Mesure</h3>
-                    <p class="service-description">Développement de bots Discord pour tous types de demandes. Hébergement 24h/24 lifetime assuré.</p>
-                </div>
-            </div>
+  <div class="hero-cta">
+    <a href="#services" class="btn-primary">Voir mes services</a>
+    <a href="#contact" class="btn-ghost">Me contacter</a>
+  </div>
 
-            <div class="contact-info">
-                <h3 class="contact-title">📧 Pour tout contact :</h3>
-                <div class="contact-details">
-                    <a href="mailto:yonn.ix055@gmail.com" class="contact-link">
-                        <span class="contact-icon">✉️</span>
-                        <span>yonn.ix055@gmail.com</span>
-                    </a>
-                    <p class="contact-separator">ou</p>
-                    <a href="https://discord.com/users/yonn_ix" target="_blank" rel="noopener noreferrer" class="contact-link">
-                        <span class="contact-icon">💬</span>
-                        <span>Discord : yonn_ix</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-<section class="services-section">
-    <!-- ... tes cartes de services ... -->
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
 </section>
 
-<section class="contact-info" style="margin-top:40px;">
-    <h3 class="contact-title">🎫 Ouvrir un ticket</h3>
-    <form id="ticketForm" class="contact-details">
-        <input type="text" id="ticketName" placeholder="Ton pseudo / nom" required
-               style="width:100%;max-width:400px;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);">
-        <input type="text" id="ticketDiscord" placeholder="Ton Discord (ex: yonn_ix)" required
-               style="width:100%;max-width:400px;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);">
-        <input type="email" id="ticketEmail" placeholder="Ton email (optionnel)"
-               style="width:100%;max-width:400px;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);">
-        <select id="ticketType"
-                style="width:100%;max-width:400px;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);">
-            <option value="Site web">Site web</option>
-            <option value="Bot Discord">Bot Discord</option>
-            <option value="Autre">Autre</option>
-        </select>
-        <textarea id="ticketMessage" placeholder="Décris ton projet / ta question" required
-                  rows="4"
-                  style="width:100%;max-width:400px;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);resize:vertical;"></textarea>
-
-        <button type="submit" class="contact-link" style="margin-top:10px;">
-            <span class="contact-icon">🎫</span>
-            <span>Envoyer le ticket</span>
-        </button>
-
-        <p id="ticketStatus" style="font-size:0.85rem;opacity:0.8;"></p>
-    </form>
-</section>
-
-        <!-- Discord Server Section -->
-        <section class="discord-section">
-            <div class="discord-card">
-                <div class="discord-content">
-                    <div class="discord-icon">🎙️</div>
-                    <h2>Serveur Discord</h2>
-                    <p>Rejoins notre communauté pour discuter, faire des events et te connecter avec d'autres</p>
-                    <a href="https://discord.gg/N8qXQtmkBa" target="_blank" rel="noopener noreferrer" class="btn-discord">
-                        <span>Rejoindre le serveur</span>
-                        <span>→</span>
-                    </a>
-                </div>
-            </div>
-        </section>
+<!-- ============================================================
+     RÉSEAUX
+     ============================================================ -->
+<section id="reseaux">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Réseaux</div>
+      <h2 class="section-title">Me retrouver<br>en ligne</h2>
     </div>
 
-    <!-- Admin Link -->
-    <a href="/admin" class="admin-link">⚙️ Admin</a>
+    <div class="marquee-wrap reveal">
+      <div class="marquee-track">
+        <span class="marquee-item accent">@yonn_ix</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item">Instagram</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item">TikTok</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item">Twitch</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item">Discord</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item">GitHub</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item accent">@yonn_ix</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item">Instagram</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item">TikTok</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item">Twitch</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item">Discord</span>
+        <span class="marquee-item">·</span>
+        <span class="marquee-item">GitHub</span>
+        <span class="marquee-item">·</span>
+      </div>
+    </div>
 
-    <footer>
-        <p>© 2026 yonn_ix • Services & Réseaux Sociaux</p>
-    </footer>
+    <div class="socials-grid">
+      <a href="https://www.instagram.com/yonn_ix/" target="_blank" rel="noopener noreferrer" class="social-card reveal reveal-delay-1 tilt">
+        <img src="/logos/insta.png" alt="Instagram" class="s-icon" loading="lazy" width="44" height="44">
+        <div class="s-name">Instagram</div>
+        <div class="s-handle">@yonn_ix</div>
+        <span class="s-arrow">↗</span>
+      </a>
+      <a href="https://www.tiktok.com/@yonn_ix" target="_blank" rel="noopener noreferrer" class="social-card reveal reveal-delay-2 tilt">
+        <img src="/logos/tiktok.png" alt="TikTok" class="s-icon" loading="lazy" width="44" height="44">
+        <div class="s-name">TikTok</div>
+        <div class="s-handle">@yonn_ix</div>
+        <span class="s-arrow">↗</span>
+      </a>
+      <a href="https://twitch.tv/yonn_ix" target="_blank" rel="noopener noreferrer" class="social-card reveal reveal-delay-3 tilt">
+        <img src="/logos/twitch.png" alt="Twitch" class="s-icon" loading="lazy" width="44" height="44">
+        <div class="s-name">Twitch</div>
+        <div class="s-handle">yonn_ix</div>
+        <span class="s-arrow">↗</span>
+      </a>
+      <a href="https://github.com/Yonnix-dev" target="_blank" rel="noopener noreferrer" class="social-card reveal reveal-delay-4 tilt">
+        <img src="/logos/github.png" alt="GitHub" class="s-icon" loading="lazy" width="44" height="44">
+        <div class="s-name">GitHub</div>
+        <div class="s-handle">Yonnix-dev</div>
+        <span class="s-arrow">↗</span>
+      </a>
+      <a href="https://discord.com/users/yonn_ix" target="_blank" rel="noopener noreferrer" class="social-card reveal reveal-delay-5 tilt">
+        <img src="/logos/discord.png" alt="Discord" class="s-icon" loading="lazy" width="44" height="44">
+        <div class="s-name">Discord</div>
+        <div class="s-handle">yonn_ix</div>
+        <span class="s-arrow">↗</span>
+      </a>
+      <a href="https://www.paypal.me/YonnOrsel" target="_blank" rel="noopener noreferrer" class="social-card reveal reveal-delay-1 tilt">
+        <img src="/logos/paypal.png" alt="PayPal" class="s-icon" loading="lazy" width="44" height="44">
+        <div class="s-name">PayPal</div>
+        <div class="s-handle">YonnOrsel</div>
+        <span class="s-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
 
-    <!-- Elfsight AI Chatbot -->
-    <script src="https://elfsightcdn.com/platform.js" async></script>
-    <div class="elfsight-app-480e0817-9f84-4fa3-97ab-954cd8f43a31" data-elfsight-app-lazy></div>
+<!-- ============================================================
+     SERVICES + CONTACT
+     ============================================================ -->
+<section id="services">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Services</div>
+      <h2 class="section-title">Ce que<br>je propose</h2>
+    </div>
 
-    <script>
-        // Track mouse position for dynamic grid effect
-        document.addEventListener('mousemove', (e) => {
-            document.documentElement.style.setProperty('--mouse-x', e.clientX + 'px');
-            document.documentElement.style.setProperty('--mouse-y', e.clientY + 'px');
-        });
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1 tilt">
+        <div class="svc-number">01</div>
+        <span class="svc-emoji">🌐</span>
+        <h3 class="svc-title">Sites Web Sur Mesure</h3>
+        <p class="svc-desc">Création de sites web personnalisés et modernes. Hébergement 24h/24 lifetime inclus. Prix variable selon ta demande.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-2 tilt">
+        <div class="svc-number">02</div>
+        <span class="svc-emoji">🤖</span>
+        <h3 class="svc-title">Bots Discord Sur Mesure</h3>
+        <p class="svc-desc">Développement de bots Discord pour tous types de projets. Hébergement 24h/24 lifetime assuré.</p>
+      </div>
+    </div>
 
-        // Fetch Discord status from Lanyard
-        const DISCORD_USER_ID = '964542992641818624'; // ID Discord
+    <div class="form-wrap reveal" id="contact">
+      <h3 class="form-title">Ouvrir un ticket 🎫</h3>
+      <form id="ticketForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="ticketName">Pseudo / Nom</label>
+            <input type="text" id="ticketName" placeholder="yonn_ix" required>
+          </div>
+          <div class="form-group">
+            <label for="ticketDiscord">Discord</label>
+            <input type="text" id="ticketDiscord" placeholder="yonn_ix" required>
+          </div>
+          <div class="form-group">
+            <label for="ticketEmail">Email (optionnel)</label>
+            <input type="email" id="ticketEmail" placeholder="ton@email.com">
+          </div>
+          <div class="form-group">
+            <label for="ticketType">Type de service</label>
+            <select id="ticketType">
+              <option value="Site web">Site web</option>
+              <option value="Bot Discord">Bot Discord</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label for="ticketMessage">Ton projet</label>
+            <textarea id="ticketMessage" placeholder="Décris ce que tu recherches..." required></textarea>
+          </div>
+        </div>
+        <button type="submit" class="form-submit">Envoyer le ticket →</button>
+        <p id="ticketStatus"></p>
+      </form>
+    </div>
 
-        async function fetchDiscordStatus() {
-            try {
-                const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
-                const data = await response.json();
+    <div class="reveal" style="margin-top:20px;">
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:0">Ou directement :</p>
+      <div class="contact-row">
+        <a href="mailto:yonn.ix055@gmail.com" class="contact-chip">✉️ yonn.ix055@gmail.com</a>
+        <a href="https://discord.com/users/yonn_ix" target="_blank" rel="noopener noreferrer" class="contact-chip">💬 Discord : yonn_ix</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-                if (data.success && data.data) {
-                    const user = data.data;
-                    const container = document.getElementById('discord-status-container');
+<!-- ============================================================
+     DISCORD COMMUNITY
+     ============================================================ -->
+<section id="discord" style="padding:0 20px 120px">
+  <div class="container">
+    <div class="discord-banner reveal tilt">
+      <div>
+        <p class="db-label">Communauté</p>
+        <h2 class="db-title">Rejoins le<br>serveur Discord</h2>
+        <p class="db-sub">Discute, participe aux events, connecte-toi avec d'autres membres de la communauté.</p>
+      </div>
+      <a href="https://discord.gg/N8qXQtmkBa" target="_blank" rel="noopener noreferrer" class="db-btn">
+        🎙️ Rejoindre →
+      </a>
+    </div>
+  </div>
+</section>
 
-                    let statusEmoji = '⚫';
-                    if (user.discord_status === 'online') statusEmoji = '🟢';
-                    else if (user.discord_status === 'idle') statusEmoji = '🟡';
-                    else if (user.discord_status === 'dnd') statusEmoji = '🔴';
+<!-- ADMIN -->
+<a href="/admin" class="admin-link">⚙ Admin</a>
 
-                    let html = `
-                        <div style="
-                            display: inline-flex;
-                            align-items: center;
-                            gap: 12px;
-                            padding: 12px 20px;
-                            background: var(--color-surface);
-                            border: 1px solid var(--color-border);
-                            border-radius: 10px;
-                            animation: fadeInDown 0.8s var(--ease);
-                        ">
-                            <img src="https://cdn.discordapp.com/avatars/${user.discord_user.id}/${user.discord_user.avatar}.png" 
-                                 alt="Discord Avatar" 
-                                 style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--color-accent);">
-                            <div style="text-align: left;">
-                                <div style="font-weight: 600; color: var(--color-text);">${user.discord_user.username}</div>
-                                <div style="font-size: 0.8rem; color: var(--color-accent); display: flex; align-items: center; gap: 6px;">
-                                    <span>${statusEmoji}</span>
-                                    <span>${user.discord_status.charAt(0).toUpperCase() + user.discord_status.slice(1)}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 yonn_ix</span>
+  <span style="font-family:'Space Mono',monospace;font-size:.7rem;color:rgba(251,191,36,.2)">Creator · Developer · Community Builder</span>
+</footer>
 
-                    container.innerHTML = html;
-                }
-            } catch (error) {
-                console.log('Discord status not configured or unavailable');
-            }
-        }
+<!-- Elfsight Chatbot -->
+<script src="https://elfsightcdn.com/platform.js" async></script>
+<div class="elfsight-app-480e0817-9f84-4fa3-97ab-954cd8f43a31" data-elfsight-app-lazy></div>
 
-        // Fetch on page load
-        fetchDiscordStatus();
-        // Refresh every 10 seconds
-        setInterval(fetchDiscordStatus, 10000);
-
-        // Smooth reveal animations on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe all cards
-        document.querySelectorAll('.social-card, .discord-card').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Add click ripple effect
-        document.querySelectorAll('.social-card, .btn-discord').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-
-                ripple.style.cssText = `
-                    position: absolute;
-                    width: ${size}px;
-                    height: ${size}px;
-                    border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.5);
-                    left: ${x}px;
-                    top: ${y}px;
-                    pointer-events: none;
-                    animation: ripple 0.6s ease-out;
-                `;
-
-                this.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            });
-        });
-
-        // Add ripple animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-const WEBHOOK_URL = "https://discord.com/api/webhooks/1459665542863392890/3fiB5IFeLYs88ToLR6__PJYvc9Q5JNjepeywfYrlgYBXVi_grkDdlS4eLy5qWB0nKi0b";
-
-document.getElementById('ticketForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const statusEl = document.getElementById('ticketStatus');
-    statusEl.textContent = "Envoi du ticket...";
-    
-    const name = document.getElementById('ticketName').value.trim();
-    const discord = document.getElementById('ticketDiscord').value.trim();
-    const email = document.getElementById('ticketEmail').value.trim();
-    const type = document.getElementById('ticketType').value;
-    const message = document.getElementById('ticketMessage').value.trim();
-
-    const payload = {
-        content: null,
-        embeds: [
-            {
-                title: "🎫 Nouveau ticket depuis le site",
-                color: 0xfbbf24,
-                fields: [
-                    { name: "Nom / Pseudo", value: name || "Non fourni", inline: true },
-                    { name: "Discord", value: discord || "Non fourni", inline: true },
-                    { name: "Email", value: email || "Non fourni", inline: false },
-                    { name: "Type", value: type, inline: true },
-                    { name: "Message", value: message || "—", inline: false }
-                ],
-                timestamp: new Date().toISOString()
-            }
-        ]
-    };
-
-    try {
-        const res = await fetch(WEBHOOK_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-
-        if (!res.ok) throw new Error("Erreur " + res.status);
-
-        statusEl.textContent = "✅ Ticket envoyé ! Je te réponds sur Discord / email.";
-        document.getElementById('ticketForm').reset();
-    } catch (err) {
-        console.error(err);
-        statusEl.textContent = "❌ Impossible d'envoyer le ticket. Réessaie plus tard.";
-    }
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// ─── Cursor ────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+});
+(function animRing(){
+  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('a,button,.social-card,.service-card,.discord-banner').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cursor.style.width='6px';cursor.style.height='6px';
+    ring.style.width='56px';ring.style.height='56px';ring.style.opacity='.4';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cursor.style.width='12px';cursor.style.height='12px';
+    ring.style.width='36px';ring.style.height='36px';ring.style.opacity='1';
+  });
 });
 
-    </script>
+// ─── Card spotlight ─────────────────────────────────────────
+document.querySelectorAll('.social-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+    card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+  });
+});
+
+// ─── Scroll progress ───────────────────────────────────────
+const prog=document.getElementById('progress');
+window.addEventListener('scroll',()=>{
+  const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);
+  prog.style.transform='scaleX('+pct+')';
+},{passive:true});
+
+// ─── 3D Tilt ───────────────────────────────────────────────
+document.querySelectorAll('.tilt').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*14;
+    const y=((e.clientY-r.top)/r.height-.5)*-14;
+    card.style.transition='transform .1s';
+    card.style.transform=`perspective(1000px) rotateX(${y}deg) rotateY(${x}deg) scale(1.02)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transition='transform .5s cubic-bezier(0.16,1,0.3,1)';
+    card.style.transform='perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+  });
+});
+
+// ─── Scroll reveal ─────────────────────────────────────────
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+  });
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ─── Discord Status (Lanyard) ──────────────────────────────
+const DISCORD_USER_ID='964542992641818624';
+async function fetchDiscordStatus(){
+  try{
+    const res=await fetch('https://api.lanyard.rest/v1/users/'+DISCORD_USER_ID);
+    const data=await res.json();
+    if(!data.success||!data.data)return;
+    const u=data.data;
+    const colors={'online':'#22c55e','idle':'#eab308','dnd':'#ef4444','offline':'#6b7280'};
+    const labels={'online':'En ligne','idle':'Inactif','dnd':'Ne pas déranger','offline':'Hors ligne'};
+    const col=colors[u.discord_status]||'#6b7280';
+    document.getElementById('discord-status-container').innerHTML=`
+      <div class="discord-pill">
+        <img src="https://cdn.discordapp.com/avatars/${u.discord_user.id}/${u.discord_user.avatar}.png" alt="Avatar">
+        <span style="color:var(--text);font-weight:600">${u.discord_user.username}</span>
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:.75rem;color:${col}">
+          <span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block"></span>
+          ${labels[u.discord_status]||u.discord_status}
+        </span>
+      </div>`;
+  }catch(err){}
+}
+fetchDiscordStatus();
+setInterval(fetchDiscordStatus,10000);
+
+// ─── Ticket Form ───────────────────────────────────────────
+const WEBHOOK='https://discord.com/api/webhooks/1459665542863392890/3fiB5IFeLYs88ToLR6__PJYvc9Q5JNjepeywfYrlgYBXVi_grkDdlS4eLy5qWB0nKi0b';
+document.getElementById('ticketForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const statusEl=document.getElementById('ticketStatus');
+  const btn=e.target.querySelector('.form-submit');
+  btn.textContent='Envoi...';btn.disabled=true;
+  const payload={embeds:[{
+    title:'🎫 Nouveau ticket',color:0xfbbf24,
+    fields:[
+      {name:'Pseudo',value:document.getElementById('ticketName').value||'—',inline:true},
+      {name:'Discord',value:document.getElementById('ticketDiscord').value||'—',inline:true},
+      {name:'Email',value:document.getElementById('ticketEmail').value||'—',inline:false},
+      {name:'Type',value:document.getElementById('ticketType').value,inline:true},
+      {name:'Message',value:document.getElementById('ticketMessage').value||'—',inline:false}
+    ],
+    timestamp:new Date().toISOString()
+  }]};
+  try{
+    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(!r.ok)throw new Error();
+    statusEl.textContent='✅ Ticket envoyé ! Je te réponds rapidement.';
+    statusEl.className='success';
+    e.target.reset();
+  }catch{
+    statusEl.textContent="❌ Erreur lors de l'envoi. Contacte-moi directement.";
+    statusEl.className='error';
+  }finally{
+    btn.textContent='Envoyer le ticket →';btn.disabled=false;
+  }
+});
+
+// ─── Ripple effect ─────────────────────────────────────────
+document.querySelectorAll('.btn-primary,.btn-ghost,.db-btn,.form-submit').forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    const r=btn.getBoundingClientRect();
+    const size=Math.max(r.width,r.height);
+    const rip=document.createElement('span');
+    rip.style.cssText=`position:absolute;width:${size}px;height:${size}px;border-radius:50%;
+      background:rgba(255,255,255,.2);left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px;
+      pointer-events:none;animation:rip .6s ease-out forwards;`;
+    btn.style.position='relative';btn.style.overflow='hidden';
+    btn.appendChild(rip);setTimeout(()=>rip.remove(),600);
+  });
+});
+const s=document.createElement('style');
+s.textContent='@keyframes rip{to{transform:scale(4);opacity:0}}';
+document.head.appendChild(s);
+</script>
 </body>
 </html>
