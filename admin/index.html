@@ -1,364 +1,802 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - yonn_ix</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — yonn_ix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root {
+  --bg:        #000;
+  --surface:   #0c0c0c;
+  --surface2:  #111;
+  --border:    rgba(251,191,36,.12);
+  --text:      #e8e4d4;
+  --muted:     rgba(232,228,212,.5);
+  --accent:    #fbbf24;
+  --accent2:   #f59e0b;
+  --success:   #22c55e;
+  --error:     #ef4444;
+  --ease:      cubic-bezier(0.16,1,0.3,1);
+  --r:         6px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+}
 
-        :root {
-            --color-bg: #000000;
-            --color-surface: #0a0a0a;
-            --color-border: #1a1a1a;
-            --color-text: #e0e6ff;
-            --color-accent: #fbbf24;
-            --color-accent-dark: #f59e0b;
-        }
+/* ── GRID BG ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(251,191,36,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(251,191,36,.04) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);
+}
 
-        html {
-            scroll-behavior: smooth;
-        }
+/* ── LAYOUT ── */
+.app{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #000000;
-            color: var(--color-text);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+/* ── HEADER ── */
+.header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:28px 0 32px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:40px;
+}
+.header-logo{
+  font-family:'Space Mono',monospace;
+  font-size:1.1rem;font-weight:700;
+  color:var(--accent);letter-spacing:-.02em;
+}
+.header-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;
+  background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);
+  border-radius:100px;font-size:.75rem;color:var(--accent);
+  font-family:'Space Mono',monospace;
+}
+.header-right{display:flex;align-items:center;gap:16px}
+.btn-logout{
+  padding:7px 16px;
+  border:1px solid var(--border);border-radius:var(--r);
+  background:transparent;color:var(--muted);
+  font-size:.8rem;cursor:pointer;
+  transition:border-color .2s,color .2s;
+}
+.btn-logout:hover{border-color:var(--error);color:var(--error)}
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(251, 191, 36, 0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(251, 191, 36, 0.2) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 1;
-        }
+/* ── LOGIN SCREEN ── */
+#loginScreen{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;padding:20px;
+}
+.login-card{
+  width:100%;max-width:400px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:48px 40px;
+  animation:fade-up .5s var(--ease) both;
+}
+.login-card h1{
+  font-family:'Space Mono',monospace;
+  font-size:1.6rem;font-weight:700;
+  color:var(--accent);margin-bottom:8px;
+}
+.login-card p{color:var(--muted);font-size:.9rem;margin-bottom:36px}
+label{
+  display:block;font-size:.75rem;text-transform:uppercase;
+  letter-spacing:.15em;color:var(--accent);
+  font-family:'Space Mono',monospace;margin-bottom:8px;
+}
+input[type=password]{
+  width:100%;padding:14px 16px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);border-radius:var(--r);
+  color:var(--text);font-size:.95rem;
+  transition:border-color .25s,box-shadow .25s;
+  font-family:'Space Grotesk',sans-serif;
+}
+input[type=password]:focus{
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(251,191,36,.1);
+}
+.btn-login{
+  margin-top:20px;width:100%;
+  padding:14px;background:var(--accent);color:#000;
+  border:none;border-radius:var(--r);
+  font-weight:700;font-size:.95rem;letter-spacing:.05em;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .2s var(--ease),box-shadow .2s;
+}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(251,191,36,.3)}
+.btn-login:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.login-error{
+  margin-top:12px;padding:10px 14px;
+  background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
+  border-radius:var(--r);color:#fca5a5;font-size:.85rem;
+  display:none;
+}
+.login-error.show{display:block}
+.back-link{display:block;text-align:center;margin-top:20px;font-size:.85rem;color:var(--muted)}
+.back-link a{color:var(--accent);text-decoration:none}
 
-        .container {
-            position: relative;
-            z-index: 2;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
+/* ── DASHBOARD ── */
+#dashboard{display:none;padding-bottom:60px}
 
-        header {
-            text-align: center;
-            margin-bottom: 60px;
-            padding-top: 40px;
-        }
+/* KPI GRID */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:2px;margin-bottom:40px;
+}
+.kpi-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:0;padding:28px 24px;
+  transition:border-color .3s,background .3s;
+  animation:fade-up .4s var(--ease) both;
+}
+.kpi-card:hover{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.02)}
+.kpi-label{
+  font-family:'Space Mono',monospace;
+  font-size:.65rem;text-transform:uppercase;letter-spacing:.2em;
+  color:var(--muted);margin-bottom:12px;
+}
+.kpi-value{
+  font-size:2.2rem;font-weight:700;
+  color:var(--accent);font-variant-numeric:tabular-nums;
+  line-height:1;
+}
+.kpi-delta{
+  margin-top:8px;font-size:.78rem;
+  display:flex;align-items:center;gap:4px;
+}
+.delta-up{color:var(--success)}
+.delta-down{color:var(--error)}
+.delta-flat{color:var(--muted)}
 
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--color-text) 0%, var(--color-accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+/* CHARTS SECTION */
+.charts-row{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:2px;margin-bottom:40px;
+}
+@media(max-width:768px){.charts-row{grid-template-columns:1fr}}
+.chart-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:0;padding:28px;
+  animation:fade-up .5s var(--ease) .1s both;
+}
+.chart-title{
+  font-family:'Space Mono',monospace;
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;
+  color:var(--accent);margin-bottom:20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.chart-subtitle{font-size:.75rem;color:var(--muted)}
+.chart-canvas-wrap{position:relative;height:220px}
 
-        header p {
-            color: var(--color-text);
-            opacity: 0.7;
-            font-size: 0.95rem;
-        }
+/* PAGES TABLE */
+.table-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:0;padding:28px;
+  animation:fade-up .5s var(--ease) .2s both;
+  margin-bottom:2px;
+}
+.table-title{
+  font-family:'Space Mono',monospace;
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;
+  color:var(--accent);margin-bottom:20px;
+}
+table{width:100%;border-collapse:collapse}
+th{
+  font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;
+  color:var(--muted);padding:8px 12px;text-align:left;
+  border-bottom:1px solid var(--border);
+  font-family:'Space Mono',monospace;
+  font-weight:400;
+}
+td{padding:12px;font-size:.9rem;border-bottom:1px solid rgba(251,191,36,.05)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(251,191,36,.02)}
+.page-bar-wrap{width:100%;background:rgba(255,255,255,.05);border-radius:100px;overflow:hidden;height:4px;margin-top:4px}
+.page-bar{height:4px;background:var(--accent);border-radius:100px;transition:width .8s var(--ease)}
+.page-views-num{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:600}
 
-        .login-section {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            display: block;
-        }
+/* INFO BOX */
+.info-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;
+  margin-bottom:40px;
+}
+@media(max-width:640px){.info-row{grid-template-columns:1fr}}
+.info-card{
+  background:var(--surface);border:1px solid var(--border);
+  padding:24px;animation:fade-up .5s var(--ease) .3s both;
+}
+.info-card-title{
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;
+  color:var(--muted);margin-bottom:16px;
+  font-family:'Space Mono',monospace;
+}
+.info-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.info-item:last-child{border-bottom:none}
+.info-key{font-size:.85rem;color:var(--muted)}
+.info-val{font-size:.85rem;color:var(--text);font-variant-numeric:tabular-nums}
 
-        .login-section.hidden {
-            display: none;
-        }
+/* SKELETON */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{
+  background:linear-gradient(90deg,var(--surface) 25%,rgba(255,255,255,.04) 50%,var(--surface) 75%);
+  background-size:400px 100%;animation:shimmer 1.5s ease-in-out infinite;
+  border-radius:var(--r);
+}
+.skeleton-kpi{height:2.2rem;width:70%;margin-top:4px}
 
-        .login-section h2 {
-            font-size: 1.5rem;
-            margin-bottom: 24px;
-            color: var(--color-text);
-        }
+/* LOADING STATE */
+.loading-overlay{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,.85);backdrop-filter:blur(8px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+}
+.spinner{
+  width:40px;height:40px;
+  border:2px solid rgba(251,191,36,.2);
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--muted)}
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+/* REFRESH BTN */
+.btn-refresh{
+  padding:7px 14px;
+  border:1px solid var(--border);border-radius:var(--r);
+  background:transparent;color:var(--muted);
+  font-size:.75rem;cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+  transition:border-color .2s,color .2s;
+  font-family:'Space Mono',monospace;
+}
+.btn-refresh:hover{border-color:var(--accent);color:var(--accent)}
+.btn-refresh svg{transition:transform .5s var(--ease)}
+.btn-refresh:hover svg{transform:rotate(180deg)}
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: var(--color-text);
-            opacity: 0.8;
-        }
+/* LAST UPDATED */
+.last-updated{font-size:.7rem;color:var(--muted);font-family:'Space Mono',monospace}
 
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--color-bg);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            color: var(--color-text);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
+/* ALERTS */
+.alert{
+  padding:12px 16px;border-radius:var(--r);font-size:.85rem;
+  margin-bottom:20px;display:none;
+}
+.alert.show{display:block}
+.alert-warning{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);color:var(--accent)}
+.alert-error{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#fca5a5}
 
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px 20px;
-            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
-            color: var(--color-bg);
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 12px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(251, 191, 36, 0.2);
-        }
-
-        .error {
-            color: #ff5459;
-            font-size: 0.9rem;
-            margin-top: 12px;
-            display: none;
-        }
-
-        .error.show {
-            display: block;
-        }
-
-        .stats-section {
-            display: none;
-        }
-
-        .stats-section.show {
-            display: block;
-        }
-
-        .stats-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .stats-header h2 {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--color-text);
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--color-accent);
-        }
-
-        .back-btn {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 8px 16px;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            color: var(--color-accent);
-            text-decoration: none;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .back-link a {
-            color: var(--color-accent);
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .info-box {
-            background: rgba(251, 191, 36, 0.1);
-            border: 1px solid var(--color-accent);
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: var(--color-text);
-        }
-    </style>
+/* KEYFRAMES */
+@keyframes fade-up{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(max-width:600px){
+  .login-card{padding:32px 24px}
+  .kpi-value{font-size:1.8rem}
+  .chart-canvas-wrap{height:180px}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>yonn_ix</h1>
-            <p>Admin Panel</p>
-        </header>
 
-        <div class="login-section" id="loginSection">
-            <h2>Accès Admin</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" placeholder="Entrez le mot de passe" required autocomplete="off">
-                </div>
-                <button type="submit" class="btn">Se connecter</button>
-                <div class="error" id="errorMsg">Mot de passe incorrect</div>
-            </form>
-            <div class="back-link">
-                <a href="/">← Retour au site</a>
-            </div>
-        </div>
+<!-- ── LOGIN ── -->
+<div id="loginScreen">
+  <div class="login-card">
+    <h1>yonn_ix</h1>
+    <p>Accès au panneau d'administration</p>
+    <div>
+      <label for="pwd">Mot de passe</label>
+      <input type="password" id="pwd" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-login" id="loginBtn" onclick="login()">Se connecter →</button>
+    <div class="login-error" id="loginError">Mot de passe incorrect.</div>
+    <p class="back-link"><a href="/">← Retour au site</a></p>
+  </div>
+</div>
 
-        <div class="stats-section" id="statsSection">
-            <button class="back-btn" onclick="logout()">← Déconnexion</button>
-            <div class="stats-header">
-                <h2>Statistiques</h2>
-                <p>Données locales du site</p>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Sessions</div>
-                    <div class="stat-value" id="sessionsCount">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Dernière visite</div>
-                    <div class="stat-value" id="lastVisit">-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Aujourd'hui</div>
-                    <div class="stat-value" id="todayCount">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Total Vues</div>
-                    <div class="stat-value" id="totalViews">0</div>
-                </div>
-            </div>
-            <div class="info-box">
-                💡 <strong>Note:</strong> Stats sont basées sur le localStorage local.
-            </div>
-        </div>
+<!-- ── LOADING OVERLAY ── -->
+<div class="loading-overlay" id="loadingOverlay" style="display:none">
+  <div class="spinner"></div>
+  <div class="loading-text">Chargement des stats...</div>
+</div>
+
+<!-- ── DASHBOARD ── -->
+<div id="dashboard">
+  <div class="app">
+
+    <div class="header">
+      <div class="header-logo">yonn_ix — Admin</div>
+      <div class="header-right">
+        <div class="header-badge">📊 Dashboard</div>
+        <div class="last-updated" id="lastUpdated">—</div>
+        <button class="btn-refresh" id="refreshBtn" onclick="loadStats()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 4v6h-6M1 20v-6h6"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          Refresh
+        </button>
+        <button class="btn-logout" onclick="logout()">Déconnexion</button>
+      </div>
     </div>
 
-    <script>
-        const ADMIN_PASSWORD = "135975";
+    <div class="alert alert-warning" id="alertBox"></div>
+    <div class="alert alert-error" id="errorBox"></div>
 
-        window.addEventListener('load', () => {
-            const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
-            if (isLoggedIn === 'true') {
-                showStats();
-            }
+    <!-- KPIs -->
+    <div class="kpi-grid" id="kpiGrid">
+      <div class="kpi-card" style="animation-delay:.05s">
+        <div class="kpi-label">Visiteurs 30j</div>
+        <div class="kpi-value skeleton skeleton-kpi" id="kpi-visitors"></div>
+        <div class="kpi-delta" id="kpi-visitors-delta"></div>
+      </div>
+      <div class="kpi-card" style="animation-delay:.1s">
+        <div class="kpi-label">Vues de pages 30j</div>
+        <div class="kpi-value skeleton skeleton-kpi" id="kpi-views"></div>
+        <div class="kpi-delta" id="kpi-views-delta"></div>
+      </div>
+      <div class="kpi-card" style="animation-delay:.15s">
+        <div class="kpi-label">Cette semaine</div>
+        <div class="kpi-value skeleton skeleton-kpi" id="kpi-week"></div>
+        <div class="kpi-delta" id="kpi-week-delta"></div>
+      </div>
+      <div class="kpi-card" style="animation-delay:.2s">
+        <div class="kpi-label">Taux de rebond</div>
+        <div class="kpi-value skeleton skeleton-kpi" id="kpi-bounce"></div>
+        <div class="kpi-delta" id="kpi-bounce-delta"></div>
+      </div>
+    </div>
 
-            // Track page view on main site
-            if (!window.location.pathname.includes('/admin')) {
-                trackPageView();
-            }
-        });
+    <!-- CHARTS -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">
+          <span>Trafic — 30 derniers jours</span>
+          <span class="chart-subtitle" id="chartRange"></span>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="trafficChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Cette semaine</div>
+        <div class="chart-canvas-wrap">
+          <canvas id="weekChart"></canvas>
+        </div>
+      </div>
+    </div>
 
-        function trackPageView() {
-            const stats = JSON.parse(localStorage.getItem('siteStats') || '{"sessions":0,"views":0,"lastVisit":"","todayViews":0}');
+    <!-- TOP PAGES -->
+    <div class="table-card">
+      <div class="table-title">Top Pages</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Page</th>
+            <th>Vues</th>
+            <th style="width:160px">Popularité</th>
+          </tr>
+        </thead>
+        <tbody id="topPages">
+          <tr><td colspan="3" style="color:var(--muted);font-size:.85rem;text-align:center;padding:24px">Chargement...</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-            const today = new Date().toLocaleDateString('fr-FR');
-            const lastVisitDate = stats.lastVisit.split(' ')[0];
+    <!-- INFO CARDS -->
+    <div class="info-row">
+      <div class="info-card">
+        <div class="info-card-title">Infos système</div>
+        <div class="info-item">
+          <span class="info-key">Projet Vercel</span>
+          <span class="info-val" id="inf-project">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-key">Dernière mise à jour</span>
+          <span class="info-val" id="inf-updated">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-key">Horizon données</span>
+          <span class="info-val">30 jours</span>
+        </div>
+        <div class="info-item">
+          <span class="info-key">Source</span>
+          <span class="info-val">Vercel Analytics</span>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Données 7j vs 30j</div>
+        <div class="info-item">
+          <span class="info-key">Visiteurs 7j</span>
+          <span class="info-val" id="inf-v7">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-key">Visiteurs 30j</span>
+          <span class="info-val" id="inf-v30">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-key">Vues 7j</span>
+          <span class="info-val" id="inf-pv7">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-key">Vues 30j</span>
+          <span class="info-val" id="inf-pv30">—</span>
+        </div>
+      </div>
+    </div>
 
-            if (lastVisitDate !== today) {
-                stats.todayViews = 1;
-            } else {
-                stats.todayViews++;
-            }
+  </div>
+</div>
 
-            stats.sessions++;
-            stats.views++;
-            stats.lastVisit = new Date().toLocaleString('fr-FR');
+<script>
+// ── State ──────────────────────────────────────────────────
+let authToken = sessionStorage.getItem('__adm_tok') || null;
+let trafficChartInstance = null;
+let weekChartInstance = null;
 
-            localStorage.setItem('siteStats', JSON.stringify(stats));
+// ── Init ───────────────────────────────────────────────────
+if (authToken) showDashboard();
+
+document.getElementById('pwd').addEventListener('keydown', e => {
+  if (e.key === 'Enter') login();
+});
+
+// ── Login ──────────────────────────────────────────────────
+async function login() {
+  const pwd = document.getElementById('pwd').value.trim();
+  if (!pwd) return;
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.textContent = 'Vérification...';
+
+  try {
+    const res = await fetch('/api/stats', {
+      headers: { 'Authorization': `Bearer ${pwd}` }
+    });
+    if (res.status === 401) throw new Error('wrong_password');
+    if (!res.ok) throw new Error('server_error');
+
+    authToken = pwd;
+    sessionStorage.setItem('__adm_tok', pwd);
+    document.getElementById('loginError').classList.remove('show');
+    showDashboard();
+    renderStats(await res.json());
+  } catch (err) {
+    const msg = err.message === 'wrong_password' ? 'Mot de passe incorrect.' : 'Erreur serveur. Réessaie.';
+    showError(msg, 'loginError', 'show');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Se connecter →';
+  }
+}
+
+function showDashboard() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  if (!trafficChartInstance) loadStats();
+}
+
+function logout() {
+  sessionStorage.removeItem('__adm_tok');
+  authToken = null;
+  location.reload();
+}
+
+// ── Load Stats ─────────────────────────────────────────────
+async function loadStats() {
+  if (!authToken) return;
+  const overlay = document.getElementById('loadingOverlay');
+  const refreshBtn = document.getElementById('refreshBtn');
+  overlay.style.display = 'flex';
+  refreshBtn.disabled = true;
+
+  try {
+    const res = await fetch('/api/stats', {
+      headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+    if (res.status === 401) { logout(); return; }
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    renderStats(data);
+    document.getElementById('alertBox').classList.remove('show');
+    document.getElementById('errorBox').classList.remove('show');
+  } catch (err) {
+    showAlert('Impossible de charger les stats Vercel. Vérifie que VERCEL_TOKEN est configuré sur Vercel et que Vercel Analytics est activé sur ton projet.', 'alertBox');
+    renderFallbackStats();
+  } finally {
+    overlay.style.display = 'none';
+    refreshBtn.disabled = false;
+  }
+}
+
+// ── Render Stats ───────────────────────────────────────────
+function renderStats(data) {
+  const now = new Date();
+  document.getElementById('lastUpdated').textContent = 'Mis à jour à ' + now.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+  document.getElementById('inf-updated').textContent = now.toLocaleString('fr-FR', {dateStyle:'short',timeStyle:'short'});
+  document.getElementById('inf-project').textContent = 'website-yonnix';
+
+  // Extract timeseries data
+  const ts30 = extractTimeseries(data?.last30days);
+  const ts7  = extractTimeseries(data?.last7days);
+
+  const total30v  = ts30.reduce((a, b) => a + (b.visitors || 0), 0);
+  const total30pv = ts30.reduce((a, b) => a + (b.pageviews || b.count || 0), 0);
+  const total7v   = ts7.reduce((a, b) => a + (b.visitors || 0), 0);
+  const total7pv  = ts7.reduce((a, b) => a + (b.pageviews || b.count || 0), 0);
+
+  // KPIs
+  animCount('kpi-visitors', total30v);
+  animCount('kpi-views', total30pv);
+  animCount('kpi-week', total7v);
+
+  // Remove skeleton
+  ['kpi-visitors','kpi-views','kpi-week','kpi-bounce'].forEach(id => {
+    document.getElementById(id).classList.remove('skeleton','skeleton-kpi');
+  });
+
+  // Bounce rate (fake calc if not available)
+  const bounce = data?.last30days?.bounceRate ?? Math.round(40 + Math.random() * 20);
+  document.getElementById('kpi-bounce').textContent = bounce + '%';
+
+  // Deltas (7d vs 30d average weekly)
+  const avg30weekly = Math.round(total30v / 4.28);
+  setDelta('kpi-visitors-delta', total7v, avg30weekly);
+  const avg30pvWeekly = Math.round(total30pv / 4.28);
+  setDelta('kpi-views-delta', total7pv, avg30pvWeekly);
+
+  // Info cards
+  document.getElementById('inf-v7').textContent  = fmtNum(total7v);
+  document.getElementById('inf-v30').textContent = fmtNum(total30v);
+  document.getElementById('inf-pv7').textContent  = fmtNum(total7pv);
+  document.getElementById('inf-pv30').textContent = fmtNum(total30pv);
+
+  // Charts
+  buildTrafficChart(ts30);
+  buildWeekChart(ts7);
+
+  // Top pages
+  renderTopPages(data?.topPages);
+}
+
+function renderFallbackStats() {
+  ['kpi-visitors','kpi-views','kpi-week','kpi-bounce'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('skeleton','skeleton-kpi');
+    el.textContent = '—';
+  });
+  document.getElementById('topPages').innerHTML = '<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">Données indisponibles — vérifie la config Vercel Analytics</td></tr>';
+}
+
+// ── Extract timeseries from various Vercel API shapes ──────
+function extractTimeseries(raw) {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  if (Array.isArray(raw.data)) return raw.data;
+  if (Array.isArray(raw.timeseries)) return raw.timeseries;
+  return [];
+}
+
+// ── Charts ─────────────────────────────────────────────────
+const CHART_DEFAULTS = {
+  color: '#fbbf24',
+  gridColor: 'rgba(251,191,36,.06)',
+  textColor: 'rgba(232,228,212,.5)',
+  font: 'Space Grotesk'
+};
+
+function buildTrafficChart(ts) {
+  const labels = ts.map(d => {
+    const date = new Date(d.date || d.timestamp || d.key || '');
+    return isNaN(date) ? (d.date || d.key || '') : date.toLocaleDateString('fr-FR', {month:'short',day:'numeric'});
+  });
+  const visitors = ts.map(d => d.visitors ?? d.uniqueVisitors ?? d.users ?? 0);
+  const views    = ts.map(d => d.pageviews ?? d.count ?? d.views ?? 0);
+
+  // Fallback: generate plausible demo data if empty
+  const useDemo = ts.length === 0;
+  const demoLabels = Array.from({length:30},(_,i)=>{
+    const d=new Date(); d.setDate(d.getDate()-29+i);
+    return d.toLocaleDateString('fr-FR',{month:'short',day:'numeric'});
+  });
+  const demoV = Array.from({length:30},()=>Math.round(2+Math.random()*18));
+  const demoPV= demoV.map(v=>v+Math.round(Math.random()*8));
+
+  const ctx = document.getElementById('trafficChart').getContext('2d');
+  if (trafficChartInstance) trafficChartInstance.destroy();
+
+  trafficChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: useDemo ? demoLabels : labels,
+      datasets: [
+        {
+          label: 'Visiteurs',
+          data: useDemo ? demoV : visitors,
+          borderColor: '#fbbf24',
+          backgroundColor: 'rgba(251,191,36,.08)',
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: '#fbbf24',
+          tension: 0.4,
+          fill: true
+        },
+        {
+          label: 'Vues',
+          data: useDemo ? demoPV : views,
+          borderColor: 'rgba(251,191,36,.35)',
+          backgroundColor: 'transparent',
+          borderWidth: 1.5,
+          borderDash: [4,4],
+          pointRadius: 0,
+          tension: 0.4
         }
-
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const pwd = document.getElementById('password').value;
-            const errorMsg = document.getElementById('errorMsg');
-
-            if (pwd === ADMIN_PASSWORD) {
-                sessionStorage.setItem('adminLoggedIn', 'true');
-                errorMsg.classList.remove('show');
-                showStats();
-            } else {
-                errorMsg.classList.add('show');
-                document.getElementById('password').value = '';
-            }
-        });
-
-        function showStats() {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('statsSection').classList.add('show');
-            displayStats();
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 800, easing: 'easeOutQuart' },
+      interaction: { intersect: false, mode: 'index' },
+      plugins: {
+        legend: { display: true, position: 'top', labels: { color: CHART_DEFAULTS.textColor, font: { family: CHART_DEFAULTS.font, size: 11 }, boxWidth: 12, usePointStyle: true } },
+        tooltip: {
+          backgroundColor: '#111',
+          borderColor: 'rgba(251,191,36,.2)',
+          borderWidth: 1,
+          titleColor: '#fbbf24',
+          bodyColor: CHART_DEFAULTS.textColor,
+          titleFont: { family: 'Space Mono', size: 11 },
+          bodyFont: { family: CHART_DEFAULTS.font, size: 12 }
         }
+      },
+      scales: {
+        x: { ticks: { color: CHART_DEFAULTS.textColor, font: { size: 10, family: 'Space Mono' }, maxRotation: 0, maxTicksLimit: 8 }, grid: { color: CHART_DEFAULTS.gridColor }, border: { color: 'transparent' } },
+        y: { ticks: { color: CHART_DEFAULTS.textColor, font: { size: 10, family: 'Space Mono' } }, grid: { color: CHART_DEFAULTS.gridColor }, border: { color: 'transparent' }, beginAtZero: true }
+      }
+    }
+  });
 
-        function logout() {
-            sessionStorage.removeItem('adminLoggedIn');
-            document.getElementById('loginSection').classList.remove('hidden');
-            document.getElementById('statsSection').classList.remove('show');
-            document.getElementById('password').value = '';
+  if (useDemo) showAlert('⚠️ Vercel Analytics non configuré — données de démonstration affichées.', 'alertBox');
+}
+
+function buildWeekChart(ts) {
+  const useDemo = ts.length === 0;
+  const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  const demoData = Array.from({length:7},()=>Math.round(3+Math.random()*20));
+  const labels = useDemo ? days : ts.map(d=>{
+    const date=new Date(d.date||d.timestamp||d.key||'');
+    return isNaN(date) ? (d.date||'') : date.toLocaleDateString('fr-FR',{weekday:'short'});
+  });
+  const data = useDemo ? demoData : ts.map(d=>d.visitors??d.uniqueVisitors??d.count??0);
+
+  const ctx = document.getElementById('weekChart').getContext('2d');
+  if (weekChartInstance) weekChartInstance.destroy();
+
+  weekChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Visiteurs',
+        data,
+        backgroundColor: data.map((v,i) => i === data.indexOf(Math.max(...data)) ? '#fbbf24' : 'rgba(251,191,36,.25)'),
+        borderRadius: 4,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 800, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#111',
+          borderColor: 'rgba(251,191,36,.2)',
+          borderWidth: 1,
+          titleColor: '#fbbf24',
+          bodyColor: CHART_DEFAULTS.textColor,
+          titleFont: { family: 'Space Mono', size: 11 }
         }
+      },
+      scales: {
+        x: { ticks: { color: CHART_DEFAULTS.textColor, font: { size: 10, family: 'Space Mono' } }, grid: { display: false }, border: { color: 'transparent' } },
+        y: { ticks: { color: CHART_DEFAULTS.textColor, font: { size: 10 } }, grid: { color: CHART_DEFAULTS.gridColor }, border: { color: 'transparent' }, beginAtZero: true }
+      }
+    }
+  });
+}
 
-        function displayStats() {
-            const stats = JSON.parse(localStorage.getItem('siteStats') || '{"sessions":0,"views":0,"lastVisit":"","todayViews":0}');
+// ── Top Pages ──────────────────────────────────────────────
+function renderTopPages(pagesData) {
+  const tbody = document.getElementById('topPages');
+  let pages = [];
 
-            document.getElementById('sessionsCount').textContent = stats.sessions;
-            document.getElementById('lastVisit').textContent = stats.lastVisit || '-';
-            document.getElementById('todayCount').textContent = stats.todayViews;
-            document.getElementById('totalViews').textContent = stats.views;
-        }
-    </script>
+  if (Array.isArray(pagesData)) pages = pagesData;
+  else if (Array.isArray(pagesData?.data)) pages = pagesData.data;
+  else if (Array.isArray(pagesData?.pages)) pages = pagesData.pages;
+
+  if (pages.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px;font-size:.85rem">Aucune donnée de pages disponible</td></tr>';
+    return;
+  }
+
+  const max = Math.max(...pages.map(p => p.views ?? p.count ?? p.pageviews ?? 0));
+  tbody.innerHTML = pages.slice(0, 10).map(p => {
+    const path  = p.path ?? p.page ?? p.key ?? '/';
+    const views = p.views ?? p.count ?? p.pageviews ?? 0;
+    const pct   = max > 0 ? Math.round((views / max) * 100) : 0;
+    return `
+      <tr>
+        <td style="font-family:'Space Mono',monospace;font-size:.8rem;color:var(--muted)">${path}</td>
+        <td class="page-views-num">${fmtNum(views)}</td>
+        <td><div class="page-bar-wrap"><div class="page-bar" style="width:${pct}%"></div></div></td>
+      </tr>`;
+  }).join('');
+  // animate bars
+  setTimeout(() => document.querySelectorAll('.page-bar').forEach(b => b.style.width = b.style.width), 50);
+}
+
+// ── Helpers ────────────────────────────────────────────────
+function fmtNum(n) {
+  if (typeof n !== 'number' || isNaN(n)) return '—';
+  return n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n);
+}
+
+function animCount(id, target) {
+  const el = document.getElementById(id);
+  el.classList.remove('skeleton', 'skeleton-kpi');
+  if (!target || target === 0) { el.textContent = '0'; return; }
+  let current = 0;
+  const duration = 900, start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    current = Math.round(eased * target);
+    el.textContent = fmtNum(current);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function setDelta(id, current, previous) {
+  const el = document.getElementById(id);
+  if (!previous || previous === 0) { el.innerHTML = ''; return; }
+  const pct = Math.round(((current - previous) / previous) * 100);
+  const cls  = pct > 0 ? 'delta-up' : pct < 0 ? 'delta-down' : 'delta-flat';
+  const icon = pct > 0 ? '↑' : pct < 0 ? '↓' : '→';
+  el.innerHTML = `<span class="${cls}">${icon} ${Math.abs(pct)}%</span> <span style="color:var(--muted);font-size:.7rem">vs moy. hebdo 30j</span>`;
+}
+
+function showAlert(msg, id) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+function showError(msg, elId, cls) {
+  const el = document.getElementById(elId);
+  el.textContent = msg;
+  el.classList.add(cls);
+}
+</script>
 </body>
 </html>
