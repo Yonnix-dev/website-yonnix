@@ -1,6 +1,10 @@
 User-agent: *
 Allow: /
-Disallow: /admin/
+Disallow: /admin
 Disallow: /api/
 
 Sitemap: https://website-yonnix.vercel.app/sitemap.xml
+
+# Crawl-delay for good bots
+User-agent: Googlebot
+Crawl-delay: 5

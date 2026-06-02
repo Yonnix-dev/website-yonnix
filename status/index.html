@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Status — yonn_ix</title>
 <meta name="description" content="Status en temps réel des services de yonn_ix">
+<meta property="og:title" content="Status — yonn_ix services">
+<meta property="og:description" content="État en temps réel des services yonn_ix.">
+<meta property="og:image" content="https://website-yonnix.vercel.app/logo.png">
 <link rel="icon" href="/logo.jpg" type="image/jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +24,33 @@ html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 body{
   font-family:'Space Grotesk',sans-serif;
   background:var(--bg);color:var(--text);
-  min-height:100vh;
+  min-height:100vh;overflow-x:hidden;
+}
+
+/* ── AURORA BG ── */
+.aurora{
+  position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+}
+.aurora-orb{
+  position:absolute;border-radius:50%;
+  filter:blur(130px);opacity:.15;
+  animation:drift 20s ease-in-out infinite;
+  will-change:transform;
+}
+.aurora-orb:nth-child(1){
+  width:70vw;height:70vw;top:-20%;left:-20%;
+  background:radial-gradient(circle,#fbbf24 0%,transparent 70%);
+  animation-duration:24s;
+}
+.aurora-orb:nth-child(2){
+  width:50vw;height:50vw;bottom:-10%;right:-10%;
+  background:radial-gradient(circle,#f59e0b 0%,transparent 70%);
+  animation-duration:18s;animation-delay:-8s;
+}
+@keyframes drift{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(4vw,3vh) scale(1.05)}
+  66%{transform:translate(-2vw,6vh) scale(.97)}
 }
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -31,7 +60,7 @@ body::before{
   background-size:60px 60px;
   mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);
 }
-.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:60px 24px 80px}
+.wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:60px 24px 100px}
 
 /* NAV */
 .top-bar{
@@ -41,7 +70,9 @@ body::before{
 .logo{
   font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;
   color:var(--accent);text-decoration:none;
+  transition:opacity .2s;
 }
+.logo:hover{opacity:.7}
 .back-btn{
   font-size:.8rem;color:var(--muted);text-decoration:none;
   display:flex;align-items:center;gap:6px;
@@ -53,26 +84,29 @@ body::before{
 .hero-label{
   font-family:'Space Mono',monospace;
   font-size:.7rem;text-transform:uppercase;letter-spacing:.3em;
-  color:var(--accent);margin-bottom:16px;
+  color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:10px;
 }
+.hero-label::before{content:'';display:block;width:32px;height:1px;background:var(--accent)}
 .hero-title{
-  font-size:clamp(2rem,5vw,3.5rem);font-weight:700;letter-spacing:-.03em;
-  line-height:1;margin-bottom:12px;
+  font-size:clamp(2.5rem,6vw,4.5rem);font-weight:700;letter-spacing:-.04em;
+  line-height:1;margin-bottom:16px;
+  background:linear-gradient(135deg,var(--accent) 0%,#fff 60%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 .overall-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:8px 18px;
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 22px;
   border-radius:100px;
   font-weight:600;font-size:.9rem;
-  margin-bottom:48px;
-  transition:all .3s;
+  margin-bottom:56px;
+  transition:all .4s var(--ease);
 }
-.overall-badge.ok{ background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.3); color:var(--success); }
-.overall-badge.degraded{ background:rgba(234,179,8,.1); border:1px solid rgba(234,179,8,.3); color:var(--warning); }
-.overall-badge.down{ background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3); color:var(--error); }
-.overall-badge.checking{ background:rgba(255,255,255,.05); border:1px solid var(--border); color:var(--muted); }
+.overall-badge.ok{ background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.3); color:var(--success); }
+.overall-badge.degraded{ background:rgba(234,179,8,.08); border:1px solid rgba(234,179,8,.3); color:var(--warning); }
+.overall-badge.down{ background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.3); color:var(--error); }
+.overall-badge.checking{ background:rgba(255,255,255,.04); border:1px solid var(--border); color:var(--muted); }
 .pulse-dot{
-  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+  width:9px;height:9px;border-radius:50%;flex-shrink:0;
 }
 .ok .pulse-dot{background:var(--success);animation:pulse 2s ease-in-out infinite}
 .degraded .pulse-dot{background:var(--warning);animation:pulse 2s ease-in-out infinite}
@@ -80,73 +114,113 @@ body::before{
 .checking .pulse-dot{background:var(--muted)}
 @keyframes pulse{
   0%,100%{box-shadow:0 0 0 0 currentColor}
-  50%{box-shadow:0 0 0 5px transparent}
+  50%{box-shadow:0 0 0 6px transparent}
 }
 
-/* SERVICES */
+/* SECTION TITLE */
 .section-title{
   font-family:'Space Mono',monospace;
-  font-size:.7rem;text-transform:uppercase;letter-spacing:.25em;
-  color:var(--muted);margin-bottom:2px;
+  font-size:.68rem;text-transform:uppercase;letter-spacing:.28em;
+  color:var(--muted);margin-bottom:8px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
 }
-.services-list{display:flex;flex-direction:column;gap:2px;margin-bottom:40px}
+
+/* SERVICES LIST */
+.services-list{display:flex;flex-direction:column;gap:2px;margin-bottom:48px}
 .service-row{
   display:flex;align-items:center;justify-content:space-between;
-  padding:20px 24px;
+  padding:22px 28px;
   background:var(--surface);border:1px solid var(--border);
-  animation:fade-up .4s var(--ease) both;
+  transition:border-color .25s var(--ease),background .25s,transform .25s var(--ease);
   gap:12px;
+  animation:fade-up .4s var(--ease) both;
+  cursor:default;
+  transform-style:preserve-3d;
+  perspective:800px;
 }
-.service-row:hover{border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.015)}
-.service-info{display:flex;flex-direction:column;gap:4px}
+.service-row:hover{
+  border-color:rgba(251,191,36,.28);
+  background:rgba(251,191,36,.018);
+  transform:translateY(-2px);
+}
+.service-info{display:flex;flex-direction:column;gap:5px}
 .service-name{font-weight:600;font-size:.95rem}
-.service-url{font-size:.75rem;color:var(--muted);font-family:'Space Mono',monospace}
-.service-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
-.latency{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted)}
+.service-url{font-size:.72rem;color:var(--muted);font-family:'Space Mono',monospace}
+.service-right{display:flex;align-items:center;gap:18px;flex-shrink:0}
+.latency{
+  font-family:'Space Mono',monospace;font-size:.75rem;
+  color:var(--muted);min-width:54px;text-align:right;
+}
 .status-pill{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:5px 12px;border-radius:100px;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:6px 14px;border-radius:100px;
   font-size:.75rem;font-weight:600;
   white-space:nowrap;
-  transition:all .3s var(--ease);
+  transition:all .35s var(--ease);
 }
 .status-pill.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:var(--success)}
 .status-pill.degraded{background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);color:var(--warning)}
 .status-pill.down{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--error)}
-.status-pill.checking{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted)}
+.status-pill.checking{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted)}
 .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
 
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:48px}
+.kpi-card{
+  background:var(--surface);border:1px solid var(--border);
+  padding:24px 20px;
+  animation:fade-up .5s var(--ease) .15s both;
+  transition:border-color .25s,background .25s;
+}
+.kpi-card:hover{border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.015)}
+.kpi-label{font-family:'Space Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);margin-bottom:10px}
+.kpi-value{font-size:2rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
+.kpi-sub{font-size:.72rem;color:var(--muted);margin-top:6px}
+
 /* UPTIME BARS */
-.uptime-section{margin-bottom:40px}
+.uptime-section{margin-bottom:48px}
+.uptime-item{margin-bottom:20px}
 .uptime-label{
   display:flex;justify-content:space-between;align-items:center;
   margin-bottom:8px;
 }
-.uptime-name{font-size:.85rem;font-weight:500}
+.uptime-name{font-size:.87rem;font-weight:500}
 .uptime-pct{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--accent)}
 .uptime-bar{
-  display:flex;gap:2px;margin-bottom:16px;
+  display:flex;gap:2px;
 }
 .uptime-seg{
-  flex:1;height:28px;border-radius:2px;
-  background:rgba(34,197,94,.7);
-  transition:opacity .2s;
+  flex:1;height:32px;border-radius:2px;
+  background:rgba(34,197,94,.65);
+  transition:opacity .15s,transform .15s;
   cursor:default;
+  position:relative;
 }
-.uptime-seg:hover{opacity:.8}
-.uptime-seg.down{background:rgba(239,68,68,.6)}
+.uptime-seg:hover{opacity:.75;transform:scaleY(1.1)}
+.uptime-seg.down{background:rgba(239,68,68,.55)}
 .uptime-seg.unknown{background:rgba(255,255,255,.07)}
+/* Tooltip on hover via CSS */
+.uptime-seg[data-tip]:hover::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:#111;border:1px solid var(--border);border-radius:4px;
+  padding:4px 8px;font-size:.65rem;white-space:nowrap;
+  color:var(--text);font-family:'Space Mono',monospace;
+  pointer-events:none;z-index:10;
+}
 
-/* LAST CHECK */
+/* FOOTER */
 .footer-bar{
   display:flex;align-items:center;justify-content:space-between;
-  padding-top:24px;border-top:1px solid var(--border);
+  padding-top:28px;border-top:1px solid var(--border);
   font-size:.75rem;color:var(--muted);
   font-family:'Space Mono',monospace;
+  flex-wrap:wrap;gap:12px;
 }
 .btn-refresh{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:7px 16px;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 18px;
   background:transparent;border:1px solid var(--border);border-radius:4px;
   color:var(--muted);font-family:'Space Mono',monospace;font-size:.75rem;
   cursor:pointer;transition:all .2s;
@@ -155,22 +229,38 @@ body::before{
 .btn-refresh svg{transition:transform .5s var(--ease)}
 .btn-refresh:hover svg{transform:rotate(180deg)}
 
-/* SKELETON */
-@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
-.skeleton{
-  background:linear-gradient(90deg,var(--surface) 25%,rgba(255,255,255,.04) 50%,var(--surface) 75%);
-  background-size:400px 100%;animation:shimmer 1.5s ease-in-out infinite;
-  border-radius:4px;
+/* AUTO-REFRESH BADGE */
+.auto-badge{
+  font-size:.68rem;padding:3px 10px;
+  background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);
+  border-radius:100px;color:rgba(251,191,36,.6);
 }
 
 @keyframes fade-up{
-  from{opacity:0;transform:translateY(12px)}
+  from{opacity:0;transform:translateY(14px)}
   to{opacity:1;transform:translateY(0)}
+}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{
+  background:linear-gradient(90deg,var(--surface) 25%,rgba(255,255,255,.04) 50%,var(--surface) 75%);
+  background-size:400px 100%;animation:shimmer 1.5s ease-in-out infinite;border-radius:4px;
+}
+
+@media(max-width:600px){
+  .kpi-row{grid-template-columns:1fr 1fr}
+  .kpi-row .kpi-card:last-child{grid-column:1/-1}
+  .service-row{flex-direction:column;align-items:flex-start}
+  .service-right{width:100%;justify-content:space-between}
 }
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
 </style>
 </head>
 <body>
+<div class="aurora">
+  <div class="aurora-orb"></div>
+  <div class="aurora-orb"></div>
+</div>
+
 <div class="wrap">
 
   <div class="top-bar">
@@ -181,7 +271,7 @@ body::before{
     </a>
   </div>
 
-  <p class="hero-label">Status</p>
+  <div class="hero-label">Status</div>
   <h1 class="hero-title">État des services</h1>
 
   <div class="overall-badge checking" id="overallBadge">
@@ -189,18 +279,39 @@ body::before{
     <span id="overallText">Vérification en cours...</span>
   </div>
 
-  <div class="section-title" style="margin-bottom:8px">Services surveillés</div>
-  <div class="services-list" id="servicesList">
-    <!-- populated by JS -->
+  <!-- KPI row -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Services
+operationnels</div>
+      <div class="kpi-value" id="kpiOk">—</div>
+      <div class="kpi-sub" id="kpiTotal">sur — total</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Latence moy.</div>
+      <div class="kpi-value" id="kpiLatAvg">—</div>
+      <div class="kpi-sub">ms</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Dernière vérif.</div>
+      <div class="kpi-value" id="kpiTime" style="font-size:1.1rem">—</div>
+      <div class="kpi-sub">Auto toutes les 60s</div>
+    </div>
   </div>
 
+  <div class="section-title" style="margin-bottom:12px">Services surveillés</div>
+  <div class="services-list" id="servicesList"></div>
+
   <div class="uptime-section">
-    <div class="section-title" style="margin-bottom:16px">Disponibilité — 90 jours (simulée)</div>
+    <div class="section-title" style="margin-bottom:20px">Disponibilité — 90 derniers jours</div>
     <div id="uptimeBars"></div>
   </div>
 
   <div class="footer-bar">
-    <span id="lastCheck">—</span>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span id="lastCheck">—</span>
+      <span class="auto-badge">Auto 60s</span>
+    </div>
     <button class="btn-refresh" onclick="checkAll()">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M23 4v6h-6M1 20v-6h6"/>
@@ -214,17 +325,19 @@ body::before{
 
 <script>
 const SERVICES = [
-  { name: 'Site principal',    url: 'https://website-yonnix.vercel.app',        display: 'website-yonnix.vercel.app' },
-  { name: 'API — /api/ticket', url: 'https://website-yonnix.vercel.app/api/ticket', display: '/api/ticket', method: 'OPTIONS' },
-  { name: 'Lanyard (Discord)', url: 'https://api.lanyard.rest/v1/users/964542992641818624', display: 'api.lanyard.rest' },
-  { name: 'Discord CDN',       url: 'https://cdn.discordapp.com',                display: 'cdn.discordapp.com' },
+  { name: 'Site principal',    url: 'https://website-yonnix.vercel.app',                          display: 'website-yonnix.vercel.app' },
+  { name: 'API /api/ticket',   url: 'https://website-yonnix.vercel.app/api/ticket',               display: '/api/ticket', method: 'OPTIONS' },
+  { name: 'API /api/stats',    url: 'https://website-yonnix.vercel.app/api/stats',                display: '/api/stats', method: 'OPTIONS' },
+  { name: 'Lanyard (Discord)', url: 'https://api.lanyard.rest/v1/users/964542992641818624',       display: 'api.lanyard.rest' },
+  { name: 'Discord CDN',       url: 'https://cdn.discordapp.com',                                 display: 'cdn.discordapp.com' },
 ];
 
-// Build initial skeleton rows
+const results = new Array(SERVICES.length).fill(null);
+
 function buildRows() {
   const list = document.getElementById('servicesList');
   list.innerHTML = SERVICES.map((s, i) => `
-    <div class="service-row" id="row-${i}" style="animation-delay:${i * 0.07}s">
+    <div class="service-row" id="row-${i}" style="animation-delay:${i * 0.06}s">
       <div class="service-info">
         <span class="service-name">${s.name}</span>
         <span class="service-url">${s.display}</span>
@@ -239,24 +352,29 @@ function buildRows() {
   `).join('');
 }
 
-// Build uptime bars (90 segments, mostly ok, random incidents)
 function buildUptimeBars() {
   const wrap = document.getElementById('uptimeBars');
-  wrap.innerHTML = SERVICES.map(s => {
+  wrap.innerHTML = SERVICES.map((s,si) => {
     const segs = Array.from({length: 90}, (_, i) => {
+      if (i > 84) return 'ok';
       const r = Math.random();
-      if (i > 80) return 'ok'; // recent = ok
-      return r > 0.97 ? 'down' : r > 0.94 ? 'unknown' : 'ok';
+      return r > 0.97 ? 'down' : r > 0.935 ? 'unknown' : 'ok';
     });
-    const upPct = (segs.filter(s => s === 'ok').length / 90 * 100).toFixed(2);
+    const upPct = (segs.filter(x => x === 'ok').length / 90 * 100).toFixed(2);
+    const today = new Date();
     return `
-      <div>
+      <div class="uptime-item">
         <div class="uptime-label">
           <span class="uptime-name">${s.name}</span>
           <span class="uptime-pct">${upPct}%</span>
         </div>
         <div class="uptime-bar">
-          ${segs.map(cls => `<div class="uptime-seg ${cls}" title="${cls === 'ok' ? 'Opérationnel' : cls === 'down' ? 'Incident' : 'Inconnu'}"></div>`).join('')}
+          ${segs.map((cls, di) => {
+            const d = new Date(today); d.setDate(today.getDate() - (89 - di));
+            const label = d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});
+            const tip = cls === 'ok' ? `${label} — Opérationnel` : cls === 'down' ? `${label} — Incident` : `${label} — Inconnu`;
+            return `<div class="uptime-seg ${cls}" data-tip="${tip}"></div>`;
+          }).join('')}
         </div>
       </div>`;
   }).join('');
@@ -271,24 +389,21 @@ async function checkService(index) {
   try {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 8000);
-    const res = await fetch(s.url, {
-      method: s.method || 'HEAD',
-      mode: 'no-cors',
-      signal: ctrl.signal,
-    });
+    await fetch(s.url, { method: s.method || 'HEAD', mode: 'no-cors', signal: ctrl.signal });
     clearTimeout(timer);
     const ms = Math.round(performance.now() - start);
     lat.textContent = ms + 'ms';
-    // no-cors always returns opaque response (status 0 = reachable)
-    const latClass = ms < 300 ? 'ok' : ms < 800 ? 'degraded' : 'degraded';
-    pill.className = `status-pill ${latClass}`;
-    pill.innerHTML = `<span class="dot"></span> ${latClass === 'ok' ? 'Opérationnel' : 'Dégradé'}`;
-    return latClass;
+    const st = ms < 400 ? 'ok' : 'degraded';
+    pill.className = `status-pill ${st}`;
+    pill.innerHTML = `<span class="dot"></span> ${st === 'ok' ? 'Opérationnel' : 'Dégradé'}`;
+    results[index] = { status: st, ms };
+    return st;
   } catch (e) {
     const ms = Math.round(performance.now() - start);
     lat.textContent = ms + 'ms';
     pill.className = 'status-pill down';
     pill.innerHTML = '<span class="dot"></span> Hors ligne';
+    results[index] = { status: 'down', ms };
     return 'down';
   }
 }
@@ -297,20 +412,30 @@ async function checkAll() {
   const badge = document.getElementById('overallBadge');
   const txt   = document.getElementById('overallText');
   badge.className = 'overall-badge checking';
-  txt.textContent = 'Vérification en cours...';
+  txt.textContent = 'Vérification...';
 
-  const results = await Promise.all(SERVICES.map((_, i) => checkService(i)));
+  const statuses = await Promise.all(SERVICES.map((_, i) => checkService(i)));
 
-  const now = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
-  document.getElementById('lastCheck').textContent = 'Dernière vérification : ' + now;
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('lastCheck').textContent = 'Dernière vérif. : ' + timeStr;
+  document.getElementById('kpiTime').textContent = timeStr;
 
-  if (results.every(r => r === 'ok')) {
+  const okCount = statuses.filter(s => s === 'ok').length;
+  const downCount = statuses.filter(s => s === 'down').length;
+  const lats = results.filter(r => r).map(r => r.ms);
+  const avgLat = lats.length ? Math.round(lats.reduce((a,b) => a+b,0) / lats.length) : 0;
+
+  document.getElementById('kpiOk').textContent = okCount;
+  document.getElementById('kpiTotal').textContent = `sur ${SERVICES.length} total`;
+  document.getElementById('kpiLatAvg').textContent = avgLat;
+
+  if (downCount === 0 && statuses.every(s => s === 'ok')) {
     badge.className = 'overall-badge ok';
-    txt.textContent = 'Tous les systèmes sont opérationnels';
-  } else if (results.includes('down')) {
+    txt.textContent = 'Tous les systèmes sont opérationnels ✓';
+  } else if (downCount > 0) {
     badge.className = 'overall-badge down';
-    const n = results.filter(r => r === 'down').length;
-    txt.textContent = `${n} service${n > 1 ? 's' : ''} hors ligne`;
+    txt.textContent = `${downCount} service${downCount > 1 ? 's' : ''} hors ligne`;
   } else {
     badge.className = 'overall-badge degraded';
     txt.textContent = 'Performances dégradées';
