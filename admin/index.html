@@ -135,10 +135,80 @@ tr:hover td{background:rgba(251,191,36,.02)}
 .btn-delete-ticket:hover{background:rgba(239,68,68,.15)}
 .tickets-empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:.9rem}
 .tickets-empty svg{margin:0 auto 16px;opacity:.3}
-.tickets-stats{display:flex;gap:16px;margin-bottom:20px}
+.tickets-stats{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
 .t-stat{padding:12px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);font-size:.8rem}
 .t-stat span{display:block;font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--accent);margin-bottom:2px}
 .t-stat label{color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em}
+
+/* ── STATUS TAB ── */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;margin-bottom:32px}
+.status-service-card{
+  background:var(--surface);border:1px solid var(--border);padding:28px;
+  animation:fade-up .4s var(--ease) both;
+  transition:border-color .3s,background .3s;
+}
+.status-service-card:hover{border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.015)}
+.ssc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.ssc-name{font-weight:700;font-size:1rem;display:flex;align-items:center;gap:10px}
+.ssc-emoji{font-size:1.4rem}
+.ssc-current{font-family:'Space Mono',monospace;font-size:.7rem;padding:4px 12px;border-radius:100px;border:1px solid;font-weight:700}
+.ssc-current.operational{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--success)}
+.ssc-current.degraded{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.3);color:var(--warning)}
+.ssc-current.down{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--error)}
+.ssc-current.maintenance{background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.3);color:#93c5fd}
+.ssc-desc{font-size:.82rem;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.ssc-actions{display:flex;gap:6px;flex-wrap:wrap}
+.status-btn{padding:6px 14px;border-radius:100px;font-size:.72rem;font-weight:700;cursor:pointer;border:1px solid;transition:all .2s;font-family:'Space Mono',monospace;letter-spacing:.05em}
+.status-btn.op{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.3);color:var(--success)}
+.status-btn.op:hover,.status-btn.op.active-state{background:rgba(34,197,94,.2);border-color:var(--success);box-shadow:0 4px 14px rgba(34,197,94,.2)}
+.status-btn.deg{background:rgba(234,179,8,.08);border-color:rgba(234,179,8,.3);color:var(--warning)}
+.status-btn.deg:hover,.status-btn.deg.active-state{background:rgba(234,179,8,.2);border-color:var(--warning);box-shadow:0 4px 14px rgba(234,179,8,.2)}
+.status-btn.dn{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:var(--error)}
+.status-btn.dn:hover,.status-btn.dn.active-state{background:rgba(239,68,68,.2);border-color:var(--error);box-shadow:0 4px 14px rgba(239,68,68,.2)}
+.status-btn.mt{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#93c5fd}
+.status-btn.mt:hover,.status-btn.mt.active-state{background:rgba(96,165,250,.2);border-color:#93c5fd;box-shadow:0 4px 14px rgba(96,165,250,.2)}
+.status-global{
+  background:var(--surface);border:1px solid var(--border);
+  padding:32px 36px;margin-bottom:32px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  animation:fade-up .3s var(--ease) both;
+}
+.sg-label{font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);margin-bottom:8px}
+.sg-status{font-size:1.5rem;font-weight:700;display:flex;align-items:center;gap:12px}
+.sg-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.sg-dot.operational{background:var(--success);box-shadow:0 0 12px rgba(34,197,94,.6);animation:pulse-dot 2s ease-in-out infinite}
+.sg-dot.degraded{background:var(--warning);box-shadow:0 0 12px rgba(234,179,8,.6);animation:pulse-dot 2s ease-in-out infinite}
+.sg-dot.down{background:var(--error);box-shadow:0 0 12px rgba(239,68,68,.6);animation:pulse-dot 2s ease-in-out infinite}
+.sg-dot.maintenance{background:#60a5fa;box-shadow:0 0 12px rgba(96,165,250,.6)}
+.sg-link{font-size:.82rem;color:var(--muted);font-family:'Space Mono',monospace}
+.sg-link a{color:var(--accent);text-decoration:none}
+.sg-link a:hover{text-decoration:underline}
+.status-save-btn{
+  padding:12px 28px;background:var(--accent);color:#000;
+  border:none;border-radius:var(--r);font-weight:700;font-size:.9rem;
+  cursor:pointer;letter-spacing:.05em;
+  transition:transform .2s var(--ease),box-shadow .2s;
+  font-family:'Space Grotesk',sans-serif;
+}
+.status-save-btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(251,191,36,.3)}
+.status-save-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.status-history{background:var(--surface);border:1px solid var(--border);padding:28px;margin-top:2px;animation:fade-up .5s var(--ease) .2s both}
+.history-list{display:flex;flex-direction:column;gap:0}
+.history-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(251,191,36,.05);font-size:.85rem}
+.history-item:last-child{border-bottom:none}
+.history-badge{padding:2px 10px;border-radius:100px;font-size:.7rem;font-weight:700;font-family:'Space Mono',monospace;border:1px solid;flex-shrink:0}
+.history-badge.operational{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--success)}
+.history-badge.degraded{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.3);color:var(--warning)}
+.history-badge.down{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--error)}
+.history-badge.maintenance{background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.3);color:#93c5fd}
+.history-service{font-weight:600;flex:1}
+.history-time{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted);margin-left:auto}
+.status-incident-form{background:var(--surface);border:1px solid var(--border);padding:28px;margin-top:2px;animation:fade-up .5s var(--ease) .3s both}
+.incident-title{font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin-bottom:20px}
+.incident-input{width:100%;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:.9rem;font-family:'Space Grotesk',sans-serif;margin-bottom:12px;transition:border-color .2s,box-shadow .2s}
+.incident-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(251,191,36,.1)}
+.incident-input::placeholder{color:var(--muted)}
+textarea.incident-input{resize:vertical;min-height:80px}
 
 /* ── LOADING ── */
 .loading-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
@@ -157,7 +227,15 @@ tr:hover td{background:rgba(251,191,36,.02)}
 .skeleton{background:linear-gradient(90deg,var(--surface) 25%,rgba(255,255,255,.04) 50%,var(--surface) 75%);background-size:400px 100%;animation:shimmer 1.5s ease-in-out infinite;border-radius:var(--r)}
 .skeleton-kpi{height:2.2rem;width:70%;margin-top:4px}
 
+/* ── TOAST ── */
+.adm-toast-wrap{position:fixed;bottom:24px;right:24px;z-index:99999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.adm-toast{padding:14px 20px;border-radius:var(--r);font-size:.85rem;font-weight:600;pointer-events:all;transform:translateX(120%);opacity:0;transition:transform .4s var(--ease),opacity .4s var(--ease);border:1px solid}
+.adm-toast.show{transform:translateX(0);opacity:1}
+.adm-toast.adm-success{background:rgba(10,10,10,.95);border-color:rgba(34,197,94,.3);color:#86efac}
+.adm-toast.adm-info{background:rgba(10,10,10,.95);border-color:rgba(251,191,36,.3);color:var(--accent)}
+
 @keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
 @media(max-width:600px){.login-card{padding:32px 24px}.kpi-value{font-size:1.8rem}.chart-canvas-wrap{height:180px}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
 </style>
@@ -185,6 +263,9 @@ tr:hover td{background:rgba(251,191,36,.02)}
   <div class="loading-text">Chargement...</div>
 </div>
 
+<!-- TOAST -->
+<div class="adm-toast-wrap" id="admToastWrap"></div>
+
 <!-- DASHBOARD -->
 <div id="dashboard">
   <div class="app">
@@ -204,6 +285,7 @@ tr:hover td{background:rgba(251,191,36,.02)}
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTab('analytics')">📊 Analytics</button>
       <button class="tab-btn" onclick="switchTab('tickets')" id="ticketsTabBtn">🎫 Tickets <span id="ticketsBadge" style="margin-left:4px;padding:1px 7px;border-radius:100px;background:var(--accent);color:#000;font-size:.65rem;font-weight:700">0</span></button>
+      <button class="tab-btn" onclick="switchTab('status')">🟢 Status</button>
     </div>
 
     <!-- TAB: ANALYTICS -->
@@ -272,7 +354,6 @@ tr:hover td{background:rgba(251,191,36,.02)}
     <!-- TAB: TICKETS -->
     <div class="tab-content" id="tab-tickets">
       <div class="tickets-stats" id="ticketsStats"></div>
-
       <div class="tickets-header">
         <div class="ticket-filters" id="ticketFilters">
           <button class="filter-btn active" data-filter="all" onclick="filterTickets('all')">Tous</button>
@@ -286,8 +367,46 @@ tr:hover td{background:rgba(251,191,36,.02)}
           <input type="text" placeholder="Rechercher..." oninput="searchTickets(this.value)" id="ticketSearch">
         </div>
       </div>
-
       <div class="tickets-list" id="ticketsList"></div>
+    </div>
+
+    <!-- TAB: STATUS ─────────────────────────────────────────── -->
+    <div class="tab-content" id="tab-status">
+
+      <!-- Global status banner -->
+      <div class="status-global" id="statusGlobalBanner">
+        <div>
+          <div class="sg-label">État global des services</div>
+          <div class="sg-status" id="sgStatusText">
+            <span class="sg-dot operational" id="sgDot"></span>
+            <span id="sgLabel">Tous les systèmes opérationnels</span>
+          </div>
+        </div>
+        <div class="sg-link">
+          Page publique : <a href="/status" target="_blank">/status ↗</a>
+          &nbsp;·&nbsp;
+          <button class="status-save-btn" id="statusSaveBtn" onclick="saveAllStatuses()">💾 Publier les changements</button>
+        </div>
+      </div>
+
+      <!-- Service cards -->
+      <div class="status-grid" id="statusGrid"></div>
+
+      <!-- Incident message form -->
+      <div class="status-incident-form">
+        <div class="incident-title">📢 Message d'incident (affiché sur /status)</div>
+        <input type="text" class="incident-input" id="incidentTitle" placeholder="Titre de l'incident ex: Ralentissements API Discord">
+        <textarea class="incident-input" id="incidentBody" placeholder="Description détaillée, impact, ETA de résolution..."></textarea>
+        <button class="status-save-btn" onclick="saveIncident()" style="margin-top:4px">Publier le message d'incident →</button>
+        <button class="status-save-btn" onclick="clearIncident()" style="margin-top:4px;margin-left:8px;background:transparent;color:var(--muted);border:1px solid var(--border);box-shadow:none">Effacer</button>
+      </div>
+
+      <!-- History -->
+      <div class="status-history">
+        <div class="table-title" style="margin-bottom:16px">📋 Historique des changements</div>
+        <div class="history-list" id="historyList"><div style="color:var(--muted);font-size:.85rem;padding:16px 0">Aucun changement enregistré.</div></div>
+      </div>
+
     </div>
 
   </div>
@@ -302,23 +421,41 @@ let currentFilter = 'all';
 let searchQuery = '';
 
 // ─── TICKETS STORAGE ────────────────────────────────────────────────────────
-// Stored in sessionStorage as JSON array (persists during session)
 const TICKETS_KEY = '__adm_tickets';
-
-function getTickets() {
-  try { return JSON.parse(sessionStorage.getItem(TICKETS_KEY) || '[]'); }
-  catch { return []; }
-}
-function saveTickets(arr) {
-  sessionStorage.setItem(TICKETS_KEY, JSON.stringify(arr));
-}
-
-// Demo tickets for first load
+function getTickets() { try { return JSON.parse(sessionStorage.getItem(TICKETS_KEY) || '[]'); } catch { return []; } }
+function saveTickets(arr) { sessionStorage.setItem(TICKETS_KEY, JSON.stringify(arr)); }
 const DEMO_TICKETS = [
-  { id: 'TKT-001', name: 'Alex Martin', discord: 'alexm#0042', email: 'alex@example.com', type: 'Site web', message: 'Bonjour, je souhaite un site vitrine pour mon auto-entreprise de photographie. Design moderne, galerie de photos, formulaire de contact.', date: '2026-05-30T14:22:00Z', status: 'open' },
-  { id: 'TKT-002', name: 'Lucie Fontaine', discord: 'lucie_dev', email: '', type: 'Bot Discord', message: 'J\'ai besoin d\'un bot de modération et de bienvenue pour mon serveur gaming. Environ 500 membres. Budget flexible.', date: '2026-06-01T09:11:00Z', status: 'open' },
-  { id: 'TKT-003', name: 'Thomas K.', discord: 'tk_studio', email: 'thomas@studio.fr', type: 'Site web', message: 'Portfolio pour mon studio de design. One-page avec animations. Livraison idéale dans 2 semaines.', date: '2026-06-02T17:45:00Z', status: 'closed' },
+  { id: 'TKT-001', name: 'Alex Martin', discord: 'alexm#0042', email: 'alex@example.com', type: 'Site web', message: 'Bonjour, je souhaite un site vitrine pour mon auto-entreprise de photographie.', date: '2026-05-30T14:22:00Z', status: 'open' },
+  { id: 'TKT-002', name: 'Lucie Fontaine', discord: 'lucie_dev', email: '', type: 'Bot Discord', message: "J'ai besoin d'un bot de modération pour mon serveur gaming. Environ 500 membres.", date: '2026-06-01T09:11:00Z', status: 'open' },
+  { id: 'TKT-003', name: 'Thomas K.', discord: 'tk_studio', email: 'thomas@studio.fr', type: 'Site web', message: 'Portfolio pour mon studio de design. One-page avec animations.', date: '2026-06-02T17:45:00Z', status: 'closed' },
 ];
+
+// ─── STATUS STORAGE ─────────────────────────────────────────────────────────
+const STATUS_KEY = '__site_status_v2';
+const STATUS_HISTORY_KEY = '__site_status_history';
+const STATUS_INCIDENT_KEY = '__site_status_incident';
+
+const DEFAULT_SERVICES = [
+  { id: 'website',  emoji: '🌐', name: 'Site principal',     desc: 'website-yonnix.vercel.app — page d\'accueil, portfolio', status: 'operational' },
+  { id: 'admin',    emoji: '⚙️', name: 'Panel admin',        desc: '/admin — tableau de bord analytique et gestion tickets', status: 'operational' },
+  { id: 'api',      emoji: '🔌', name: 'API',                desc: 'Endpoints /api/ticket, /api/stats — formulaire & analytics', status: 'operational' },
+  { id: 'discord',  emoji: '🤖', name: 'Bot Discord',        desc: 'Bot de modération et de bienvenue du serveur', status: 'operational' },
+  { id: 'status',   emoji: '📡', name: 'Page Status',        desc: '/status — page de statut publique', status: 'operational' },
+  { id: 'hosting',  emoji: '☁️', name: 'Hébergement Vercel', desc: 'Infrastructure Vercel — CDN, déploiements, edge network', status: 'operational' },
+];
+
+const STATUS_LABELS = { operational: '✅ Opérationnel', degraded: '⚠️ Dégradé', down: '🔴 Interruption', maintenance: '🔧 Maintenance' };
+const STATUS_CLASSES = { operational: 'op', degraded: 'deg', down: 'dn', maintenance: 'mt' };
+
+function getStatuses() {
+  try { return JSON.parse(localStorage.getItem(STATUS_KEY)) || JSON.parse(JSON.stringify(DEFAULT_SERVICES)); }
+  catch { return JSON.parse(JSON.stringify(DEFAULT_SERVICES)); }
+}
+function saveStatuses(arr) { localStorage.setItem(STATUS_KEY, JSON.stringify(arr)); }
+function getHistory() { try { return JSON.parse(localStorage.getItem(STATUS_HISTORY_KEY)) || []; } catch { return []; } }
+function saveHistory(arr) { localStorage.setItem(STATUS_HISTORY_KEY, JSON.stringify(arr.slice(0, 50))); }
+function getIncident() { try { return JSON.parse(localStorage.getItem(STATUS_INCIDENT_KEY)) || null; } catch { return null; } }
+function saveIncidentData(d) { localStorage.setItem(STATUS_INCIDENT_KEY, JSON.stringify(d)); }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 if (authToken) showDashboard();
@@ -350,23 +487,19 @@ async function login() {
 function showDashboard() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
-  // Init demo tickets if empty
   if (getTickets().length === 0) saveTickets(DEMO_TICKETS);
   renderTickets();
   updateTicketsBadge();
+  renderStatusTab();
   if (!trafficChartInstance) loadStats();
 }
 
-function logout() {
-  sessionStorage.removeItem('__adm_tok');
-  authToken = null;
-  location.reload();
-}
+function logout() { sessionStorage.removeItem('__adm_tok'); authToken = null; location.reload(); }
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    const tabs = ['analytics', 'tickets'];
+    const tabs = ['analytics', 'tickets', 'status'];
     b.classList.toggle('active', tabs[i] === tab);
   });
   document.querySelectorAll('.tab-content').forEach(el => {
@@ -374,255 +507,183 @@ function switchTab(tab) {
   });
 }
 
+// ─── STATUS TAB ──────────────────────────────────────────────────────────────
+let pendingStatuses = null;
+
+function renderStatusTab() {
+  const services = getStatuses();
+  pendingStatuses = JSON.parse(JSON.stringify(services));
+  renderStatusGrid();
+  renderStatusGlobal();
+  renderHistory();
+  const incident = getIncident();
+  if (incident) {
+    document.getElementById('incidentTitle').value = incident.title || '';
+    document.getElementById('incidentBody').value = incident.body || '';
+  }
+}
+
+function renderStatusGrid() {
+  const grid = document.getElementById('statusGrid');
+  grid.innerHTML = pendingStatuses.map(svc => `
+    <div class="status-service-card" style="animation-delay:${pendingStatuses.indexOf(svc)*.05}s">
+      <div class="ssc-header">
+        <div class="ssc-name"><span class="ssc-emoji">${svc.emoji}</span>${svc.name}</div>
+        <span class="ssc-current ${svc.status}" id="badge-${svc.id}">${STATUS_LABELS[svc.status]}</span>
+      </div>
+      <div class="ssc-desc">${svc.desc}</div>
+      <div class="ssc-actions">
+        ${['operational','degraded','down','maintenance'].map(s =>
+          `<button class="status-btn ${STATUS_CLASSES[s]}${svc.status===s?' active-state':''}" id="btn-${svc.id}-${s}" onclick="setServiceStatus('${svc.id}','${s}')">${STATUS_LABELS[s]}</button>`
+        ).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function setServiceStatus(id, newStatus) {
+  const svc = pendingStatuses.find(s => s.id === id);
+  if (!svc || svc.status === newStatus) return;
+  svc.status = newStatus;
+  // Update badge
+  const badge = document.getElementById(`badge-${id}`);
+  badge.className = `ssc-current ${newStatus}`;
+  badge.textContent = STATUS_LABELS[newStatus];
+  // Update button active states
+  ['operational','degraded','down','maintenance'].forEach(s => {
+    const btn = document.getElementById(`btn-${id}-${s}`);
+    if (btn) btn.classList.toggle('active-state', s === newStatus);
+  });
+  renderStatusGlobal();
+  admToast('Changement en attente — clique sur « Publier » pour sauvegarder.', 'adm-info');
+}
+
+function renderStatusGlobal() {
+  const statuses = (pendingStatuses || getStatuses()).map(s => s.status);
+  let global = 'operational';
+  if (statuses.includes('down')) global = 'down';
+  else if (statuses.includes('degraded')) global = 'degraded';
+  else if (statuses.includes('maintenance')) global = 'maintenance';
+  const dot = document.getElementById('sgDot');
+  const label = document.getElementById('sgLabel');
+  dot.className = `sg-dot ${global}`;
+  const labels = { operational: '✅ Tous les systèmes opérationnels', degraded: '⚠️ Performances dégradées', down: '🔴 Interruption de service', maintenance: '🔧 Maintenance en cours' };
+  label.textContent = labels[global];
+}
+
+function saveAllStatuses() {
+  if (!pendingStatuses) return;
+  const prev = getStatuses();
+  const history = getHistory();
+  pendingStatuses.forEach(svc => {
+    const old = prev.find(s => s.id === svc.id);
+    if (old && old.status !== svc.status) {
+      history.unshift({ service: svc.name, from: old.status, to: svc.status, time: new Date().toISOString() });
+    }
+  });
+  saveStatuses(pendingStatuses);
+  saveHistory(history);
+  renderHistory();
+  admToast('✅ Statuts publiés sur /status !', 'adm-success');
+  document.getElementById('statusSaveBtn').textContent = '✅ Publié !';
+  setTimeout(() => { document.getElementById('statusSaveBtn').textContent = '💾 Publier les changements'; }, 2000);
+}
+
+function saveIncident() {
+  const title = document.getElementById('incidentTitle').value.trim();
+  const body = document.getElementById('incidentBody').value.trim();
+  if (!title) { admToast('Ajoute un titre à l\'incident.', 'adm-info'); return; }
+  saveIncidentData({ title, body, time: new Date().toISOString() });
+  admToast('📢 Message d\'incident publié !', 'adm-success');
+}
+
+function clearIncident() {
+  localStorage.removeItem(STATUS_INCIDENT_KEY);
+  document.getElementById('incidentTitle').value = '';
+  document.getElementById('incidentBody').value = '';
+  admToast('Message d\'incident effacé.', 'adm-info');
+}
+
+function renderHistory() {
+  const history = getHistory();
+  const list = document.getElementById('historyList');
+  if (!history.length) { list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:16px 0">Aucun changement enregistré.</div>'; return; }
+  list.innerHTML = history.slice(0,20).map(h => {
+    const d = new Date(h.time);
+    const fmt = d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+    return `<div class="history-item">
+      <span class="history-badge ${h.from}">${STATUS_LABELS[h.from]||h.from}</span>
+      <span style="color:var(--muted);font-size:.8rem">→</span>
+      <span class="history-badge ${h.to}">${STATUS_LABELS[h.to]||h.to}</span>
+      <span class="history-service">${h.service}</span>
+      <span class="history-time">${fmt}</span>
+    </div>`;
+  }).join('');
+}
+
+function admToast(msg, cls='adm-info') {
+  const wrap = document.getElementById('admToastWrap');
+  const t = document.createElement('div');
+  t.className = `adm-toast ${cls}`;
+  t.textContent = msg;
+  wrap.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 3000);
+}
+
 // ─── TICKETS ─────────────────────────────────────────────────────────────────
 function renderTickets() {
   const tickets = getTickets();
   const list = document.getElementById('ticketsList');
   const stats = document.getElementById('ticketsStats');
-
-  const total  = tickets.length;
-  const open   = tickets.filter(t => t.status === 'open').length;
+  const total = tickets.length;
+  const open = tickets.filter(t => t.status === 'open').length;
   const closed = tickets.filter(t => t.status === 'closed').length;
-
-  stats.innerHTML = [
-    { label: 'Total', val: total },
-    { label: 'En cours', val: open },
-    { label: 'Fermés', val: closed },
-  ].map(s => `<div class="t-stat"><span>${s.val}</span><label>${s.label}</label></div>`).join('');
-
+  stats.innerHTML = [{label:'Total',val:total},{label:'En cours',val:open},{label:'Fermés',val:closed}]
+    .map(s=>`<div class="t-stat"><span>${s.val}</span><label>${s.label}</label></div>`).join('');
   let filtered = tickets;
-  if (currentFilter === 'open')    filtered = tickets.filter(t => t.status === 'open');
-  else if (currentFilter === 'closed') filtered = tickets.filter(t => t.status === 'closed');
-  else if (currentFilter !== 'all') filtered = tickets.filter(t => t.type === currentFilter);
-
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    filtered = filtered.filter(t =>
-      t.name.toLowerCase().includes(q) ||
-      t.discord.toLowerCase().includes(q) ||
-      t.message.toLowerCase().includes(q) ||
-      t.type.toLowerCase().includes(q)
-    );
-  }
-
-  if (filtered.length === 0) {
-    list.innerHTML = `<div class="tickets-empty">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect width="6" height="4" x="9" y="3" rx="1"/></svg>
-      <p>Aucun ticket trouvé</p></div>`;
-    return;
-  }
-
-  list.innerHTML = [...filtered].reverse().map((t, i) => {
-    const date = new Date(t.date).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
-    return `
-    <div class="ticket-card" id="tc-${t.id}" onclick="toggleTicket('${t.id}')">
-      <div class="ticket-head">
-        <span class="ticket-id">#${t.id}</span>
-        <span class="ticket-name">${esc(t.name)}</span>
-        <span class="ticket-type">${esc(t.type)}</span>
-        <span class="ticket-status-badge ${t.status}" onclick="event.stopPropagation();toggleStatus('${t.id}')">${t.status === 'open' ? '⏳ En cours' : '✅ Fermé'}</span>
-        <span class="ticket-date">${date}</span>
-      </div>
+  if (currentFilter==='open') filtered=tickets.filter(t=>t.status==='open');
+  else if (currentFilter==='closed') filtered=tickets.filter(t=>t.status==='closed');
+  else if (currentFilter!=='all') filtered=tickets.filter(t=>t.type===currentFilter);
+  if (searchQuery) { const q=searchQuery.toLowerCase(); filtered=filtered.filter(t=>t.name.toLowerCase().includes(q)||t.discord.toLowerCase().includes(q)||t.message.toLowerCase().includes(q)||t.type.toLowerCase().includes(q)); }
+  if (!filtered.length) { list.innerHTML=`<div class="tickets-empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect width="6" height="4" x="9" y="3" rx="1"/></svg><p>Aucun ticket trouvé</p></div>`; return; }
+  list.innerHTML=[...filtered].reverse().map(t=>{
+    const date=new Date(t.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    return `<div class="ticket-card" id="tc-${t.id}" onclick="toggleTicket('${t.id}')">
+      <div class="ticket-head"><span class="ticket-id">#${t.id}</span><span class="ticket-name">${esc(t.name)}</span><span class="ticket-type">${esc(t.type)}</span><span class="ticket-status-badge ${t.status}" onclick="event.stopPropagation();toggleStatus('${t.id}')">${t.status==='open'?'⏳ En cours':'✅ Fermé'}</span><span class="ticket-date">${date}</span></div>
       <div class="ticket-preview">${esc(t.message)}</div>
       <div class="ticket-body" id="tb-${t.id}">
         <div class="ticket-field"><label>Discord</label><p>${esc(t.discord)}</p></div>
-        <div class="ticket-field"><label>Email</label><p>${t.email ? esc(t.email) : '—'}</p></div>
+        <div class="ticket-field"><label>Email</label><p>${t.email?esc(t.email):'—'}</p></div>
         <div class="ticket-field full"><label>Message complet</label><p style="white-space:pre-wrap;color:var(--muted)">${esc(t.message)}</p></div>
-        <div class="ticket-actions">
-          ${t.status === 'open'
-            ? `<button class="btn-sm btn-close-ticket" onclick="event.stopPropagation();toggleStatus('${t.id}')">✅ Fermer le ticket</button>`
-            : `<button class="btn-sm btn-reopen-ticket" onclick="event.stopPropagation();toggleStatus('${t.id}')">♻️ Réouvrir</button>`
-          }
-          <button class="btn-sm btn-delete-ticket" onclick="event.stopPropagation();deleteTicket('${t.id}')">🗑️ Supprimer</button>
-        </div>
-      </div>
-    </div>`;
+        <div class="ticket-actions">${t.status==='open'?`<button class="btn-sm btn-close-ticket" onclick="event.stopPropagation();toggleStatus('${t.id}')">✅ Fermer le ticket</button>`:`<button class="btn-sm btn-reopen-ticket" onclick="event.stopPropagation();toggleStatus('${t.id}')">♻️ Réouvrir</button>`}<button class="btn-sm btn-delete-ticket" onclick="event.stopPropagation();deleteTicket('${t.id}')">🗑️ Supprimer</button></div>
+      </div></div>`;
   }).join('');
 }
-
-function toggleTicket(id) {
-  const body = document.getElementById(`tb-${id}`);
-  const card = document.getElementById(`tc-${id}`);
-  const isOpen = body.classList.contains('show');
-  document.querySelectorAll('.ticket-body.show').forEach(b => { b.classList.remove('show'); b.closest('.ticket-card').classList.remove('expanded'); });
-  if (!isOpen) { body.classList.add('show'); card.classList.add('expanded'); }
-}
-
-function toggleStatus(id) {
-  const tickets = getTickets();
-  const t = tickets.find(t => t.id === id);
-  if (t) { t.status = t.status === 'open' ? 'closed' : 'open'; saveTickets(tickets); renderTickets(); updateTicketsBadge(); }
-}
-
-function deleteTicket(id) {
-  if (!confirm('Supprimer ce ticket ?')) return;
-  saveTickets(getTickets().filter(t => t.id !== id));
-  renderTickets(); updateTicketsBadge();
-}
-
-function filterTickets(f) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
-  renderTickets();
-}
-
-function searchTickets(q) { searchQuery = q; renderTickets(); }
-
-function updateTicketsBadge() {
-  const open = getTickets().filter(t => t.status === 'open').length;
-  document.getElementById('ticketsBadge').textContent = open;
-}
-
-function esc(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function toggleTicket(id){const body=document.getElementById(`tb-${id}`);const card=document.getElementById(`tc-${id}`);const isOpen=body.classList.contains('show');document.querySelectorAll('.ticket-body.show').forEach(b=>{b.classList.remove('show');b.closest('.ticket-card').classList.remove('expanded');});if(!isOpen){body.classList.add('show');card.classList.add('expanded');}}
+function toggleStatus(id){const tickets=getTickets();const t=tickets.find(t=>t.id===id);if(t){t.status=t.status==='open'?'closed':'open';saveTickets(tickets);renderTickets();updateTicketsBadge();}}
+function deleteTicket(id){if(!confirm('Supprimer ce ticket ?'))return;saveTickets(getTickets().filter(t=>t.id!==id));renderTickets();updateTicketsBadge();}
+function filterTickets(f){currentFilter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter===f));renderTickets();}
+function searchTickets(q){searchQuery=q;renderTickets();}
+function updateTicketsBadge(){const open=getTickets().filter(t=>t.status==='open').length;document.getElementById('ticketsBadge').textContent=open;}
+function esc(str){return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 // ─── ANALYTICS ───────────────────────────────────────────────────────────────
 async function loadStats() {
   if (!authToken) return;
-  const overlay = document.getElementById('loadingOverlay');
-  const refreshBtn = document.getElementById('refreshBtn');
-  overlay.style.display = 'flex';
-  refreshBtn.disabled = true;
+  const overlay=document.getElementById('loadingOverlay');
+  const refreshBtn=document.getElementById('refreshBtn');
+  overlay.style.display='flex';refreshBtn.disabled=true;
   try {
-    const res = await fetch('/api/stats', { headers: { 'Authorization': `Bearer ${authToken}` } });
-    if (res.status === 401) { logout(); return; }
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
+    const res=await fetch('/api/stats',{headers:{'Authorization':`Bearer ${authToken}`}});
+    if(res.status===401){logout();return;}
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
     renderStats(data);
     document.getElementById('alertBox').classList.remove('show');
     document.getElementById('errorBox').classList.remove('show');
-  } catch (err) {
-    showAlert('Impossible de charger les stats Vercel. Vérifie que VERCEL_TOKEN est configuré.', 'alertBox');
+  } catch(err){
+    showAlert('Impossible de charger les stats Vercel. Vérifie que VERCEL_TOKEN est configuré.','alertBox');
     renderFallbackStats();
   } finally {
-    overlay.style.display = 'none';
-    refreshBtn.disabled = false;
-  }
-}
-
-function renderStats(data) {
-  const now = new Date();
-  document.getElementById('lastUpdated').textContent = 'Mis à jour à ' + now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-  document.getElementById('inf-updated').textContent = now.toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'});
-  document.getElementById('inf-project').textContent = 'website-yonnix';
-  const ts30 = extractTimeseries(data?.last30days);
-  const ts7  = extractTimeseries(data?.last7days);
-  const total30v  = ts30.reduce((a,b) => a+(b.visitors||0), 0);
-  const total30pv = ts30.reduce((a,b) => a+(b.pageviews||b.count||0), 0);
-  const total7v   = ts7.reduce((a,b) => a+(b.visitors||0), 0);
-  const total7pv  = ts7.reduce((a,b) => a+(b.pageviews||b.count||0), 0);
-  animCount('kpi-visitors', total30v);
-  animCount('kpi-views', total30pv);
-  animCount('kpi-week', total7v);
-  ['kpi-visitors','kpi-views','kpi-week','kpi-bounce'].forEach(id => document.getElementById(id).classList.remove('skeleton','skeleton-kpi'));
-  const bounce = data?.last30days?.bounceRate ?? Math.round(40+Math.random()*20);
-  document.getElementById('kpi-bounce').textContent = bounce+'%';
-  const avg30weekly = Math.round(total30v/4.28);
-  setDelta('kpi-visitors-delta', total7v, avg30weekly);
-  setDelta('kpi-views-delta', total7pv, Math.round(total30pv/4.28));
-  document.getElementById('inf-v7').textContent  = fmtNum(total7v);
-  document.getElementById('inf-v30').textContent = fmtNum(total30v);
-  document.getElementById('inf-pv7').textContent  = fmtNum(total7pv);
-  document.getElementById('inf-pv30').textContent = fmtNum(total30pv);
-  buildTrafficChart(ts30);
-  buildWeekChart(ts7);
-  renderTopPages(data?.topPages);
-}
-
-function renderFallbackStats() {
-  ['kpi-visitors','kpi-views','kpi-week','kpi-bounce'].forEach(id => {
-    const el = document.getElementById(id);
-    el.classList.remove('skeleton','skeleton-kpi');
-    el.textContent = '—';
-  });
-  document.getElementById('topPages').innerHTML = '<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">Données indisponibles</td></tr>';
-}
-
-function extractTimeseries(raw) {
-  if (!raw) return [];
-  if (Array.isArray(raw)) return raw;
-  if (Array.isArray(raw.data)) return raw.data;
-  if (Array.isArray(raw.timeseries)) return raw.timeseries;
-  return [];
-}
-
-const CD = { color:'#fbbf24', gridColor:'rgba(251,191,36,.06)', textColor:'rgba(232,228,212,.5)', font:'Space Grotesk' };
-
-function buildTrafficChart(ts) {
-  const useDemo = ts.length === 0;
-  const demoLabels = Array.from({length:30},(_,i)=>{ const d=new Date(); d.setDate(d.getDate()-29+i); return d.toLocaleDateString('fr-FR',{month:'short',day:'numeric'}); });
-  const demoV = Array.from({length:30},()=>Math.round(2+Math.random()*18));
-  const demoPV= demoV.map(v=>v+Math.round(Math.random()*8));
-  const labels = useDemo ? demoLabels : ts.map(d=>{ const dt=new Date(d.date||d.timestamp||d.key||''); return isNaN(dt)?(d.date||d.key||''):dt.toLocaleDateString('fr-FR',{month:'short',day:'numeric'}); });
-  const visitors = useDemo ? demoV : ts.map(d=>d.visitors??d.uniqueVisitors??d.users??0);
-  const views    = useDemo ? demoPV: ts.map(d=>d.pageviews??d.count??d.views??0);
-  const ctx = document.getElementById('trafficChart').getContext('2d');
-  if (trafficChartInstance) trafficChartInstance.destroy();
-  trafficChartInstance = new Chart(ctx, {
-    type:'line', data:{ labels, datasets:[
-      { label:'Visiteurs', data:visitors, borderColor:'#fbbf24', backgroundColor:'rgba(251,191,36,.08)', borderWidth:2, pointRadius:0, pointHoverRadius:5, pointHoverBackgroundColor:'#fbbf24', tension:0.4, fill:true },
-      { label:'Vues', data:views, borderColor:'rgba(251,191,36,.35)', backgroundColor:'transparent', borderWidth:1.5, borderDash:[4,4], pointRadius:0, tension:0.4 }
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false, animation:{duration:800,easing:'easeOutQuart'}, interaction:{intersect:false,mode:'index'},
-      plugins:{ legend:{display:true,position:'top',labels:{color:CD.textColor,font:{family:CD.font,size:11},boxWidth:12,usePointStyle:true}},
-        tooltip:{backgroundColor:'#111',borderColor:'rgba(251,191,36,.2)',borderWidth:1,titleColor:'#fbbf24',bodyColor:CD.textColor,titleFont:{family:'Space Mono',size:11},bodyFont:{family:CD.font,size:12}} },
-      scales:{ x:{ticks:{color:CD.textColor,font:{size:10,family:'Space Mono'},maxRotation:0,maxTicksLimit:8},grid:{color:CD.gridColor},border:{color:'transparent'}}, y:{ticks:{color:CD.textColor,font:{size:10,family:'Space Mono'}},grid:{color:CD.gridColor},border:{color:'transparent'},beginAtZero:true} }
-    }
-  });
-  if (useDemo) showAlert('⚠️ Vercel Analytics non configuré — données de démonstration.', 'alertBox');
-}
-
-function buildWeekChart(ts) {
-  const useDemo = ts.length === 0;
-  const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-  const demoData = Array.from({length:7},()=>Math.round(3+Math.random()*20));
-  const labels = useDemo ? days : ts.map(d=>{ const dt=new Date(d.date||d.timestamp||d.key||''); return isNaN(dt)?(d.date||''):dt.toLocaleDateString('fr-FR',{weekday:'short'}); });
-  const data   = useDemo ? demoData : ts.map(d=>d.visitors??d.uniqueVisitors??d.count??0);
-  const ctx = document.getElementById('weekChart').getContext('2d');
-  if (weekChartInstance) weekChartInstance.destroy();
-  weekChartInstance = new Chart(ctx, {
-    type:'bar', data:{ labels, datasets:[{ label:'Visiteurs', data, backgroundColor:data.map((v,i)=>i===data.indexOf(Math.max(...data))?'#fbbf24':'rgba(251,191,36,.25)'), borderRadius:4, borderSkipped:false }]},
-    options:{ responsive:true, maintainAspectRatio:false, animation:{duration:800,easing:'easeOutQuart'},
-      plugins:{ legend:{display:false}, tooltip:{backgroundColor:'#111',borderColor:'rgba(251,191,36,.2)',borderWidth:1,titleColor:'#fbbf24',bodyColor:CD.textColor,titleFont:{family:'Space Mono',size:11}} },
-      scales:{ x:{ticks:{color:CD.textColor,font:{size:10,family:'Space Mono'}},grid:{display:false},border:{color:'transparent'}}, y:{ticks:{color:CD.textColor,font:{size:10}},grid:{color:CD.gridColor},border:{color:'transparent'},beginAtZero:true} }
-    }
-  });
-}
-
-function renderTopPages(pagesData) {
-  const tbody = document.getElementById('topPages');
-  let pages = [];
-  if (Array.isArray(pagesData)) pages = pagesData;
-  else if (Array.isArray(pagesData?.data)) pages = pagesData.data;
-  else if (Array.isArray(pagesData?.pages)) pages = pagesData.pages;
-  if (pages.length === 0) { tbody.innerHTML = '<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px;font-size:.85rem">Aucune donnée disponible</td></tr>'; return; }
-  const max = Math.max(...pages.map(p=>p.views??p.count??p.pageviews??0));
-  tbody.innerHTML = pages.slice(0,10).map(p => {
-    const path  = p.path??p.page??p.key??'/';
-    const views = p.views??p.count??p.pageviews??0;
-    const pct   = max > 0 ? Math.round((views/max)*100) : 0;
-    return `<tr><td style="font-family:'Space Mono',monospace;font-size:.8rem;color:var(--muted)">${path}</td><td class="page-views-num">${fmtNum(views)}</td><td><div class="page-bar-wrap"><div class="page-bar" style="width:${pct}%"></div></div></td></tr>`;
-  }).join('');
-}
-
-function fmtNum(n) { if(typeof n!=='number'||isNaN(n)) return '—'; return n>=1000?(n/1000).toFixed(1)+'k':String(n); }
-function animCount(id, target) {
-  const el=document.getElementById(id); el.classList.remove('skeleton','skeleton-kpi');
-  if(!target||target===0){el.textContent='0';return;}
-  let current=0; const duration=900,start=performance.now();
-  function step(now){const p=Math.min((now-start)/duration,1);const e=1-Math.pow(1-p,3);current=Math.round(e*target);el.textContent=fmtNum(current);if(p<1)requestAnimationFrame(step);}
-  requestAnimationFrame(step);
-}
-function setDelta(id, current, previous) {
-  const el=document.getElementById(id);
-  if(!previous||previous===0){el.innerHTML='';return;}
-  const pct=Math.round(((current-previous)/previous)*100);
-  const cls=pct>0?'delta-up':pct<0?'delta-down':'delta-flat';
-  const icon=pct>0?'↑':pct<0?'↓':'→';
-  el.innerHTML=`<span class="${cls}">${icon} ${Math.abs(pct)}%</span> <span style="color:var(--muted);font-size:.7rem">vs moy. hebdo 30j</span>`;
-}
-function showAlert(msg, id) { const el=document.getElementById(id); el.textContent=msg; el.classList.add('show'); }
-</script>
-</body>
-</html>
+    
