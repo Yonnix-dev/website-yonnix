@@ -107,7 +107,7 @@ a{text-decoration:none;color:inherit}
 }
 
 /* ============================================================
-   AURORA BACKGROUND — Enhanced
+   AURORA BACKGROUND
    ============================================================ */
 .aurora{
   position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
@@ -169,7 +169,20 @@ a{text-decoration:none;color:inherit}
   position:fixed;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   transform-origin:left;transform:scaleX(0);
-  z-index:999;transition:transform .1s linear;
+  z-index:999;
+}
+/* CSS Scroll-driven (progressive enhancement) */
+@supports (animation-timeline: scroll()) {
+  #progress {
+    transform: none;
+    animation: grow-progress linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0% 100%;
+  }
+  @keyframes grow-progress {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
 }
 
 /* ============================================================
@@ -183,10 +196,10 @@ nav{
   -webkit-backdrop-filter:blur(24px) saturate(200%);
   background:rgba(0,0,0,.45);
   border-bottom:1px solid var(--border);
-  transform:translateY(-100%);
+  translate:0 -100%;
   animation:nav-in .8s var(--ease) 1.6s forwards;
 }
-@keyframes nav-in{to{transform:translateY(0)}}
+@keyframes nav-in{to{translate:0 0}}
 .nav-logo{
   font-family:'Space Mono',monospace;
   font-size:1.1rem;font-weight:700;
@@ -225,7 +238,6 @@ nav{
   opacity:0;animation:fade-up .8s var(--ease) 1.8s forwards;
 }
 
-/* ─── HERO TITLE — single line, no wrap ───────────────────── */
 .hero-title{
   font-size:clamp(4rem,14vw,13rem);
   font-weight:700;line-height:.9;letter-spacing:-.04em;
@@ -260,14 +272,14 @@ nav{
   background:var(--accent);color:#000;
   border-radius:4px;font-weight:700;font-size:.9rem;letter-spacing:.05em;
   border:2px solid var(--accent);
-  transition:background .2s,transform .2s,box-shadow .2s;
+  transition:background .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease),color .25s;
   cursor:none;position:relative;overflow:hidden;
 }
 .btn-primary::after{
   content:'';position:absolute;inset:0;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
   transform:translateX(-100%);
-  transition:transform .6s var(--ease);
+  transition:transform .5s var(--ease);
 }
 .btn-primary:hover::after{transform:translateX(100%)}
 .btn-primary:hover{
@@ -280,7 +292,7 @@ nav{
   background:transparent;color:var(--text);
   border-radius:4px;font-weight:600;font-size:.9rem;letter-spacing:.05em;
   border:1px solid var(--border);
-  transition:border-color .2s,transform .2s,box-shadow .2s;cursor:none;
+  transition:border-color .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease);cursor:none;
 }
 .btn-ghost:hover{
   border-color:var(--accent);transform:translateY(-4px);
@@ -336,37 +348,56 @@ section{position:relative;z-index:2;padding:120px 20px}
 }
 
 /* ============================================================
-   SCROLL REVEAL — Multiple variants
+   SCROLL REVEAL — CSS scroll-driven (no JS needed)
+   Fallback: JS IntersectionObserver for older browsers
    ============================================================ */
 .reveal{
   opacity:0;
-  clip-path:inset(30px 0 0 0);
-  transform:translateY(20px);
-  transition:opacity 1s var(--ease),clip-path 1s var(--ease),transform 1s var(--ease);
+  clip-path:inset(0 0 12px 0);
+  transition:opacity .9s var(--ease), clip-path .9s var(--ease);
 }
 .reveal.visible{
-  opacity:1;clip-path:inset(0 0 0 0);transform:translateY(0);
+  opacity:1;clip-path:inset(0 0 0 0);
+}
+/* CSS scroll-driven enhancement */
+@supports (animation-timeline: scroll()) {
+  .reveal {
+    opacity: 0;
+    clip-path: inset(0 0 12px 0);
+    animation: reveal-fade linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 75%;
+  }
+  @keyframes reveal-fade {
+    to { opacity: 1; clip-path: inset(0 0 0 0); }
+  }
+  /* Staggered delays for grids */
+  .reveal-delay-1 { animation-delay: .05s }
+  .reveal-delay-2 { animation-delay: .1s }
+  .reveal-delay-3 { animation-delay: .15s }
+  .reveal-delay-4 { animation-delay: .2s }
+  .reveal-delay-5 { animation-delay: .25s }
 }
 .reveal-left{
   opacity:0;transform:translateX(-40px);
-  transition:opacity 1s var(--ease),transform 1s var(--ease);
+  transition:opacity .9s var(--ease),transform .9s var(--ease);
 }
 .reveal-left.visible{opacity:1;transform:translateX(0)}
 .reveal-right{
   opacity:0;transform:translateX(40px);
-  transition:opacity 1s var(--ease),transform 1s var(--ease);
+  transition:opacity .9s var(--ease),transform .9s var(--ease);
 }
 .reveal-right.visible{opacity:1;transform:translateX(0)}
 .reveal-scale{
-  opacity:0;transform:scale(.88);
-  transition:opacity 1s var(--ease),transform 1s var(--ease);
+  opacity:0;transform:scale(.9);
+  transition:opacity .9s var(--ease),transform .9s var(--ease);
 }
 .reveal-scale.visible{opacity:1;transform:scale(1)}
-.reveal-delay-1{transition-delay:.1s}
-.reveal-delay-2{transition-delay:.2s}
-.reveal-delay-3{transition-delay:.3s}
-.reveal-delay-4{transition-delay:.4s}
-.reveal-delay-5{transition-delay:.5s}
+.reveal-delay-1{transition-delay:.08s}
+.reveal-delay-2{transition-delay:.16s}
+.reveal-delay-3{transition-delay:.24s}
+.reveal-delay-4{transition-delay:.32s}
+.reveal-delay-5{transition-delay:.40s}
 
 /* ============================================================
    PARALLAX SECTIONS
@@ -381,6 +412,7 @@ section{position:relative;z-index:2;padding:120px 20px}
 .marquee-track{
   display:flex;gap:24px;width:max-content;
   animation:marquee 18s linear infinite;
+  will-change:transform;
 }
 .marquee-track:hover{animation-play-state:paused}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -403,35 +435,37 @@ section{position:relative;z-index:2;padding:120px 20px}
   border:1px solid var(--border);
   display:flex;flex-direction:column;align-items:flex-start;
   text-decoration:none;
-  transition:border-color .35s var(--ease),background .35s,transform .35s var(--ease);
+  transition:border-color .3s var(--ease),background .3s,transform .3s var(--ease),box-shadow .3s var(--ease);
   cursor:none;
+  will-change:transform;
 }
 .social-card::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(251,191,36,.12) 0%,transparent 60%);
-  opacity:0;transition:opacity .4s;
+  opacity:0;transition:opacity .3s;
 }
 .social-card:hover::before{opacity:1}
 .social-card:hover{
   border-color:rgba(251,191,36,.45);
   background:rgba(251,191,36,.035);
   transform:translateY(-4px);
+  box-shadow:0 20px 48px rgba(251,191,36,.08);
 }
 .s-icon{
   width:44px;height:44px;margin-bottom:20px;
-  transition:transform .5s var(--ease),filter .3s;
+  transition:transform .4s var(--ease),filter .3s;
   object-fit:contain;
 }
-.social-card:hover .s-icon{transform:scale(1.2) rotate(-8deg);filter:drop-shadow(0 0 8px rgba(251,191,36,.5))}
+.social-card:hover .s-icon{transform:scale(1.15) rotate(-6deg);filter:drop-shadow(0 0 8px rgba(251,191,36,.5))}
 .s-name{font-size:1.1rem;font-weight:700;margin-bottom:4px}
 .s-handle{font-size:.85rem;color:var(--muted)}
 .s-arrow{
   position:absolute;top:28px;right:28px;
   font-size:1.4rem;color:var(--accent);
-  opacity:0;transform:translate(-8px,8px);
-  transition:opacity .35s var(--ease),transform .35s var(--ease);
+  opacity:0;translate:-8px 8px;
+  transition:opacity .3s var(--ease),translate .3s var(--ease);
 }
-.social-card:hover .s-arrow{opacity:1;transform:translate(0,0)}
+.social-card:hover .s-arrow{opacity:1;translate:0 0}
 
 /* ============================================================
    SERVICES
@@ -443,14 +477,15 @@ section{position:relative;z-index:2;padding:120px 20px}
 .service-card{
   position:relative;overflow:hidden;padding:52px 40px;
   background:var(--surface);border:1px solid var(--border);
-  transition:border-color .35s,background .35s,transform .35s var(--ease);
+  transition:border-color .3s var(--ease),background .3s,transform .3s var(--ease),box-shadow .3s var(--ease);
+  will-change:transform;
 }
 .service-card::after{
   content:'';position:absolute;
   bottom:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--accent),transparent);
   transform:scaleX(0);transform-origin:left;
-  transition:transform .5s var(--ease);
+  transition:transform .45s var(--ease);
 }
 .service-card:hover::after{transform:scaleX(1)}
 .service-card:hover{
@@ -474,7 +509,7 @@ section{position:relative;z-index:2;padding:120px 20px}
 .form-wrap{
   background:var(--surface);border:1px solid var(--border);
   padding:60px;margin-top:2px;
-  transition:border-color .35s,box-shadow .35s;
+  transition:border-color .3s var(--ease),box-shadow .3s var(--ease);
 }
 .form-wrap:hover{border-color:rgba(251,191,36,.25);box-shadow:0 0 60px rgba(251,191,36,.04)}
 .form-title{font-size:1.8rem;font-weight:700;margin-bottom:40px}
@@ -497,7 +532,7 @@ section{position:relative;z-index:2;padding:120px 20px}
   padding:14px 16px;
   font-family:'Space Grotesk',sans-serif;
   font-size:.95rem;
-  transition:border-color .25s,box-shadow .25s,background .25s;
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease),background .2s;
   appearance:none;
   cursor:none;
 }
@@ -519,13 +554,13 @@ section{position:relative;z-index:2;padding:120px 20px}
   font-family:'Space Grotesk',sans-serif;
   font-size:.95rem;font-weight:700;letter-spacing:.05em;
   cursor:none;
-  transition:transform .25s var(--ease),box-shadow .25s,background .25s;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease);
   position:relative;overflow:hidden;
 }
 .form-submit::before{
   content:'';position:absolute;inset:0;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
-  transform:translateX(-100%);transition:transform .6s;
+  transform:translateX(-100%);transition:transform .55s var(--ease);
 }
 .form-submit:hover::before{transform:translateX(100%)}
 .form-submit:hover{
@@ -549,7 +584,8 @@ section{position:relative;z-index:2;padding:120px 20px}
   padding:80px 60px;
   display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;
   overflow:hidden;position:relative;
-  transition:border-color .35s,transform .35s var(--ease),box-shadow .35s;
+  transition:border-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease);
+  will-change:transform;
 }
 .discord-banner:hover{
   border-color:rgba(251,191,36,.35);
@@ -575,13 +611,13 @@ section{position:relative;z-index:2;padding:120px 20px}
   padding:18px 40px;
   background:var(--accent);color:#000;
   border-radius:4px;font-weight:700;font-size:1rem;white-space:nowrap;
-  transition:transform .25s var(--ease),box-shadow .25s;cursor:none;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease);cursor:none;
   flex-shrink:0;overflow:hidden;
 }
 .db-btn::after{
   content:'';position:absolute;inset:0;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
-  transform:translateX(-100%);transition:transform .5s;
+  transform:translateX(-100%);transition:transform .5s var(--ease);
 }
 .db-btn:hover::after{transform:translateX(100%)}
 .db-btn:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(251,191,36,.35)}
@@ -597,7 +633,7 @@ section{position:relative;z-index:2;padding:120px 20px}
   padding:14px 24px;
   background:var(--surface);border:1px solid var(--border);border-radius:4px;
   color:var(--accent);font-size:.9rem;font-weight:500;
-  transition:border-color .25s,transform .25s var(--ease),box-shadow .25s;cursor:none;
+  transition:border-color .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease);cursor:none;
 }
 .contact-chip:hover{
   border-color:var(--accent);transform:translateY(-3px);
@@ -625,7 +661,7 @@ footer{
   border:1px solid var(--border);border-radius:4px;
   color:var(--muted);font-size:.7rem;letter-spacing:.1em;
   text-transform:uppercase;font-family:'Space Mono',monospace;
-  transition:all .2s;cursor:none;
+  transition:all .2s var(--ease);cursor:none;
 }
 .admin-link:hover{color:var(--accent);border-color:var(--accent)}
 
@@ -669,7 +705,7 @@ footer{
 /* ============================================================
    MAGNETIC BUTTON WRAPPER
    ============================================================ */
-.magnetic{display:inline-block;transition:transform .4s var(--ease)}
+.magnetic{display:inline-block;transition:transform .35s var(--ease)}
 
 /* ============================================================
    RESPONSIVE
@@ -684,6 +720,17 @@ footer{
   .form-wrap{padding:36px 24px}
   section{padding:80px 16px}
   footer{flex-direction:column;gap:12px;text-align:center}
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    transition-duration:.01ms !important;
+  }
+  .reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1;transform:none;clip-path:none}
 }
 </style>
 </head>
@@ -937,7 +984,6 @@ footer{
 <script>
 // ─── Cinematic intro ───────────────────────────────────────
 const overlay = document.getElementById('intro-overlay');
-// Total intro duration: ~1.5s (0.1 appear + 0.45 delay + 0.9 zoom + 0.05 buffer)
 setTimeout(() => {
   overlay.classList.add('done');
   setTimeout(() => overlay.remove(), 700);
@@ -994,24 +1040,26 @@ document.querySelectorAll('.social-card').forEach(card=>{
   });
 });
 
-// ─── Scroll progress ───────────────────────────────────────
-const prog=document.getElementById('progress');
-window.addEventListener('scroll',()=>{
-  const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);
-  prog.style.transform='scaleX('+pct+')';
-},{passive:true});
+// ─── Scroll progress fallback (no CSS scroll-driven support) ─
+if (!CSS.supports('animation-timeline','scroll()')) {
+  const prog=document.getElementById('progress');
+  window.addEventListener('scroll',()=>{
+    const pct=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight);
+    prog.style.transform='scaleX('+pct+')';
+  },{passive:true});
+}
 
 // ─── 3D Tilt ───────────────────────────────────────────────
 document.querySelectorAll('.tilt').forEach(card=>{
   card.addEventListener('mousemove',e=>{
     const r=card.getBoundingClientRect();
-    const x=((e.clientX-r.left)/r.width-.5)*16;
-    const y=((e.clientY-r.top)/r.height-.5)*-16;
-    card.style.transition='transform .1s';
+    const x=((e.clientX-r.left)/r.width-.5)*14;
+    const y=((e.clientY-r.top)/r.height-.5)*-14;
+    card.style.transition='transform .08s';
     card.style.transform=`perspective(1200px) rotateX(${y}deg) rotateY(${x}deg) scale(1.03)`;
   });
   card.addEventListener('mouseleave',()=>{
-    card.style.transition='transform .6s cubic-bezier(0.16,1,0.3,1)';
+    card.style.transition='transform .55s cubic-bezier(0.16,1,0.3,1)';
     card.style.transform='perspective(1200px) rotateX(0deg) rotateY(0deg) scale(1)';
   });
 });
@@ -1020,8 +1068,8 @@ document.querySelectorAll('.tilt').forEach(card=>{
 document.querySelectorAll('.magnetic').forEach(btn=>{
   btn.addEventListener('mousemove',e=>{
     const r=btn.getBoundingClientRect();
-    const dx=(e.clientX-r.left-r.width/2)*.25;
-    const dy=(e.clientY-r.top-r.height/2)*.25;
+    const dx=(e.clientX-r.left-r.width/2)*.22;
+    const dy=(e.clientY-r.top-r.height/2)*.22;
     btn.style.transform=`translate(${dx}px,${dy}px)`;
   });
   btn.addEventListener('mouseleave',()=>{
@@ -1029,23 +1077,32 @@ document.querySelectorAll('.magnetic').forEach(btn=>{
   });
 });
 
-// ─── Scroll reveal — multiple classes ─────────────────────
-const revealClasses=['.reveal','.reveal-left','.reveal-right','.reveal-scale'];
-const allReveal=document.querySelectorAll(revealClasses.join(','));
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
-  });
-},{threshold:.07,rootMargin:'0px 0px -30px 0px'});
-allReveal.forEach(el=>obs.observe(el));
+// ─── Scroll reveal fallback ─────────────────────────────────
+if (!CSS.supports('animation-timeline','scroll()')) {
+  const revealClasses=['.reveal','.reveal-left','.reveal-right','.reveal-scale'];
+  const allReveal=document.querySelectorAll(revealClasses.join(','));
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+    });
+  },{threshold:.07,rootMargin:'0px 0px -30px 0px'});
+  allReveal.forEach(el=>obs.observe(el));
+}
 
 // ─── Parallax on scroll ────────────────────────────────────
+const heroTitle = document.querySelector('.hero-title');
+const heroBg    = document.querySelector('.aurora');
+let ticking = false;
 window.addEventListener('scroll',()=>{
-  const y=window.scrollY;
-  const heroTitle=document.querySelector('.hero-title');
-  const heroBg=document.querySelector('.aurora');
-  if(heroTitle) heroTitle.style.transform=`translateY(${y*.18}px)`;
-  if(heroBg) heroBg.style.transform=`translateY(${y*.08}px)`;
+  if(!ticking){
+    requestAnimationFrame(()=>{
+      const y=window.scrollY;
+      if(heroTitle) heroTitle.style.transform=`translateY(${y*.16}px)`;
+      if(heroBg)    heroBg.style.transform=`translateY(${y*.07}px)`;
+      ticking=false;
+    });
+    ticking=true;
+  }
 },{passive:true});
 
 // ─── Discord Status (Lanyard) ──────────────────────────────
@@ -1073,26 +1130,27 @@ async function fetchDiscordStatus(){
 fetchDiscordStatus();
 setInterval(fetchDiscordStatus,10000);
 
-// ─── Ticket Form ───────────────────────────────────────────
-const WEBHOOK='https://discord.com/api/webhooks/1459665542863392890/3fiB5IFeLYs88ToLR6__PJYvc9Q5JNjepeywfYrlgYBXVi_grkDdlS4eLy5qWB0nKi0b';
+// ─── Ticket Form — Secure proxy ────────────────────────────
+// Le webhook Discord est maintenant géré côté serveur via /api/ticket
 document.getElementById('ticketForm').addEventListener('submit',async e=>{
   e.preventDefault();
   const statusEl=document.getElementById('ticketStatus');
   const btn=e.target.querySelector('.form-submit');
   btn.textContent='Envoi...';btn.disabled=true;
-  const payload={embeds:[{
-    title:'🎫 Nouveau ticket',color:0xfbbf24,
-    fields:[
-      {name:'Pseudo',value:document.getElementById('ticketName').value||'—',inline:true},
-      {name:'Discord',value:document.getElementById('ticketDiscord').value||'—',inline:true},
-      {name:'Email',value:document.getElementById('ticketEmail').value||'—',inline:false},
-      {name:'Type',value:document.getElementById('ticketType').value,inline:true},
-      {name:'Message',value:document.getElementById('ticketMessage').value||'—',inline:false}
-    ],
-    timestamp:new Date().toISOString()
-  }]};
+  statusEl.className='';statusEl.style.display='none';
+
   try{
-    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const r=await fetch('/api/ticket',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        name:    document.getElementById('ticketName').value,
+        discord: document.getElementById('ticketDiscord').value,
+        email:   document.getElementById('ticketEmail').value,
+        type:    document.getElementById('ticketType').value,
+        message: document.getElementById('ticketMessage').value
+      })
+    });
     if(!r.ok)throw new Error();
     statusEl.textContent='✅ Ticket envoyé ! Je te réponds rapidement.';
     statusEl.className='success';
@@ -1113,9 +1171,9 @@ document.querySelectorAll('.btn-primary,.btn-ghost,.db-btn,.form-submit').forEac
     const rip=document.createElement('span');
     rip.style.cssText=`position:absolute;width:${size}px;height:${size}px;border-radius:50%;
       background:rgba(255,255,255,.2);left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px;
-      pointer-events:none;animation:rip .7s ease-out forwards;`;
+      pointer-events:none;animation:rip .65s ease-out forwards;`;
     btn.style.position='relative';btn.style.overflow='hidden';
-    btn.appendChild(rip);setTimeout(()=>rip.remove(),700);
+    btn.appendChild(rip);setTimeout(()=>rip.remove(),650);
   });
 });
 const s=document.createElement('style');
