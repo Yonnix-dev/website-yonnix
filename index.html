@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>yonn_ix — Creator & Developer</title>
+<!-- ── Open Graph ─────────────────────────────────────────── -->
+<meta property="og:title" content="yonn_ix — Creator & Developer">
+<meta property="og:description" content="Sites web sur mesure · Bots Discord · Contenu créatif. Basé en France, disponible partout.">
+<meta property="og:image" content="https://website-yonnix.vercel.app/logo.png">
+<meta property="og:url" content="https://website-yonnix.vercel.app">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="yonn_ix — Creator & Developer">
+<meta name="twitter:description" content="Sites web sur mesure · Bots Discord · Contenu créatif. Basé en France.">
+<meta name="twitter:image" content="https://website-yonnix.vercel.app/logo.png">
+<meta name="description" content="Sites web sur mesure · Bots Discord · Contenu créatif. Basé en France, disponible partout.">
+<!-- ── Favicon / Fonts ────────────────────────────────────── -->
 <link rel="icon" href="/logo.jpg" type="image/jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,7 +184,6 @@ a{text-decoration:none;color:inherit}
   transform-origin:left;transform:scaleX(0);
   z-index:999;
 }
-/* CSS Scroll-driven (progressive enhancement) */
 @supports (animation-timeline: scroll()) {
   #progress {
     transform: none;
@@ -321,12 +333,39 @@ nav{
 }
 .discord-pill{
   display:inline-flex;align-items:center;gap:10px;
-  padding:8px 16px 8px 8px;
+  padding:8px 20px 8px 8px;
   background:rgba(255,255,255,.04);
   border:1px solid var(--border);border-radius:100px;
+  font-size:.85rem;color:var(--muted);
+  transition:border-color .3s var(--ease), box-shadow .3s var(--ease);
+}
+.discord-pill:hover{
+  border-color:rgba(251,191,36,.35);
+  box-shadow:0 8px 30px rgba(251,191,36,.08);
+}
+.discord-pill img{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent)}
+
+/* ── Discord Member Counter ─────────────────────────────── */
+.discord-members-wrap{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-left:4px;
   font-size:.8rem;color:var(--muted);
 }
-.discord-pill img{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--accent)}
+.members-count{
+  font-family:'Space Mono',monospace;
+  font-weight:700;color:var(--accent);
+  font-variant-numeric:tabular-nums;
+  font-size:.9rem;
+  transition:color .3s;
+}
+.members-dot{
+  width:6px;height:6px;border-radius:50%;background:#22c55e;
+  animation:pulse-dot 2s ease-in-out infinite;
+}
+@keyframes count-up{
+  from{opacity:0;transform:translateY(4px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
 /* ============================================================
    SECTION WRAPPER
@@ -348,8 +387,7 @@ section{position:relative;z-index:2;padding:120px 20px}
 }
 
 /* ============================================================
-   SCROLL REVEAL — CSS scroll-driven (no JS needed)
-   Fallback: JS IntersectionObserver for older browsers
+   SCROLL REVEAL
    ============================================================ */
 .reveal{
   opacity:0;
@@ -359,7 +397,6 @@ section{position:relative;z-index:2;padding:120px 20px}
 .reveal.visible{
   opacity:1;clip-path:inset(0 0 0 0);
 }
-/* CSS scroll-driven enhancement */
 @supports (animation-timeline: scroll()) {
   .reveal {
     opacity: 0;
@@ -371,7 +408,6 @@ section{position:relative;z-index:2;padding:120px 20px}
   @keyframes reveal-fade {
     to { opacity: 1; clip-path: inset(0 0 0 0); }
   }
-  /* Staggered delays for grids */
   .reveal-delay-1 { animation-delay: .05s }
   .reveal-delay-2 { animation-delay: .1s }
   .reveal-delay-3 { animation-delay: .15s }
@@ -398,12 +434,6 @@ section{position:relative;z-index:2;padding:120px 20px}
 .reveal-delay-3{transition-delay:.24s}
 .reveal-delay-4{transition-delay:.32s}
 .reveal-delay-5{transition-delay:.40s}
-
-/* ============================================================
-   PARALLAX SECTIONS
-   ============================================================ */
-.parallax-container{overflow:hidden}
-.parallax-el{will-change:transform}
 
 /* ============================================================
    SOCIALS SECTION — Marquee + Cards
@@ -567,13 +597,88 @@ section{position:relative;z-index:2;padding:120px 20px}
   transform:translateY(-3px);
   box-shadow:0 20px 50px rgba(251,191,36,.35);
 }
-#ticketStatus{
-  margin-top:12px;font-size:.85rem;
-  padding:10px 14px;border-radius:4px;
-  display:none;
+/* Legacy ticketStatus hidden — replaced by toast */
+#ticketStatus{display:none!important}
+
+/* ============================================================
+   TOAST NOTIFICATION
+   ============================================================ */
+.toast-container{
+  position:fixed;
+  bottom:32px;right:32px;
+  z-index:99998;
+  display:flex;flex-direction:column;gap:12px;
+  pointer-events:none;
 }
-#ticketStatus.success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:#86efac;display:block}
-#ticketStatus.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#fca5a5;display:block}
+.toast{
+  display:flex;align-items:flex-start;gap:14px;
+  min-width:300px;max-width:380px;
+  padding:18px 20px;
+  border-radius:8px;
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid;
+  pointer-events:all;
+  cursor:pointer;
+  transform:translateX(120%);
+  opacity:0;
+  transition:transform .45s var(--ease), opacity .45s var(--ease);
+  will-change:transform,opacity;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.toast.show{
+  transform:translateX(0);
+  opacity:1;
+}
+.toast.hide{
+  transform:translateX(120%);
+  opacity:0;
+}
+.toast.success{
+  background:rgba(10,10,10,.92);
+  border-color:rgba(34,197,94,.3);
+}
+.toast.error{
+  background:rgba(10,10,10,.92);
+  border-color:rgba(239,68,68,.3);
+}
+.toast.info{
+  background:rgba(10,10,10,.92);
+  border-color:rgba(251,191,36,.25);
+}
+.toast-icon{
+  font-size:1.3rem;flex-shrink:0;margin-top:1px;
+}
+.toast-body{
+  flex:1;
+}
+.toast-title{
+  font-weight:700;font-size:.9rem;margin-bottom:3px;
+}
+.toast.success .toast-title{color:#86efac}
+.toast.error .toast-title{color:#fca5a5}
+.toast.info .toast-title{color:var(--accent)}
+.toast-msg{
+  font-size:.8rem;color:var(--muted);line-height:1.5;
+}
+.toast-close{
+  font-size:1rem;color:var(--muted);background:none;border:none;
+  cursor:pointer;padding:0;line-height:1;flex-shrink:0;
+  transition:color .2s;
+}
+.toast-close:hover{color:var(--text)}
+.toast-progress{
+  position:absolute;bottom:0;left:0;height:2px;
+  border-radius:0 0 8px 8px;
+  animation:toast-prog linear forwards;
+}
+.toast.success .toast-progress{background:rgba(34,197,94,.6)}
+.toast.error .toast-progress{background:rgba(239,68,68,.6)}
+.toast.info .toast-progress{background:rgba(251,191,36,.5)}
+@keyframes toast-prog{
+  from{width:100%}
+  to{width:0}
+}
 
 /* ============================================================
    DISCORD COMMUNITY BANNER
@@ -605,6 +710,27 @@ section{position:relative;z-index:2;padding:120px 20px}
 }
 .db-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:700;margin-bottom:12px}
 .db-sub{color:var(--muted);font-size:1rem;max-width:40ch}
+
+/* ── Discord member counter in banner ── */
+.db-members{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:16px;
+  padding:8px 16px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:100px;
+  font-size:.82rem;color:var(--muted);
+}
+.db-members-count{
+  font-family:'Space Mono',monospace;
+  font-weight:700;color:var(--accent);
+  font-variant-numeric:tabular-nums;
+}
+.db-members-dot{
+  width:6px;height:6px;border-radius:50%;background:#22c55e;
+  animation:pulse-dot 2s ease-in-out infinite;
+}
+
 .db-btn{
   position:relative;z-index:2;
   display:inline-flex;align-items:center;gap:12px;
@@ -720,11 +846,10 @@ footer{
   .form-wrap{padding:36px 24px}
   section{padding:80px 16px}
   footer{flex-direction:column;gap:12px;text-align:center}
+  .toast-container{bottom:16px;right:16px;left:16px}
+  .toast{min-width:unset}
 }
 
-/* ============================================================
-   REDUCED MOTION
-   ============================================================ */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{
     animation-duration:.01ms !important;
@@ -759,6 +884,9 @@ footer{
 <div class="grid-bg"></div>
 <div id="particles"></div>
 
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
 <!-- NAV -->
 <nav>
   <div class="nav-logo">yonn_ix</div>
@@ -767,6 +895,7 @@ footer{
     <a href="#services">Services</a>
     <a href="#contact">Contact</a>
     <a href="#discord">Discord</a>
+    <a href="/status" style="color:var(--muted)">Status</a>
   </div>
 </nav>
 
@@ -957,6 +1086,12 @@ footer{
         <p class="db-label">Communauté</p>
         <h2 class="db-title">Rejoins le<br>serveur Discord</h2>
         <p class="db-sub">Discute, participe aux events, connecte-toi avec d'autres membres de la communauté.</p>
+        <!-- Member counter -->
+        <div class="db-members" id="discordMembersCounter" style="display:none">
+          <span class="db-members-dot"></span>
+          <span id="discordMembersCount" class="db-members-count">—</span>
+          <span style="color:var(--muted)">membres en ligne</span>
+        </div>
       </div>
       <a href="https://discord.gg/N8qXQtmkBa" target="_blank" rel="noopener noreferrer" class="db-btn">
         🎙️ Rejoindre →
@@ -1040,7 +1175,7 @@ document.querySelectorAll('.social-card').forEach(card=>{
   });
 });
 
-// ─── Scroll progress fallback (no CSS scroll-driven support) ─
+// ─── Scroll progress fallback ─
 if (!CSS.supports('animation-timeline','scroll()')) {
   const prog=document.getElementById('progress');
   window.addEventListener('scroll',()=>{
@@ -1105,8 +1240,44 @@ window.addEventListener('scroll',()=>{
   }
 },{passive:true});
 
-// ─── Discord Status (Lanyard) ──────────────────────────────
-const DISCORD_USER_ID='964542992641818624';
+// ─── TOAST SYSTEM ──────────────────────────────────────────
+function showToast({ type='info', title, message, duration=5000 }) {
+  const container = document.getElementById('toastContainer');
+  const icons = { success:'✅', error:'❌', info:'💬' };
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.style.position = 'relative';
+  toast.innerHTML = `
+    <span class="toast-icon">${icons[type]||'ℹ️'}</span>
+    <div class="toast-body">
+      <div class="toast-title">${title}</div>
+      ${message ? `<div class="toast-msg">${message}</div>` : ''}
+    </div>
+    <button class="toast-close" aria-label="Fermer">×</button>
+    <div class="toast-progress" style="animation-duration:${duration}ms"></div>
+  `;
+  container.appendChild(toast);
+  // Animate in
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => toast.classList.add('show'));
+  });
+  // Dismiss
+  const dismiss = () => {
+    toast.classList.remove('show');
+    toast.classList.add('hide');
+    setTimeout(() => toast.remove(), 500);
+  };
+  toast.querySelector('.toast-close').addEventListener('click', dismiss);
+  toast.addEventListener('click', dismiss);
+  const timer = setTimeout(dismiss, duration);
+  toast.addEventListener('mouseenter', () => clearTimeout(timer));
+  toast.addEventListener('mouseleave', () => setTimeout(dismiss, 1500));
+}
+
+// ─── Discord Status (Lanyard) + Member Counter ────────────
+const DISCORD_USER_ID = '964542992641818624';
+const DISCORD_SERVER_ID = 'N8qXQtmkBa'; // server invite slug
+
 async function fetchDiscordStatus(){
   try{
     const res=await fetch('https://api.lanyard.rest/v1/users/'+DISCORD_USER_ID);
@@ -1127,23 +1298,52 @@ async function fetchDiscordStatus(){
       </div>`;
   }catch(err){}
 }
+
+// ─── Discord Widget — member counter with animated count-up
+async function fetchDiscordMembers() {
+  try {
+    // Discord Widget API (public, no auth needed for public servers)
+    const res = await fetch('https://discord.com/api/guilds/1372963059748048916/widget.json');
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const online = data.presence_count ?? 0;
+    const el = document.getElementById('discordMembersCount');
+    const wrap = document.getElementById('discordMembersCounter');
+    wrap.style.display = 'inline-flex';
+    // Animated count-up
+    const duration = 1800;
+    const start = performance.now();
+    const prev = parseInt(el.textContent) || 0;
+    function step(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(prev + (online - prev) * ease);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  } catch(e) {
+    // Widget disabled or server not found — silently hide
+  }
+}
+
 fetchDiscordStatus();
-setInterval(fetchDiscordStatus,10000);
+setInterval(fetchDiscordStatus, 10000);
+fetchDiscordMembers();
+setInterval(fetchDiscordMembers, 30000);
 
 // ─── Ticket Form — Secure proxy ────────────────────────────
-// Le webhook Discord est maintenant géré côté serveur via /api/ticket
-document.getElementById('ticketForm').addEventListener('submit',async e=>{
+document.getElementById('ticketForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const statusEl=document.getElementById('ticketStatus');
-  const btn=e.target.querySelector('.form-submit');
-  btn.textContent='Envoi...';btn.disabled=true;
-  statusEl.className='';statusEl.style.display='none';
+  const btn = e.target.querySelector('.form-submit');
+  const originalText = btn.textContent;
+  btn.textContent = 'Envoi...';
+  btn.disabled = true;
 
-  try{
-    const r=await fetch('/api/ticket',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
+  try {
+    const r = await fetch('/api/ticket', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         name:    document.getElementById('ticketName').value,
         discord: document.getElementById('ticketDiscord').value,
         email:   document.getElementById('ticketEmail').value,
@@ -1151,15 +1351,38 @@ document.getElementById('ticketForm').addEventListener('submit',async e=>{
         message: document.getElementById('ticketMessage').value
       })
     });
-    if(!r.ok)throw new Error();
-    statusEl.textContent='✅ Ticket envoyé ! Je te réponds rapidement.';
-    statusEl.className='success';
+
+    if (r.status === 429) {
+      const data = await r.json().catch(() => ({}));
+      showToast({
+        type: 'error',
+        title: 'Trop de tentatives',
+        message: data.error || 'Attends quelques minutes avant de renvoyer.',
+        duration: 6000
+      });
+      return;
+    }
+
+    if (!r.ok) throw new Error();
+
+    showToast({
+      type: 'success',
+      title: 'Ticket envoyé ! 🎫',
+      message: 'Je te réponds rapidement sur Discord.',
+      duration: 6000
+    });
     e.target.reset();
-  }catch{
-    statusEl.textContent="❌ Erreur lors de l'envoi. Contacte-moi directement.";
-    statusEl.className='error';
-  }finally{
-    btn.textContent='Envoyer le ticket →';btn.disabled=false;
+
+  } catch {
+    showToast({
+      type: 'error',
+      title: 'Erreur d\'envoi',
+      message: 'Contacte-moi directement sur Discord.',
+      duration: 6000
+    });
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
   }
 });
 
