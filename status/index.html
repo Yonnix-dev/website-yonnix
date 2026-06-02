@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Status — yonn_ix</title>
+<meta name="description" content="Status en temps réel des services de yonn_ix">
+<link rel="icon" href="/logo.jpg" type="image/jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;--surface:#0c0c0c;--border:rgba(251,191,36,.12);
+  --text:#e8e4d4;--muted:rgba(232,228,212,.5);
+  --accent:#fbbf24;--success:#22c55e;--warning:#eab308;--error:#ef4444;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(251,191,36,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(251,191,36,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);
+}
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:60px 24px 80px}
+
+/* NAV */
+.top-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:64px;
+}
+.logo{
+  font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;
+  color:var(--accent);text-decoration:none;
+}
+.back-btn{
+  font-size:.8rem;color:var(--muted);text-decoration:none;
+  display:flex;align-items:center;gap:6px;
+  transition:color .2s;
+}
+.back-btn:hover{color:var(--accent)}
+
+/* HERO */
+.hero-label{
+  font-family:'Space Mono',monospace;
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.3em;
+  color:var(--accent);margin-bottom:16px;
+}
+.hero-title{
+  font-size:clamp(2rem,5vw,3.5rem);font-weight:700;letter-spacing:-.03em;
+  line-height:1;margin-bottom:12px;
+}
+.overall-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 18px;
+  border-radius:100px;
+  font-weight:600;font-size:.9rem;
+  margin-bottom:48px;
+  transition:all .3s;
+}
+.overall-badge.ok{ background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.3); color:var(--success); }
+.overall-badge.degraded{ background:rgba(234,179,8,.1); border:1px solid rgba(234,179,8,.3); color:var(--warning); }
+.overall-badge.down{ background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3); color:var(--error); }
+.overall-badge.checking{ background:rgba(255,255,255,.05); border:1px solid var(--border); color:var(--muted); }
+.pulse-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+.ok .pulse-dot{background:var(--success);animation:pulse 2s ease-in-out infinite}
+.degraded .pulse-dot{background:var(--warning);animation:pulse 2s ease-in-out infinite}
+.down .pulse-dot{background:var(--error);animation:pulse 1s ease-in-out infinite}
+.checking .pulse-dot{background:var(--muted)}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 currentColor}
+  50%{box-shadow:0 0 0 5px transparent}
+}
+
+/* SERVICES */
+.section-title{
+  font-family:'Space Mono',monospace;
+  font-size:.7rem;text-transform:uppercase;letter-spacing:.25em;
+  color:var(--muted);margin-bottom:2px;
+}
+.services-list{display:flex;flex-direction:column;gap:2px;margin-bottom:40px}
+.service-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 24px;
+  background:var(--surface);border:1px solid var(--border);
+  animation:fade-up .4s var(--ease) both;
+  gap:12px;
+}
+.service-row:hover{border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.015)}
+.service-info{display:flex;flex-direction:column;gap:4px}
+.service-name{font-weight:600;font-size:.95rem}
+.service-url{font-size:.75rem;color:var(--muted);font-family:'Space Mono',monospace}
+.service-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.latency{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted)}
+.status-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:100px;
+  font-size:.75rem;font-weight:600;
+  white-space:nowrap;
+  transition:all .3s var(--ease);
+}
+.status-pill.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:var(--success)}
+.status-pill.degraded{background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);color:var(--warning)}
+.status-pill.down{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--error)}
+.status-pill.checking{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted)}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* UPTIME BARS */
+.uptime-section{margin-bottom:40px}
+.uptime-label{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:8px;
+}
+.uptime-name{font-size:.85rem;font-weight:500}
+.uptime-pct{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--accent)}
+.uptime-bar{
+  display:flex;gap:2px;margin-bottom:16px;
+}
+.uptime-seg{
+  flex:1;height:28px;border-radius:2px;
+  background:rgba(34,197,94,.7);
+  transition:opacity .2s;
+  cursor:default;
+}
+.uptime-seg:hover{opacity:.8}
+.uptime-seg.down{background:rgba(239,68,68,.6)}
+.uptime-seg.unknown{background:rgba(255,255,255,.07)}
+
+/* LAST CHECK */
+.footer-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:24px;border-top:1px solid var(--border);
+  font-size:.75rem;color:var(--muted);
+  font-family:'Space Mono',monospace;
+}
+.btn-refresh{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 16px;
+  background:transparent;border:1px solid var(--border);border-radius:4px;
+  color:var(--muted);font-family:'Space Mono',monospace;font-size:.75rem;
+  cursor:pointer;transition:all .2s;
+}
+.btn-refresh:hover{border-color:var(--accent);color:var(--accent)}
+.btn-refresh svg{transition:transform .5s var(--ease)}
+.btn-refresh:hover svg{transform:rotate(180deg)}
+
+/* SKELETON */
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton{
+  background:linear-gradient(90deg,var(--surface) 25%,rgba(255,255,255,.04) 50%,var(--surface) 75%);
+  background-size:400px 100%;animation:shimmer 1.5s ease-in-out infinite;
+  border-radius:4px;
+}
+
+@keyframes fade-up{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top-bar">
+    <a href="/" class="logo">yonn_ix</a>
+    <a href="/" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Retour
+    </a>
+  </div>
+
+  <p class="hero-label">Status</p>
+  <h1 class="hero-title">État des services</h1>
+
+  <div class="overall-badge checking" id="overallBadge">
+    <span class="pulse-dot"></span>
+    <span id="overallText">Vérification en cours...</span>
+  </div>
+
+  <div class="section-title" style="margin-bottom:8px">Services surveillés</div>
+  <div class="services-list" id="servicesList">
+    <!-- populated by JS -->
+  </div>
+
+  <div class="uptime-section">
+    <div class="section-title" style="margin-bottom:16px">Disponibilité — 90 jours (simulée)</div>
+    <div id="uptimeBars"></div>
+  </div>
+
+  <div class="footer-bar">
+    <span id="lastCheck">—</span>
+    <button class="btn-refresh" onclick="checkAll()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M23 4v6h-6M1 20v-6h6"/>
+        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+      </svg>
+      Rafraîchir
+    </button>
+  </div>
+
+</div>
+
+<script>
+const SERVICES = [
+  { name: 'Site principal',    url: 'https://website-yonnix.vercel.app',        display: 'website-yonnix.vercel.app' },
+  { name: 'API — /api/ticket', url: 'https://website-yonnix.vercel.app/api/ticket', display: '/api/ticket', method: 'OPTIONS' },
+  { name: 'Lanyard (Discord)', url: 'https://api.lanyard.rest/v1/users/964542992641818624', display: 'api.lanyard.rest' },
+  { name: 'Discord CDN',       url: 'https://cdn.discordapp.com',                display: 'cdn.discordapp.com' },
+];
+
+// Build initial skeleton rows
+function buildRows() {
+  const list = document.getElementById('servicesList');
+  list.innerHTML = SERVICES.map((s, i) => `
+    <div class="service-row" id="row-${i}" style="animation-delay:${i * 0.07}s">
+      <div class="service-info">
+        <span class="service-name">${s.name}</span>
+        <span class="service-url">${s.display}</span>
+      </div>
+      <div class="service-right">
+        <span class="latency" id="lat-${i}">—</span>
+        <span class="status-pill checking" id="pill-${i}">
+          <span class="dot"></span> Vérification...
+        </span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Build uptime bars (90 segments, mostly ok, random incidents)
+function buildUptimeBars() {
+  const wrap = document.getElementById('uptimeBars');
+  wrap.innerHTML = SERVICES.map(s => {
+    const segs = Array.from({length: 90}, (_, i) => {
+      const r = Math.random();
+      if (i > 80) return 'ok'; // recent = ok
+      return r > 0.97 ? 'down' : r > 0.94 ? 'unknown' : 'ok';
+    });
+    const upPct = (segs.filter(s => s === 'ok').length / 90 * 100).toFixed(2);
+    return `
+      <div>
+        <div class="uptime-label">
+          <span class="uptime-name">${s.name}</span>
+          <span class="uptime-pct">${upPct}%</span>
+        </div>
+        <div class="uptime-bar">
+          ${segs.map(cls => `<div class="uptime-seg ${cls}" title="${cls === 'ok' ? 'Opérationnel' : cls === 'down' ? 'Incident' : 'Inconnu'}"></div>`).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function checkService(index) {
+  const s = SERVICES[index];
+  const pill = document.getElementById(`pill-${index}`);
+  const lat  = document.getElementById(`lat-${index}`);
+  const start = performance.now();
+
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    const res = await fetch(s.url, {
+      method: s.method || 'HEAD',
+      mode: 'no-cors',
+      signal: ctrl.signal,
+    });
+    clearTimeout(timer);
+    const ms = Math.round(performance.now() - start);
+    lat.textContent = ms + 'ms';
+    // no-cors always returns opaque response (status 0 = reachable)
+    const latClass = ms < 300 ? 'ok' : ms < 800 ? 'degraded' : 'degraded';
+    pill.className = `status-pill ${latClass}`;
+    pill.innerHTML = `<span class="dot"></span> ${latClass === 'ok' ? 'Opérationnel' : 'Dégradé'}`;
+    return latClass;
+  } catch (e) {
+    const ms = Math.round(performance.now() - start);
+    lat.textContent = ms + 'ms';
+    pill.className = 'status-pill down';
+    pill.innerHTML = '<span class="dot"></span> Hors ligne';
+    return 'down';
+  }
+}
+
+async function checkAll() {
+  const badge = document.getElementById('overallBadge');
+  const txt   = document.getElementById('overallText');
+  badge.className = 'overall-badge checking';
+  txt.textContent = 'Vérification en cours...';
+
+  const results = await Promise.all(SERVICES.map((_, i) => checkService(i)));
+
+  const now = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  document.getElementById('lastCheck').textContent = 'Dernière vérification : ' + now;
+
+  if (results.every(r => r === 'ok')) {
+    badge.className = 'overall-badge ok';
+    txt.textContent = 'Tous les systèmes sont opérationnels';
+  } else if (results.includes('down')) {
+    badge.className = 'overall-badge down';
+    const n = results.filter(r => r === 'down').length;
+    txt.textContent = `${n} service${n > 1 ? 's' : ''} hors ligne`;
+  } else {
+    badge.className = 'overall-badge degraded';
+    txt.textContent = 'Performances dégradées';
+  }
+}
+
+buildRows();
+buildUptimeBars();
+checkAll();
+setInterval(checkAll, 60_000);
+</script>
+</body>
+</html>

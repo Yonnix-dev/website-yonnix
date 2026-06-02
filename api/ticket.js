@@ -1,19 +1,35 @@
 /**
  * api/ticket.js — Vercel Serverless Function
- * Relaie le formulaire de contact vers Discord via webhook sécurisé.
+ * Relaie le formulaire vers Discord + rate limiting par IP
  *
- * Variable d'environnement requise dans Vercel Dashboard :
- *   DISCORD_WEBHOOK_URL = https://discord.com/api/webhooks/...
+ * Env var requise : DISCORD_WEBHOOK_URL
  */
 
+import { checkRateLimit } from './ratelimit.js';
+
 export default async function handler(req, res) {
-  // CORS
   res.setHeader('Access-Control-Allow-Origin', 'https://website-yonnix.vercel.app');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  // Rate limiting
+  const ip =
+    req.headers['x-forwarded-for']?.split(',')[0].trim() ||
+    req.headers['x-real-ip'] ||
+    req.socket?.remoteAddress ||
+    'unknown';
+
+  const rl = checkRateLimit(ip);
+  res.setHeader('X-RateLimit-Remaining', rl.remaining);
+  if (!rl.allowed) {
+    res.setHeader('Retry-After', rl.retryAfter);
+    return res.status(429).json({
+      error: `Trop de requêtes. Réessaie dans ${rl.retryAfter}s.`
+    });
+  }
 
   const WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
   if (!WEBHOOK_URL) {
@@ -23,30 +39,28 @@ export default async function handler(req, res) {
 
   const { name, discord, email, type, message } = req.body ?? {};
 
-  // Validation
   if (!name || !discord || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res.status(400).json({ error: 'Champs requis manquants' });
   }
   if (message.length > 2000 || name.length > 100 || discord.length > 100) {
-    return res.status(400).json({ error: 'Field too long' });
+    return res.status(400).json({ error: 'Champ trop long' });
   }
 
-  // Sanitize : empêche les pings @everyone / @here
   const safe = (str = '') =>
     String(str).replace(/@(everyone|here)/gi, '[@$1]').slice(0, 1024);
 
   const payload = {
     embeds: [{
-      title: '\uD83C\uDFAB Nouveau Ticket',
+      title: '🎫 Nouveau Ticket',
       color: 0xfbbf24,
       fields: [
-        { name: '\uD83D\uDC64 Pseudo / Nom',   value: safe(name),    inline: true  },
-        { name: '\uD83D\uDCAC Discord',        value: safe(discord), inline: true  },
-        { name: '\uD83D\uDCE7 Email',          value: safe(email) || '_non renseigné_', inline: false },
-        { name: '\uD83D\uDEE0\uFE0F Service',  value: safe(type)  || '_non renseigné_', inline: true  },
-        { name: '\uD83D\uDCDD Message',        value: safe(message) },
+        { name: '👤 Pseudo / Nom',  value: safe(name),    inline: true },
+        { name: '💬 Discord',       value: safe(discord), inline: true },
+        { name: '📧 Email',         value: safe(email) || '_non renseigné_', inline: false },
+        { name: '🛠️ Service',       value: safe(type)  || '_non renseigné_', inline: true  },
+        { name: '📝 Message',       value: safe(message) },
       ],
-      footer: { text: 'yonn_ix \u00b7 website-yonnix.vercel.app' },
+      footer: { text: `yonn_ix · IP: ${ip}` },
       timestamp: new Date().toISOString(),
     }],
   };
