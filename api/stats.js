@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  // CORS ouvert sur toutes les origines Vercel + local
+  // CORS — accepte toutes les origines *.vercel.app + localhost
   const origin = req.headers['origin'] || '';
   const allowed = [
     'https://website-yonnix.vercel.app',
@@ -21,9 +21,8 @@ export default async function handler(req, res) {
   const authHeader = req.headers['authorization'];
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
+  // Si ADMIN_PASSWORD pas configurée → ne bloque pas, retourne 200 vide
   if (!ADMIN_PASSWORD) {
-    // Pas de password configuré → retourne quand même 200 avec données vides
-    // pour ne pas bloquer l'accès admin
     return res.status(200).json({
       last30days: null,
       last7days: null,
@@ -40,11 +39,15 @@ export default async function handler(req, res) {
   const VERCEL_TOKEN = process.env.VERCEL_TOKEN;
   const PROJECT_ID = 'prj_OWVGeh9fxLPNMz0MOkleMaUsfj7A';
 
-  if (!VERCEL_TOKEN) return res.status(200).json({
-    last30days: null, last7days: null, topPages: null,
-    fetchedAt: new Date().toISOString(),
-    warning: 'VERCEL_TOKEN not configured'
-  });
+  if (!VERCEL_TOKEN) {
+    return res.status(200).json({
+      last30days: null,
+      last7days: null,
+      topPages: null,
+      fetchedAt: new Date().toISOString(),
+      warning: 'VERCEL_TOKEN not configured'
+    });
+  }
 
   try {
     const now = new Date();
@@ -66,9 +69,14 @@ export default async function handler(req, res) {
       return r.json().catch(() => null);
     };
     const [data30, data7, pagesData] = await Promise.all([parse(web30), parse(web7), parse(pageviews)]);
-    res.status(200).json({ last30days: data30, last7days: data7, topPages: pagesData, fetchedAt: new Date().toISOString() });
+    return res.status(200).json({
+      last30days: data30,
+      last7days: data7,
+      topPages: pagesData,
+      fetchedAt: new Date().toISOString()
+    });
   } catch (err) {
     console.error('Stats error:', err);
-    res.status(500).json({ error: 'Failed to fetch stats', message: err.message });
+    return res.status(500).json({ error: 'Failed to fetch stats', message: err.message });
   }
 }
