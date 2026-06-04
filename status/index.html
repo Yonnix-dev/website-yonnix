@@ -8,7 +8,6 @@
 <meta property="og:title" content="Status — yonn_ix services">
 <meta property="og:description" content="État en temps réel des services yonn_ix.">
 <meta property="og:image" content="https://website-yonnix.vercel.app/logo.png">
-<link rel="icon" href="/logo.jpg" type="image/jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -21,248 +20,81 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{
-  font-family:'Space Grotesk',sans-serif;
-  background:var(--bg);color:var(--text);
-  min-height:100vh;overflow-x:hidden;
-}
-
-/* ── AURORA BG ── */
-.aurora{
-  position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
-}
-.aurora-orb{
-  position:absolute;border-radius:50%;
-  filter:blur(130px);opacity:.15;
-  animation:drift 20s ease-in-out infinite;
-  will-change:transform;
-}
-.aurora-orb:nth-child(1){
-  width:70vw;height:70vw;top:-20%;left:-20%;
-  background:radial-gradient(circle,#fbbf24 0%,transparent 70%);
-  animation-duration:24s;
-}
-.aurora-orb:nth-child(2){
-  width:50vw;height:50vw;bottom:-10%;right:-10%;
-  background:radial-gradient(circle,#f59e0b 0%,transparent 70%);
-  animation-duration:18s;animation-delay:-8s;
-}
-@keyframes drift{
-  0%,100%{transform:translate(0,0) scale(1)}
-  33%{transform:translate(4vw,3vh) scale(1.05)}
-  66%{transform:translate(-2vw,6vh) scale(.97)}
-}
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(251,191,36,.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(251,191,36,.04) 1px,transparent 1px);
-  background-size:60px 60px;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);
-}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.aurora{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.aurora-orb{position:absolute;border-radius:50%;filter:blur(130px);opacity:.15;animation:drift 20s ease-in-out infinite;will-change:transform}
+.aurora-orb:nth-child(1){width:70vw;height:70vw;top:-20%;left:-20%;background:radial-gradient(circle,#fbbf24 0%,transparent 70%);animation-duration:24s}
+.aurora-orb:nth-child(2){width:50vw;height:50vw;bottom:-10%;right:-10%;background:radial-gradient(circle,#f59e0b 0%,transparent 70%);animation-duration:18s;animation-delay:-8s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(4vw,3vh) scale(1.05)}66%{transform:translate(-2vw,6vh) scale(.97)}}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(251,191,36,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(251,191,36,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
 .wrap{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:60px 24px 100px}
-
-/* NAV */
-.top-bar{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:64px;
-}
-.logo{
-  font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;
-  color:var(--accent);text-decoration:none;
-  transition:opacity .2s;
-}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:64px}
+.logo{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:var(--accent);text-decoration:none;transition:opacity .2s}
 .logo:hover{opacity:.7}
-.back-btn{
-  font-size:.8rem;color:var(--muted);text-decoration:none;
-  display:flex;align-items:center;gap:6px;
-  transition:color .2s;
-}
+.back-btn{font-size:.8rem;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
 .back-btn:hover{color:var(--accent)}
-
-/* HERO */
-.hero-label{
-  font-family:'Space Mono',monospace;
-  font-size:.7rem;text-transform:uppercase;letter-spacing:.3em;
-  color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:10px;
-}
+.hero-label{font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.3em;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:10px}
 .hero-label::before{content:'';display:block;width:32px;height:1px;background:var(--accent)}
-.hero-title{
-  font-size:clamp(2.5rem,6vw,4.5rem);font-weight:700;letter-spacing:-.04em;
-  line-height:1;margin-bottom:16px;
-  background:linear-gradient(135deg,var(--accent) 0%,#fff 60%,var(--accent) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.overall-badge{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:10px 22px;
-  border-radius:100px;
-  font-weight:600;font-size:.9rem;
-  margin-bottom:56px;
-  transition:all .4s var(--ease);
-}
-.overall-badge.ok{ background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.3); color:var(--success); }
-.overall-badge.degraded{ background:rgba(234,179,8,.08); border:1px solid rgba(234,179,8,.3); color:var(--warning); }
-.overall-badge.down{ background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.3); color:var(--error); }
-.overall-badge.checking{ background:rgba(255,255,255,.04); border:1px solid var(--border); color:var(--muted); }
-.pulse-dot{
-  width:9px;height:9px;border-radius:50%;flex-shrink:0;
-}
+.hero-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:16px;background:linear-gradient(135deg,var(--accent) 0%,#fff 60%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.overall-badge{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:100px;font-weight:600;font-size:.9rem;margin-bottom:56px;transition:all .4s var(--ease)}
+.overall-badge.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);color:var(--success)}
+.overall-badge.degraded{background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.3);color:var(--warning)}
+.overall-badge.down{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);color:var(--error)}
+.overall-badge.maintenance{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.3);color:#93c5fd}
+.overall-badge.checking{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted)}
+.pulse-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .ok .pulse-dot{background:var(--success);animation:pulse 2s ease-in-out infinite}
 .degraded .pulse-dot{background:var(--warning);animation:pulse 2s ease-in-out infinite}
 .down .pulse-dot{background:var(--error);animation:pulse 1s ease-in-out infinite}
+.maintenance .pulse-dot{background:#60a5fa}
 .checking .pulse-dot{background:var(--muted)}
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 0 0 currentColor}
-  50%{box-shadow:0 0 0 6px transparent}
-}
-
-/* SECTION TITLE */
-.section-title{
-  font-family:'Space Mono',monospace;
-  font-size:.68rem;text-transform:uppercase;letter-spacing:.28em;
-  color:var(--muted);margin-bottom:8px;
-  padding-bottom:8px;
-  border-bottom:1px solid var(--border);
-}
-
-/* SERVICES LIST */
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 currentColor}50%{box-shadow:0 0 0 6px transparent}}
+.section-title{font-family:'Space Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.28em;color:var(--muted);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .services-list{display:flex;flex-direction:column;gap:2px;margin-bottom:48px}
-.service-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:22px 28px;
-  background:var(--surface);border:1px solid var(--border);
-  transition:border-color .25s var(--ease),background .25s,transform .25s var(--ease);
-  gap:12px;
-  animation:fade-up .4s var(--ease) both;
-  cursor:default;
-  transform-style:preserve-3d;
-  perspective:800px;
-}
-.service-row:hover{
-  border-color:rgba(251,191,36,.28);
-  background:rgba(251,191,36,.018);
-  transform:translateY(-2px);
-}
+.service-row{display:flex;align-items:center;justify-content:space-between;padding:22px 28px;background:var(--surface);border:1px solid var(--border);transition:border-color .25s var(--ease),background .25s,transform .25s var(--ease);gap:12px;animation:fade-up .4s var(--ease) both}
+.service-row:hover{border-color:rgba(251,191,36,.28);background:rgba(251,191,36,.018);transform:translateY(-2px)}
 .service-info{display:flex;flex-direction:column;gap:5px}
 .service-name{font-weight:600;font-size:.95rem}
-.service-url{font-size:.72rem;color:var(--muted);font-family:'Space Mono',monospace}
-.service-right{display:flex;align-items:center;gap:18px;flex-shrink:0}
-.latency{
-  font-family:'Space Mono',monospace;font-size:.75rem;
-  color:var(--muted);min-width:54px;text-align:right;
-}
-.status-pill{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:6px 14px;border-radius:100px;
-  font-size:.75rem;font-weight:600;
-  white-space:nowrap;
-  transition:all .35s var(--ease);
-}
-.status-pill.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:var(--success)}
+.service-desc{font-size:.72rem;color:var(--muted);font-family:'Space Mono',monospace}
+.status-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:100px;font-size:.75rem;font-weight:600;white-space:nowrap;transition:all .35s var(--ease)}
+.status-pill.operational{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:var(--success)}
 .status-pill.degraded{background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25);color:var(--warning)}
 .status-pill.down{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--error)}
-.status-pill.checking{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted)}
+.status-pill.maintenance{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);color:#93c5fd}
 .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
-
-/* KPI ROW */
+.incident-box{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.25);padding:24px 28px;margin-bottom:40px;animation:fade-up .4s var(--ease) both;display:none}
+.incident-box.show{display:block}
+.incident-title{font-weight:700;color:var(--warning);margin-bottom:8px;font-size:.95rem}
+.incident-body{font-size:.85rem;color:var(--muted);line-height:1.7}
+.incident-time{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--muted);margin-top:8px}
 .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:48px}
-.kpi-card{
-  background:var(--surface);border:1px solid var(--border);
-  padding:24px 20px;
-  animation:fade-up .5s var(--ease) .15s both;
-  transition:border-color .25s,background .25s;
-}
+.kpi-card{background:var(--surface);border:1px solid var(--border);padding:24px 20px;animation:fade-up .5s var(--ease) .15s both;transition:border-color .25s,background .25s}
 .kpi-card:hover{border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.015)}
 .kpi-label{font-family:'Space Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);margin-bottom:10px}
 .kpi-value{font-size:2rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
 .kpi-sub{font-size:.72rem;color:var(--muted);margin-top:6px}
-
-/* UPTIME BARS */
-.uptime-section{margin-bottom:48px}
-.uptime-item{margin-bottom:20px}
-.uptime-label{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:8px;
-}
-.uptime-name{font-size:.87rem;font-weight:500}
-.uptime-pct{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--accent)}
-.uptime-bar{
-  display:flex;gap:2px;
-}
-.uptime-seg{
-  flex:1;height:32px;border-radius:2px;
-  background:rgba(34,197,94,.65);
-  transition:opacity .15s,transform .15s;
-  cursor:default;
-  position:relative;
-}
-.uptime-seg:hover{opacity:.75;transform:scaleY(1.1)}
-.uptime-seg.down{background:rgba(239,68,68,.55)}
-.uptime-seg.unknown{background:rgba(255,255,255,.07)}
-/* Tooltip on hover via CSS */
-.uptime-seg[data-tip]:hover::after{
-  content:attr(data-tip);
-  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
-  background:#111;border:1px solid var(--border);border-radius:4px;
-  padding:4px 8px;font-size:.65rem;white-space:nowrap;
-  color:var(--text);font-family:'Space Mono',monospace;
-  pointer-events:none;z-index:10;
-}
-
-/* FOOTER */
-.footer-bar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding-top:28px;border-top:1px solid var(--border);
-  font-size:.75rem;color:var(--muted);
-  font-family:'Space Mono',monospace;
-  flex-wrap:wrap;gap:12px;
-}
-.btn-refresh{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:8px 18px;
-  background:transparent;border:1px solid var(--border);border-radius:4px;
-  color:var(--muted);font-family:'Space Mono',monospace;font-size:.75rem;
-  cursor:pointer;transition:all .2s;
-}
-.btn-refresh:hover{border-color:var(--accent);color:var(--accent)}
-.btn-refresh svg{transition:transform .5s var(--ease)}
-.btn-refresh:hover svg{transform:rotate(180deg)}
-
-/* AUTO-REFRESH BADGE */
-.auto-badge{
-  font-size:.68rem;padding:3px 10px;
-  background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);
-  border-radius:100px;color:rgba(251,191,36,.6);
-}
-
-@keyframes fade-up{
-  from{opacity:0;transform:translateY(14px)}
-  to{opacity:1;transform:translateY(0)}
-}
-@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
-.skeleton{
-  background:linear-gradient(90deg,var(--surface) 25%,rgba(255,255,255,.04) 50%,var(--surface) 75%);
-  background-size:400px 100%;animation:shimmer 1.5s ease-in-out infinite;border-radius:4px;
-}
-
-@media(max-width:600px){
-  .kpi-row{grid-template-columns:1fr 1fr}
-  .kpi-row .kpi-card:last-child{grid-column:1/-1}
-  .service-row{flex-direction:column;align-items:flex-start}
-  .service-right{width:100%;justify-content:space-between}
-}
+.history-section{background:var(--surface);border:1px solid var(--border);padding:28px;margin-bottom:40px;animation:fade-up .5s var(--ease) .2s both}
+.history-list{display:flex;flex-direction:column;gap:0}
+.history-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(251,191,36,.05);font-size:.85rem}
+.history-item:last-child{border-bottom:none}
+.history-badge{padding:2px 10px;border-radius:100px;font-size:.7rem;font-weight:700;font-family:'Space Mono',monospace;border:1px solid;flex-shrink:0}
+.history-badge.operational{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--success)}
+.history-badge.degraded{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.3);color:var(--warning)}
+.history-badge.down{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--error)}
+.history-badge.maintenance{background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.3);color:#93c5fd}
+.history-service{font-weight:600;flex:1}
+.history-time{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted);margin-left:auto}
+.footer-bar{display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);font-family:'Space Mono',monospace;flex-wrap:wrap;gap:12px}
+.admin-link{font-size:.75rem;color:var(--muted);text-decoration:none;transition:color .2s}
+.admin-link:hover{color:var(--accent)}
+@keyframes fade-up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){.kpi-row{grid-template-columns:1fr 1fr}.kpi-row .kpi-card:last-child{grid-column:1/-1}.service-row{flex-direction:column;align-items:flex-start}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
 </style>
 </head>
 <body>
-<div class="aurora">
-  <div class="aurora-orb"></div>
-  <div class="aurora-orb"></div>
-</div>
-
+<div class="aurora"><div class="aurora-orb"></div><div class="aurora-orb"></div></div>
 <div class="wrap">
-
   <div class="top-bar">
     <a href="/" class="logo">yonn_ix</a>
     <a href="/" class="back-btn">
@@ -270,182 +102,158 @@ body::before{
       Retour
     </a>
   </div>
-
   <div class="hero-label">Status</div>
   <h1 class="hero-title">État des services</h1>
+  <div class="overall-badge checking" id="overallBadge"><span class="pulse-dot"></span><span id="overallText">Chargement...</span></div>
 
-  <div class="overall-badge checking" id="overallBadge">
-    <span class="pulse-dot"></span>
-    <span id="overallText">Vérification en cours...</span>
+  <!-- Incident box -->
+  <div class="incident-box" id="incidentBox">
+    <div class="incident-title" id="incidentTitle"></div>
+    <div class="incident-body" id="incidentBody"></div>
+    <div class="incident-time" id="incidentTime"></div>
   </div>
 
-  <!-- KPI row -->
+  <!-- KPIs -->
   <div class="kpi-row">
-    <div class="kpi-card">
-      <div class="kpi-label">Services
-operationnels</div>
-      <div class="kpi-value" id="kpiOk">—</div>
-      <div class="kpi-sub" id="kpiTotal">sur — total</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Latence moy.</div>
-      <div class="kpi-value" id="kpiLatAvg">—</div>
-      <div class="kpi-sub">ms</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Dernière vérif.</div>
-      <div class="kpi-value" id="kpiTime" style="font-size:1.1rem">—</div>
-      <div class="kpi-sub">Auto toutes les 60s</div>
-    </div>
+    <div class="kpi-card"><div class="kpi-label">Services opérationnels</div><div class="kpi-value" id="kpiOk">—</div><div class="kpi-sub" id="kpiTotal">sur — total</div></div>
+    <div class="kpi-card"><div class="kpi-label">En maintenance</div><div class="kpi-value" id="kpiMaint">—</div><div class="kpi-sub">services</div></div>
+    <div class="kpi-card"><div class="kpi-label">Dernière mise à jour</div><div class="kpi-value" id="kpiTime" style="font-size:1rem">—</div><div class="kpi-sub">depuis /admin</div></div>
   </div>
 
-  <div class="section-title" style="margin-bottom:12px">Services surveillés</div>
-  <div class="services-list" id="servicesList"></div>
+  <!-- Services list -->
+  <div class="section-title" style="margin-bottom:12px">Services</div>
+  <div class="services-list" id="servicesList"><div style="color:var(--muted);padding:24px;font-size:.85rem">Chargement des statuts...</div></div>
 
-  <div class="uptime-section">
-    <div class="section-title" style="margin-bottom:20px">Disponibilité — 90 derniers jours</div>
-    <div id="uptimeBars"></div>
+  <!-- History -->
+  <div class="history-section">
+    <div style="font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin-bottom:16px">📋 Historique des changements</div>
+    <div class="history-list" id="historyList"><div style="color:var(--muted);font-size:.85rem;padding:8px 0">Aucun changement enregistré.</div></div>
   </div>
 
   <div class="footer-bar">
-    <div style="display:flex;align-items:center;gap:10px">
-      <span id="lastCheck">—</span>
-      <span class="auto-badge">Auto 60s</span>
-    </div>
-    <button class="btn-refresh" onclick="checkAll()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M23 4v6h-6M1 20v-6h6"/>
-        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-      </svg>
-      Rafraîchir
-    </button>
+    <span id="lastUpdate">Données publiées depuis le panel admin</span>
+    <a href="/admin" class="admin-link">⚙️ Admin →</a>
   </div>
-
 </div>
 
 <script>
-const SERVICES = [
-  { name: 'Site principal',    url: 'https://website-yonnix.vercel.app',                          display: 'website-yonnix.vercel.app' },
-  { name: 'API /api/ticket',   url: 'https://website-yonnix.vercel.app/api/ticket',               display: '/api/ticket', method: 'OPTIONS' },
-  { name: 'API /api/stats',    url: 'https://website-yonnix.vercel.app/api/stats',                display: '/api/stats', method: 'OPTIONS' },
-  { name: 'Lanyard (Discord)', url: 'https://api.lanyard.rest/v1/users/964542992641818624',       display: 'api.lanyard.rest' },
-  { name: 'Discord CDN',       url: 'https://cdn.discordapp.com',                                 display: 'cdn.discordapp.com' },
+// ── Clés localStorage synchronisées avec admin/index.html ──
+const STATUS_KEY     = '__site_status_v2';
+const HISTORY_KEY    = '__site_status_history';
+const INCIDENT_KEY   = '__site_status_incident';
+
+const STATUS_LABELS = {
+  operational: '✅ Opérationnel',
+  degraded:    '⚠️ Dégradé',
+  down:        '🔴 Interruption',
+  maintenance: '🔧 Maintenance'
+};
+
+const DEFAULT_SERVICES = [
+  { id:'website',  emoji:'🌐', name:'Site principal',     desc:'website-yonnix.vercel.app', status:'operational' },
+  { id:'admin',    emoji:'⚙️', name:'Panel admin',        desc:'/admin — tableau de bord',  status:'operational' },
+  { id:'api',      emoji:'🔌', name:'API',                desc:'/api/ticket, /api/stats',   status:'operational' },
+  { id:'discord',  emoji:'🤖', name:'Bot Discord',        desc:'Bot modération & bienvenue', status:'operational' },
+  { id:'status',   emoji:'📡', name:'Page Status',        desc:'/status — page publique',   status:'operational' },
+  { id:'hosting',  emoji:'☁️', name:'Hébergement Vercel', desc:'CDN, déploiements, edge',   status:'operational' },
 ];
 
-const results = new Array(SERVICES.length).fill(null);
+function getStatuses() {
+  try { return JSON.parse(localStorage.getItem(STATUS_KEY)) || DEFAULT_SERVICES; }
+  catch { return DEFAULT_SERVICES; }
+}
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
+  catch { return []; }
+}
+function getIncident() {
+  try { return JSON.parse(localStorage.getItem(INCIDENT_KEY)) || null; }
+  catch { return null; }
+}
 
-function buildRows() {
+function render() {
+  const services = getStatuses();
+  const history  = getHistory();
+  const incident = getIncident();
+
+  // Incident banner
+  const incBox = document.getElementById('incidentBox');
+  if (incident && incident.title) {
+    document.getElementById('incidentTitle').textContent = '⚠️ ' + incident.title;
+    document.getElementById('incidentBody').textContent  = incident.body || '';
+    const d = new Date(incident.time);
+    document.getElementById('incidentTime').textContent = 'Publié le ' + d.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    incBox.classList.add('show');
+  }
+
+  // Services list
   const list = document.getElementById('servicesList');
-  list.innerHTML = SERVICES.map((s, i) => `
-    <div class="service-row" id="row-${i}" style="animation-delay:${i * 0.06}s">
+  list.innerHTML = services.map((svc, i) => `
+    <div class="service-row" style="animation-delay:${i * 0.06}s">
       <div class="service-info">
-        <span class="service-name">${s.name}</span>
-        <span class="service-url">${s.display}</span>
+        <span class="service-name">${svc.emoji} ${svc.name}</span>
+        <span class="service-desc">${svc.desc}</span>
       </div>
-      <div class="service-right">
-        <span class="latency" id="lat-${i}">—</span>
-        <span class="status-pill checking" id="pill-${i}">
-          <span class="dot"></span> Vérification...
-        </span>
-      </div>
+      <span class="status-pill ${svc.status}">
+        <span class="dot"></span>${STATUS_LABELS[svc.status] || svc.status}
+      </span>
     </div>
   `).join('');
-}
 
-function buildUptimeBars() {
-  const wrap = document.getElementById('uptimeBars');
-  wrap.innerHTML = SERVICES.map((s,si) => {
-    const segs = Array.from({length: 90}, (_, i) => {
-      if (i > 84) return 'ok';
-      const r = Math.random();
-      return r > 0.97 ? 'down' : r > 0.935 ? 'unknown' : 'ok';
-    });
-    const upPct = (segs.filter(x => x === 'ok').length / 90 * 100).toFixed(2);
-    const today = new Date();
-    return `
-      <div class="uptime-item">
-        <div class="uptime-label">
-          <span class="uptime-name">${s.name}</span>
-          <span class="uptime-pct">${upPct}%</span>
-        </div>
-        <div class="uptime-bar">
-          ${segs.map((cls, di) => {
-            const d = new Date(today); d.setDate(today.getDate() - (89 - di));
-            const label = d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'});
-            const tip = cls === 'ok' ? `${label} — Opérationnel` : cls === 'down' ? `${label} — Incident` : `${label} — Inconnu`;
-            return `<div class="uptime-seg ${cls}" data-tip="${tip}"></div>`;
-          }).join('')}
-        </div>
-      </div>`;
-  }).join('');
-}
+  // KPIs
+  const ok    = services.filter(s => s.status === 'operational').length;
+  const maint = services.filter(s => s.status === 'maintenance').length;
+  document.getElementById('kpiOk').textContent    = ok;
+  document.getElementById('kpiMaint').textContent = maint;
+  document.getElementById('kpiTotal').textContent = `sur ${services.length} total`;
 
-async function checkService(index) {
-  const s = SERVICES[index];
-  const pill = document.getElementById(`pill-${index}`);
-  const lat  = document.getElementById(`lat-${index}`);
-  const start = performance.now();
-
-  try {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 8000);
-    await fetch(s.url, { method: s.method || 'HEAD', mode: 'no-cors', signal: ctrl.signal });
-    clearTimeout(timer);
-    const ms = Math.round(performance.now() - start);
-    lat.textContent = ms + 'ms';
-    const st = ms < 400 ? 'ok' : 'degraded';
-    pill.className = `status-pill ${st}`;
-    pill.innerHTML = `<span class="dot"></span> ${st === 'ok' ? 'Opérationnel' : 'Dégradé'}`;
-    results[index] = { status: st, ms };
-    return st;
-  } catch (e) {
-    const ms = Math.round(performance.now() - start);
-    lat.textContent = ms + 'ms';
-    pill.className = 'status-pill down';
-    pill.innerHTML = '<span class="dot"></span> Hors ligne';
-    results[index] = { status: 'down', ms };
-    return 'down';
-  }
-}
-
-async function checkAll() {
+  // Global badge
+  const statuses = services.map(s => s.status);
+  let global = 'operational';
+  if (statuses.includes('down'))        global = 'down';
+  else if (statuses.includes('degraded')) global = 'degraded';
+  else if (statuses.includes('maintenance')) global = 'maintenance';
   const badge = document.getElementById('overallBadge');
-  const txt   = document.getElementById('overallText');
-  badge.className = 'overall-badge checking';
-  txt.textContent = 'Vérification...';
+  const texts = {
+    operational: '✅ Tous les systèmes opérationnels',
+    degraded:    '⚠️ Performances dégradées',
+    down:        '🔴 Interruption de service',
+    maintenance: '🔧 Maintenance en cours'
+  };
+  badge.className = `overall-badge ${global}`;
+  document.getElementById('overallText').textContent = texts[global];
 
-  const statuses = await Promise.all(SERVICES.map((_, i) => checkService(i)));
-
-  const now = new Date();
-  const timeStr = now.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  document.getElementById('lastCheck').textContent = 'Dernière vérif. : ' + timeStr;
-  document.getElementById('kpiTime').textContent = timeStr;
-
-  const okCount = statuses.filter(s => s === 'ok').length;
-  const downCount = statuses.filter(s => s === 'down').length;
-  const lats = results.filter(r => r).map(r => r.ms);
-  const avgLat = lats.length ? Math.round(lats.reduce((a,b) => a+b,0) / lats.length) : 0;
-
-  document.getElementById('kpiOk').textContent = okCount;
-  document.getElementById('kpiTotal').textContent = `sur ${SERVICES.length} total`;
-  document.getElementById('kpiLatAvg').textContent = avgLat;
-
-  if (downCount === 0 && statuses.every(s => s === 'ok')) {
-    badge.className = 'overall-badge ok';
-    txt.textContent = 'Tous les systèmes sont opérationnels ✓';
-  } else if (downCount > 0) {
-    badge.className = 'overall-badge down';
-    txt.textContent = `${downCount} service${downCount > 1 ? 's' : ''} hors ligne`;
+  // History
+  const hList = document.getElementById('historyList');
+  if (!history.length) {
+    hList.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:8px 0">Aucun changement enregistré.</div>';
   } else {
-    badge.className = 'overall-badge degraded';
-    txt.textContent = 'Performances dégradées';
+    hList.innerHTML = history.slice(0,20).map(h => {
+      const d = new Date(h.time);
+      const fmt = d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+      return `<div class="history-item">
+        <span class="history-badge ${h.from}">${STATUS_LABELS[h.from]||h.from}</span>
+        <span style="color:var(--muted);font-size:.8rem">→</span>
+        <span class="history-badge ${h.to}">${STATUS_LABELS[h.to]||h.to}</span>
+        <span class="history-service">${h.service}</span>
+        <span class="history-time">${fmt}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // Last update time
+  if (history.length) {
+    const last = new Date(history[0].time);
+    document.getElementById('kpiTime').textContent = last.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('lastUpdate').textContent = 'Dernière mise à jour : ' + last.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+  } else {
+    document.getElementById('kpiTime').textContent = '—';
   }
 }
 
-buildRows();
-buildUptimeBars();
-checkAll();
-setInterval(checkAll, 60_000);
+render();
+// Rafraîchit automatiquement si l'admin met à jour depuis le même navigateur
+window.addEventListener('storage', render);
 </script>
 </body>
 </html>
