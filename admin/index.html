@@ -326,8 +326,6 @@ tr:hover td{background:rgba(251,191,36,.02)}
 // ══════════════════════════════════════════
 //  CONFIG — change le mot de passe ici
 // ══════════════════════════════════════════
-const ADMIN_PASSWORD = 'yonnix2024';
-
 // ══════════════════════════════════════════
 //  ELEMENTS
 // ══════════════════════════════════════════
@@ -342,15 +340,21 @@ const btnRefresh   = document.getElementById('btnRefresh');
 // ══════════════════════════════════════════
 //  LOGIN
 // ══════════════════════════════════════════
-function doLogin() {
+async function doLogin() {
   const val = pwdInput.value.trim();
   if (!val) { pwdInput.focus(); return; }
 
   btnLogin.disabled = true;
   btnLogin.textContent = 'Vérification...';
 
-  setTimeout(() => {
-    if (val === ADMIN_PASSWORD) {
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: val })
+    });
+
+    if (res.ok) {
       loginScreen.style.display = 'none';
       dashboard.style.display   = 'block';
       loginError.classList.remove('show');
@@ -362,7 +366,12 @@ function doLogin() {
       btnLogin.disabled = false;
       btnLogin.textContent = 'Accéder';
     }
-  }, 400);
+  } catch {
+    loginError.textContent = 'Erreur réseau.';
+    loginError.classList.add('show');
+    btnLogin.disabled = false;
+    btnLogin.textContent = 'Accéder';
+  }
 }
 
 btnLogin.addEventListener('click', doLogin);
