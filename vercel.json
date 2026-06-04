@@ -1,7 +1,13 @@
 {
   "buildCommand": "exit 0",
   "outputDirectory": ".",
+  "functions": {
+    "api/*.js": {
+      "runtime": "node@20"
+    }
+  },
   "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
