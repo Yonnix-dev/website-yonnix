@@ -62,28 +62,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .status-pill.down{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--error)}
 .status-pill.maintenance{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);color:#93c5fd}
 .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
-.incident-box{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.25);padding:24px 28px;margin-bottom:40px;animation:fade-up .4s var(--ease) both;display:none}
-.incident-box.show{display:block}
-.incident-title{font-weight:700;color:var(--warning);margin-bottom:8px;font-size:.95rem}
-.incident-body{font-size:.85rem;color:var(--muted);line-height:1.7}
-.incident-time{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--muted);margin-top:8px}
 .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:48px}
 .kpi-card{background:var(--surface);border:1px solid var(--border);padding:24px 20px;animation:fade-up .5s var(--ease) .15s both;transition:border-color .25s,background .25s}
 .kpi-card:hover{border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.015)}
 .kpi-label{font-family:'Space Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);margin-bottom:10px}
 .kpi-value{font-size:2rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
 .kpi-sub{font-size:.72rem;color:var(--muted);margin-top:6px}
-.history-section{background:var(--surface);border:1px solid var(--border);padding:28px;margin-bottom:40px;animation:fade-up .5s var(--ease) .2s both}
-.history-list{display:flex;flex-direction:column;gap:0}
-.history-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(251,191,36,.05);font-size:.85rem}
-.history-item:last-child{border-bottom:none}
-.history-badge{padding:2px 10px;border-radius:100px;font-size:.7rem;font-weight:700;font-family:'Space Mono',monospace;border:1px solid;flex-shrink:0}
-.history-badge.operational{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--success)}
-.history-badge.degraded{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.3);color:var(--warning)}
-.history-badge.down{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--error)}
-.history-badge.maintenance{background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.3);color:#93c5fd}
-.history-service{font-weight:600;flex:1}
-.history-time{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted);margin-left:auto}
 .footer-bar{display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);font-family:'Space Mono',monospace;flex-wrap:wrap;gap:12px}
 .admin-link{font-size:.75rem;color:var(--muted);text-decoration:none;transition:color .2s}
 .admin-link:hover{color:var(--accent)}
@@ -106,13 +90,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   <h1 class="hero-title">État des services</h1>
   <div class="overall-badge checking" id="overallBadge"><span class="pulse-dot"></span><span id="overallText">Chargement...</span></div>
 
-  <!-- Incident box -->
-  <div class="incident-box" id="incidentBox">
-    <div class="incident-title" id="incidentTitle"></div>
-    <div class="incident-body" id="incidentBody"></div>
-    <div class="incident-time" id="incidentTime"></div>
-  </div>
-
   <!-- KPIs -->
   <div class="kpi-row">
     <div class="kpi-card"><div class="kpi-label">Services opérationnels</div><div class="kpi-value" id="kpiOk">—</div><div class="kpi-sub" id="kpiTotal">sur — total</div></div>
@@ -124,12 +101,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   <div class="section-title" style="margin-bottom:12px">Services</div>
   <div class="services-list" id="servicesList"><div style="color:var(--muted);padding:24px;font-size:.85rem">Chargement des statuts...</div></div>
 
-  <!-- History -->
-  <div class="history-section">
-    <div style="font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--accent);margin-bottom:16px">📋 Historique des changements</div>
-    <div class="history-list" id="historyList"><div style="color:var(--muted);font-size:.85rem;padding:8px 0">Aucun changement enregistré.</div></div>
-  </div>
-
   <div class="footer-bar">
     <span id="lastUpdate">Données publiées depuis le panel admin</span>
     <a href="/admin" class="admin-link">⚙️ Admin →</a>
@@ -137,62 +108,48 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 </div>
 
 <script>
-// ── Clés localStorage synchronisées avec admin/index.html ──
-const STATUS_KEY     = '__site_status_v2';
-const HISTORY_KEY    = '__site_status_history';
-const INCIDENT_KEY   = '__site_status_incident';
-
 const STATUS_LABELS = {
-  operational: '✅ Opérationnel',
-  degraded:    '⚠️ Dégradé',
-  down:        '🔴 Interruption',
-  maintenance: '🔧 Maintenance'
+  operational: '\u2705 Op\u00e9rationnel',
+  degraded:    '\u26a0\ufe0f D\u00e9grad\u00e9',
+  down:        '\ud83d\udd34 Interruption',
+  maintenance: '\ud83d\udd27 Maintenance'
 };
 
 const DEFAULT_SERVICES = [
-  { id:'website',  emoji:'🌐', name:'Site principal',     desc:'website-yonnix.vercel.app', status:'operational' },
-  { id:'admin',    emoji:'⚙️', name:'Panel admin',        desc:'/admin — tableau de bord',  status:'operational' },
-  { id:'api',      emoji:'🔌', name:'API',                desc:'/api/ticket, /api/stats',   status:'operational' },
-  { id:'discord',  emoji:'🤖', name:'Bot Discord',        desc:'Bot modération & bienvenue', status:'operational' },
-  { id:'status',   emoji:'📡', name:'Page Status',        desc:'/status — page publique',   status:'operational' },
-  { id:'hosting',  emoji:'☁️', name:'Hébergement Vercel', desc:'CDN, déploiements, edge',   status:'operational' },
+  { id:'site',    emoji:'\ud83c\udf10', name:'Site principal',   desc:'yonnix.fr \u2014 page d\'accueil et navigation', status:'operational' },
+  { id:'api',     emoji:'\u2699\ufe0f', name:'API',              desc:'Endpoints de contact et donn\u00e9es dynamiques', status:'operational' },
+  { id:'music',   emoji:'\ud83c\udfb5', name:'Musique',          desc:'Lecteur audio et streaming', status:'operational' },
+  { id:'contact', emoji:'\ud83d\udcec', name:'Formulaire',       desc:'Syst\u00e8me de tickets et formulaire de contact', status:'operational' },
+  { id:'cdn',     emoji:'\ud83d\udce6', name:'CDN / Assets',     desc:'Images, polices et ressources statiques', status:'operational' },
+  { id:'vercel',  emoji:'\u25b2',  name:'Vercel Deploy',    desc:'D\u00e9ploiement continu et builds automatiques', status:'operational' },
 ];
 
-function getStatuses() {
-  try { return JSON.parse(localStorage.getItem(STATUS_KEY)) || DEFAULT_SERVICES; }
-  catch { return DEFAULT_SERVICES; }
-}
-function getHistory() {
-  try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
-  catch { return []; }
-}
-function getIncident() {
-  try { return JSON.parse(localStorage.getItem(INCIDENT_KEY)) || null; }
-  catch { return null; }
-}
+async function loadAndRender() {
+  let services = DEFAULT_SERVICES;
 
-function render() {
-  const services = getStatuses();
-  const history  = getHistory();
-  const incident = getIncident();
-
-  // Incident banner
-  const incBox = document.getElementById('incidentBox');
-  if (incident && incident.title) {
-    document.getElementById('incidentTitle').textContent = '⚠️ ' + incident.title;
-    document.getElementById('incidentBody').textContent  = incident.body || '';
-    const d = new Date(incident.time);
-    document.getElementById('incidentTime').textContent = 'Publié le ' + d.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    incBox.classList.add('show');
+  try {
+    const res  = await fetch('/api/status');
+    const data = await res.json();
+    // Redis peut renvoyer une string JSON ou un objet direct
+    const parsed = typeof data === 'string' ? JSON.parse(data) : data;
+    if (Array.isArray(parsed) && parsed.length) {
+      services = parsed;
+    }
+  } catch(e) {
+    console.warn('API /api/status indisponible, affichage des valeurs par d\u00e9faut.');
   }
 
+  render(services);
+}
+
+function render(services) {
   // Services list
   const list = document.getElementById('servicesList');
   list.innerHTML = services.map((svc, i) => `
     <div class="service-row" style="animation-delay:${i * 0.06}s">
       <div class="service-info">
-        <span class="service-name">${svc.emoji} ${svc.name}</span>
-        <span class="service-desc">${svc.desc}</span>
+        <span class="service-name">${svc.emoji || ''} ${svc.name}</span>
+        <span class="service-desc">${svc.desc || ''}</span>
       </div>
       <span class="status-pill ${svc.status}">
         <span class="dot"></span>${STATUS_LABELS[svc.status] || svc.status}
@@ -207,53 +164,34 @@ function render() {
   document.getElementById('kpiMaint').textContent = maint;
   document.getElementById('kpiTotal').textContent = `sur ${services.length} total`;
 
+  // Heure
+  const now = new Date();
+  document.getElementById('kpiTime').textContent    = now.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+  document.getElementById('lastUpdate').textContent = 'Derni\u00e8re mise \u00e0 jour : ' + now.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+
   // Global badge
   const statuses = services.map(s => s.status);
   let global = 'operational';
-  if (statuses.includes('down'))        global = 'down';
-  else if (statuses.includes('degraded')) global = 'degraded';
+  if (statuses.includes('down'))             global = 'down';
+  else if (statuses.includes('degraded'))    global = 'degraded';
   else if (statuses.includes('maintenance')) global = 'maintenance';
-  const badge = document.getElementById('overallBadge');
+
   const texts = {
-    operational: '✅ Tous les systèmes opérationnels',
-    degraded:    '⚠️ Performances dégradées',
-    down:        '🔴 Interruption de service',
-    maintenance: '🔧 Maintenance en cours'
+    operational: '\u2705 Tous les syst\u00e8mes op\u00e9rationnels',
+    degraded:    '\u26a0\ufe0f Performances d\u00e9grad\u00e9es',
+    down:        '\ud83d\udd34 Interruption de service',
+    maintenance: '\ud83d\udd27 Maintenance en cours'
   };
-  badge.className = `overall-badge ${global}`;
+  const badge = document.getElementById('overallBadge');
+  // map global -> badge class
+  const badgeClass = { operational:'ok', degraded:'degraded', down:'down', maintenance:'maintenance' };
+  badge.className = `overall-badge ${badgeClass[global]}`;
   document.getElementById('overallText').textContent = texts[global];
-
-  // History
-  const hList = document.getElementById('historyList');
-  if (!history.length) {
-    hList.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:8px 0">Aucun changement enregistré.</div>';
-  } else {
-    hList.innerHTML = history.slice(0,20).map(h => {
-      const d = new Date(h.time);
-      const fmt = d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-      return `<div class="history-item">
-        <span class="history-badge ${h.from}">${STATUS_LABELS[h.from]||h.from}</span>
-        <span style="color:var(--muted);font-size:.8rem">→</span>
-        <span class="history-badge ${h.to}">${STATUS_LABELS[h.to]||h.to}</span>
-        <span class="history-service">${h.service}</span>
-        <span class="history-time">${fmt}</span>
-      </div>`;
-    }).join('');
-  }
-
-  // Last update time
-  if (history.length) {
-    const last = new Date(history[0].time);
-    document.getElementById('kpiTime').textContent = last.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-    document.getElementById('lastUpdate').textContent = 'Dernière mise à jour : ' + last.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-  } else {
-    document.getElementById('kpiTime').textContent = '—';
-  }
 }
 
-render();
-// Rafraîchit automatiquement si l'admin met à jour depuis le même navigateur
-window.addEventListener('storage', render);
+loadAndRender();
+// Auto-refresh toutes les 30 secondes
+setInterval(loadAndRender, 30000);
 </script>
 </body>
 </html>
