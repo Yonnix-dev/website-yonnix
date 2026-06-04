@@ -3,10 +3,14 @@ const redis = Redis.fromEnv();
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
-    return res.json(await redis.get('services_status') || null);
+    const data = await redis.get('services_status');
+    return res.json(data || null);
   }
   if (req.method === 'POST') {
-    await redis.set('services_status', req.body);
+    // req.body est déjà parsé en objet par Vercel, on le re-stringify pour Redis
+    const payload = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+    await redis.set('services_status', payload);
     return res.json({ ok: true });
   }
+  return res.status(405).json({ error: 'Method not allowed' });
 }
