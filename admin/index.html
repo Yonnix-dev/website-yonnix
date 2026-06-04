@@ -546,7 +546,15 @@ const TICKETS = [
 
 let currentFilter = 'all';
 
-function loadTickets() {
+async function loadTickets() {
+  try {
+    const res = await fetch('/api/tickets');
+    const data = await res.json();
+    TICKETS.length = 0;
+    TICKETS.push(...data);
+  } catch(e) {
+    console.warn('Impossible de charger les tickets depuis l'API, mode local.');
+  }
   renderTickets();
 
   document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -603,12 +611,26 @@ function toggleTicket(id) {
   if (card) card.classList.toggle('expanded');
 }
 
-function setTicketStatus(id, status) {
+async function setTicketStatus(id, status) {
+  try {
+    await fetch('/api/tickets', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status })
+    });
+  } catch(e) { console.warn('API indisponible, changement local uniquement.'); }
   const t = TICKETS.find(t => t.id === id);
   if (t) { t.status = status; renderTickets(); }
 }
 
-function deleteTicket(id) {
+async function deleteTicket(id) {
+  try {
+    await fetch('/api/tickets', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id })
+    });
+  } catch(e) { console.warn('API indisponible, suppression locale uniquement.'); }
   const idx = TICKETS.findIndex(t => t.id === id);
   if (idx !== -1) { TICKETS.splice(idx, 1); renderTickets(); }
 }
@@ -627,7 +649,17 @@ const SERVICES = [
 
 const STATUS_LABELS = { operational: 'Opérationnel', degraded: 'Dégradé', down: 'Hors ligne', maintenance: 'Maintenance' };
 
-function loadStatus() {
+async function loadStatus() {
+  try {
+    const res = await fetch('/api/status');
+    const saved = await res.json();
+    if (saved && Array.isArray(saved)) {
+      saved.forEach(s => {
+        const local = SERVICES.find(x => x.id === s.id);
+        if (local) local.status = s.status;
+      });
+    }
+  } catch(e) { console.warn('API indisponible, statuts par défaut.'); }
   renderStatus();
   document.getElementById('statusSaveBtn').addEventListener('click', saveStatus);
 }
@@ -666,13 +698,26 @@ function updateGlobalStatus() {
   document.getElementById('sgText').textContent = text;
 }
 
-function saveStatus() {
+async function saveStatus() {
   const btn = document.getElementById('statusSaveBtn');
-  btn.textContent = '✓ Sauvegardé !';
-  btn.style.background = 'var(--success)';
+  btn.disabled = true;
+  btn.textContent = 'Sauvegarde...';
+  try {
+    await fetch('/api/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(SERVICES)
+    });
+    btn.textContent = '✓ Sauvegardé !';
+    btn.style.background = 'var(--success)';
+  } catch(e) {
+    btn.textContent = '✕ Erreur réseau';
+    btn.style.background = 'var(--error)';
+  }
   setTimeout(() => {
     btn.textContent = 'Sauvegarder les statuts';
     btn.style.background = 'var(--accent)';
+    btn.disabled = false;
   }, 2000);
 }
 </script>
