@@ -28,7 +28,7 @@ body::before{
 }
 .app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 24px}
 
-/* ── LOGIN ── */
+/* LOGIN */
 #loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
 .login-card{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:48px 40px;animation:fade-up .5s var(--ease) both}
 .login-card h1{font-family:'Space Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--accent);margin-bottom:8px}
@@ -44,7 +44,7 @@ input[type=password]:focus{outline:none;border-color:var(--accent);box-shadow:0 
 .back-link{display:block;text-align:center;margin-top:20px;font-size:.85rem;color:var(--muted)}
 .back-link a{color:var(--accent);text-decoration:none}
 
-/* ── HEADER ── */
+/* HEADER */
 .header{display:flex;align-items:center;justify-content:space-between;padding:28px 0 32px;border-bottom:1px solid var(--border);margin-bottom:0}
 .header-logo{font-family:'Space Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--accent);letter-spacing:-.02em}
 .header-right{display:flex;align-items:center;gap:12px}
@@ -56,7 +56,7 @@ input[type=password]:focus{outline:none;border-color:var(--accent);box-shadow:0 
 .btn-logout:hover{border-color:var(--error);color:var(--error)}
 .last-updated{font-size:.7rem;color:var(--muted);font-family:'Space Mono',monospace}
 
-/* ── TABS ── */
+/* TABS */
 .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:32px}
 .tab-btn{padding:14px 24px;background:transparent;border:none;color:var(--muted);font-size:.85rem;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
@@ -64,7 +64,7 @@ input[type=password]:focus{outline:none;border-color:var(--accent);box-shadow:0 
 .tab-content{display:none}
 .tab-content.active{display:block}
 
-/* ── DASHBOARD ── */
+/* DASHBOARD */
 #dashboard{display:none;padding-bottom:60px}
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;margin-bottom:40px}
 .kpi-card{background:var(--surface);border:1px solid var(--border);padding:28px 24px;transition:border-color .3s,background .3s;animation:fade-up .4s var(--ease) both}
@@ -98,7 +98,7 @@ tr:hover td{background:rgba(251,191,36,.02)}
 .info-key{font-size:.85rem;color:var(--muted)}
 .info-val{font-size:.85rem;color:var(--text);font-variant-numeric:tabular-nums}
 
-/* ── TICKETS TAB ── */
+/* TICKETS */
 .tickets-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .tickets-search{position:relative}
 .tickets-search input{padding:10px 16px 10px 38px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:.85rem;font-family:'Space Grotesk',sans-serif;width:260px;transition:border-color .2s,box-shadow .2s}
@@ -116,37 +116,27 @@ tr:hover td{background:rgba(251,191,36,.02)}
 .ticket-name{font-weight:600;font-size:.95rem}
 .ticket-type{padding:3px 10px;border-radius:100px;font-size:.72rem;font-weight:600;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:var(--accent)}
 .ticket-date{margin-left:auto;font-size:.75rem;color:var(--muted);font-family:'Space Mono',monospace}
-.ticket-status-badge{padding:3px 10px;border-radius:100px;font-size:.72rem;font-weight:600;border:1px solid;cursor:pointer;transition:all .2s}
-.ticket-status-badge.open{background:rgba(234,179,8,.1);border-color:rgba(234,179,8,.3);color:var(--warning)}
-.ticket-status-badge.closed{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--success)}
-.ticket-preview{font-size:.85rem;color:var(--muted);margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:600px}
+.ticket-status{padding:3px 10px;border-radius:100px;font-size:.72rem;font-weight:700;font-family:'Space Mono',monospace}
+.ticket-status.open{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--accent)}
+.ticket-status.closed{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--success)}
+.ticket-status.pending{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);color:#93c5fd}
 .ticket-body{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
-.ticket-body.show{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.ticket-field label{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);font-family:'Space Mono',monospace;display:block;margin-bottom:4px}
-.ticket-field p{font-size:.9rem;color:var(--text)}
-.ticket-field.full{grid-column:1/-1}
-.ticket-actions{grid-column:1/-1;display:flex;gap:8px;margin-top:8px}
-.btn-sm{padding:7px 16px;border-radius:var(--r);font-size:.78rem;font-weight:600;cursor:pointer;border:1px solid;transition:all .2s;font-family:'Space Grotesk',sans-serif}
-.btn-close-ticket{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.3);color:var(--success)}
-.btn-close-ticket:hover{background:rgba(34,197,94,.15)}
-.btn-reopen-ticket{background:rgba(234,179,8,.08);border-color:rgba(234,179,8,.3);color:var(--warning)}
-.btn-reopen-ticket:hover{background:rgba(234,179,8,.15)}
-.btn-delete-ticket{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:var(--error)}
-.btn-delete-ticket:hover{background:rgba(239,68,68,.15)}
-.tickets-empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:.9rem}
-.tickets-empty svg{margin:0 auto 16px;opacity:.3}
-.tickets-stats{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
-.t-stat{padding:12px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);font-size:.8rem}
-.t-stat span{display:block;font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--accent);margin-bottom:2px}
-.t-stat label{color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em}
+.ticket-card.expanded .ticket-body{display:block}
+.ticket-msg{font-size:.88rem;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.ticket-email{font-size:.8rem;font-family:'Space Mono',monospace;color:var(--accent)}
+.ticket-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.t-btn{padding:7px 16px;border-radius:var(--r);font-size:.78rem;font-weight:700;cursor:pointer;border:1px solid;transition:all .2s;font-family:'Space Mono',monospace}
+.t-btn-close{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.3);color:var(--success)}
+.t-btn-close:hover{background:rgba(34,197,94,.2);border-color:var(--success)}
+.t-btn-del{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:var(--error)}
+.t-btn-del:hover{background:rgba(239,68,68,.2);border-color:var(--error)}
+.t-btn-pending{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#93c5fd}
+.t-btn-pending:hover{background:rgba(96,165,250,.2);border-color:#93c5fd}
+.tickets-empty{text-align:center;padding:60px 20px;color:var(--muted);font-family:'Space Mono',monospace;font-size:.85rem}
 
-/* ── STATUS TAB ── */
+/* STATUS */
 .status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;margin-bottom:32px}
-.status-service-card{
-  background:var(--surface);border:1px solid var(--border);padding:28px;
-  animation:fade-up .4s var(--ease) both;
-  transition:border-color .3s,background .3s;
-}
+.status-service-card{background:var(--surface);border:1px solid var(--border);padding:28px;animation:fade-up .4s var(--ease) both;transition:border-color .3s,background .3s}
 .status-service-card:hover{border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.015)}
 .ssc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .ssc-name{font-weight:700;font-size:1rem;display:flex;align-items:center;gap:10px}
@@ -167,12 +157,7 @@ tr:hover td{background:rgba(251,191,36,.02)}
 .status-btn.dn:hover,.status-btn.dn.active-state{background:rgba(239,68,68,.2);border-color:var(--error);box-shadow:0 4px 14px rgba(239,68,68,.2)}
 .status-btn.mt{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:#93c5fd}
 .status-btn.mt:hover,.status-btn.mt.active-state{background:rgba(96,165,250,.2);border-color:#93c5fd;box-shadow:0 4px 14px rgba(96,165,250,.2)}
-.status-global{
-  background:var(--surface);border:1px solid var(--border);
-  padding:32px 36px;margin-bottom:32px;
-  display:flex;align-items:center;justify-content:space-between;gap:20px;
-  animation:fade-up .3s var(--ease) both;
-}
+.status-global{background:var(--surface);border:1px solid var(--border);padding:32px 36px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:20px;animation:fade-up .3s var(--ease) both}
 .sg-label{font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);margin-bottom:8px}
 .sg-status{font-size:1.5rem;font-weight:700;display:flex;align-items:center;gap:12px}
 .sg-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
@@ -183,9 +168,504 @@ tr:hover td{background:rgba(251,191,36,.02)}
 .sg-link{font-size:.82rem;color:var(--muted);font-family:'Space Mono',monospace}
 .sg-link a{color:var(--accent);text-decoration:none}
 .sg-link a:hover{text-decoration:underline}
-.status-save-btn{
-  padding:12px 28px;background:var(--accent);color:#000;
-  border:none;border-radius:var(--r);font-weight:700;font-size:.9rem;
-  cursor:pointer;letter-spacing:.05em;
-  transition:transform .2s var(--ease),box-shadow .2s;
-  font-family:'Space Grotesk',
+.status-save-btn{padding:12px 28px;background:var(--accent);color:#000;border:none;border-radius:var(--r);font-weight:700;font-size:.9rem;cursor:pointer;letter-spacing:.05em;transition:transform .2s var(--ease),box-shadow .2s;font-family:'Space Grotesk',sans-serif}
+.status-save-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(251,191,36,.3)}
+
+/* ANIMATIONS */
+@keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.5}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen">
+    <div class="login-card">
+      <h1>// admin</h1>
+      <p>Accès restreint — yonn_ix</p>
+      <label for="pwdInput">Mot de passe</label>
+      <input type="password" id="pwdInput" placeholder="••••••••" autocomplete="current-password">
+      <div class="login-error" id="loginError">Mot de passe incorrect.</div>
+      <button class="btn-login" id="btnLogin">Accéder</button>
+      <span class="back-link"><a href="/">← Retour au site</a></span>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard">
+    <div class="header">
+      <span class="header-logo">yonn_ix // admin</span>
+      <div class="header-right">
+        <span class="last-updated" id="lastUpdated"></span>
+        <button class="btn-icon" id="btnRefresh" title="Rafraîchir">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          Refresh
+        </button>
+        <button class="btn-logout" id="btnLogout">Déconnexion</button>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="tab-overview">Vue d'ensemble</button>
+      <button class="tab-btn" data-tab="tab-tickets">Tickets</button>
+      <button class="tab-btn" data-tab="tab-status">Status</button>
+    </div>
+
+    <!-- TAB: OVERVIEW -->
+    <div class="tab-content active" id="tab-overview">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Visites totales</div>
+          <div class="kpi-value" id="kpiVisits">—</div>
+          <div class="kpi-delta delta-up" id="kpiVisitsDelta"></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Tickets ouverts</div>
+          <div class="kpi-value" id="kpiTickets">—</div>
+          <div class="kpi-delta delta-flat" id="kpiTicketsDelta"></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Projets actifs</div>
+          <div class="kpi-value" id="kpiProjects">—</div>
+          <div class="kpi-delta delta-up" id="kpiProjectsDelta"></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Uptime</div>
+          <div class="kpi-value" id="kpiUptime">—</div>
+          <div class="kpi-delta delta-up" id="kpiUptimeDelta"></div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title">
+            Visites / 7 jours
+            <span class="chart-subtitle" id="chartTotal"></span>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="chartVisits"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Sources</div>
+          <div class="chart-canvas-wrap">
+            <canvas id="chartSources"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-title">Pages les plus visitées</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Page</th>
+              <th>Vues</th>
+              <th>Tendance</th>
+            </tr>
+          </thead>
+          <tbody id="tablePages"></tbody>
+        </table>
+      </div>
+
+      <div class="info-row" style="margin-top:2px">
+        <div class="info-card">
+          <div class="info-card-title">Infos site</div>
+          <div class="info-item"><span class="info-key">Domaine</span><span class="info-val">yonnix.fr</span></div>
+          <div class="info-item"><span class="info-key">Hébergement</span><span class="info-val">Vercel</span></div>
+          <div class="info-item"><span class="info-key">Framework</span><span class="info-val">HTML/CSS/JS</span></div>
+          <div class="info-item"><span class="info-key">Version</span><span class="info-val" id="infoVersion">—</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-title">Session admin</div>
+          <div class="info-item"><span class="info-key">Connecté à</span><span class="info-val" id="sessionTime">—</span></div>
+          <div class="info-item"><span class="info-key">Navigateur</span><span class="info-val" id="sessionBrowser">—</span></div>
+          <div class="info-item"><span class="info-key">Plateforme</span><span class="info-val" id="sessionPlatform">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: TICKETS -->
+    <div class="tab-content" id="tab-tickets">
+      <div class="tickets-header">
+        <div class="ticket-filters">
+          <button class="filter-btn active" data-filter="all">Tous</button>
+          <button class="filter-btn" data-filter="open">Ouverts</button>
+          <button class="filter-btn" data-filter="pending">En attente</button>
+          <button class="filter-btn" data-filter="closed">Fermés</button>
+        </div>
+        <div class="tickets-search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="ticketSearch" placeholder="Rechercher...">
+        </div>
+      </div>
+      <div class="tickets-list" id="ticketsList"></div>
+    </div>
+
+    <!-- TAB: STATUS -->
+    <div class="tab-content" id="tab-status">
+      <div class="status-global" id="statusGlobal">
+        <div>
+          <div class="sg-label">Statut global</div>
+          <div class="sg-status" id="sgStatus">
+            <div class="sg-dot operational" id="sgDot"></div>
+            <span id="sgText">Tous les systèmes opérationnels</span>
+          </div>
+        </div>
+        <div class="sg-link">Page publique : <a href="/status" target="_blank">/status</a></div>
+      </div>
+      <div class="status-grid" id="statusGrid"></div>
+      <button class="status-save-btn" id="statusSaveBtn">Sauvegarder les statuts</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  CONFIG — change le mot de passe ici
+// ══════════════════════════════════════════
+const ADMIN_PASSWORD = 'yonnix2024';
+
+// ══════════════════════════════════════════
+//  ELEMENTS
+// ══════════════════════════════════════════
+const loginScreen  = document.getElementById('loginScreen');
+const dashboard    = document.getElementById('dashboard');
+const pwdInput     = document.getElementById('pwdInput');
+const btnLogin     = document.getElementById('btnLogin');
+const loginError   = document.getElementById('loginError');
+const btnLogout    = document.getElementById('btnLogout');
+const btnRefresh   = document.getElementById('btnRefresh');
+
+// ══════════════════════════════════════════
+//  LOGIN
+// ══════════════════════════════════════════
+function doLogin() {
+  const val = pwdInput.value.trim();
+  if (!val) { pwdInput.focus(); return; }
+
+  btnLogin.disabled = true;
+  btnLogin.textContent = 'Vérification...';
+
+  setTimeout(() => {
+    if (val === ADMIN_PASSWORD) {
+      loginScreen.style.display = 'none';
+      dashboard.style.display   = 'block';
+      loginError.classList.remove('show');
+      initDashboard();
+    } else {
+      loginError.classList.add('show');
+      pwdInput.value = '';
+      pwdInput.focus();
+      btnLogin.disabled = false;
+      btnLogin.textContent = 'Accéder';
+    }
+  }, 400);
+}
+
+btnLogin.addEventListener('click', doLogin);
+pwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ══════════════════════════════════════════
+//  LOGOUT
+// ══════════════════════════════════════════
+btnLogout.addEventListener('click', () => {
+  dashboard.style.display   = 'none';
+  loginScreen.style.display = 'flex';
+  pwdInput.value = '';
+  loginError.classList.remove('show');
+  btnLogin.disabled = false;
+  btnLogin.textContent = 'Accéder';
+});
+
+// ══════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const t = document.getElementById(btn.dataset.tab);
+    if (t) t.classList.add('active');
+  });
+});
+
+// ══════════════════════════════════════════
+//  REFRESH
+// ══════════════════════════════════════════
+btnRefresh.addEventListener('click', () => {
+  loadOverview();
+  document.getElementById('lastUpdated').textContent = 'Mis à jour à ' + new Date().toLocaleTimeString('fr-FR');
+});
+
+// ══════════════════════════════════════════
+//  INIT DASHBOARD
+// ══════════════════════════════════════════
+function initDashboard() {
+  // Session info
+  document.getElementById('sessionTime').textContent = new Date().toLocaleTimeString('fr-FR');
+  document.getElementById('sessionBrowser').textContent = getBrowser();
+  document.getElementById('sessionPlatform').textContent = navigator.platform || '—';
+  document.getElementById('infoVersion').textContent = 'v1.0.0';
+  document.getElementById('lastUpdated').textContent = 'Mis à jour à ' + new Date().toLocaleTimeString('fr-FR');
+
+  loadOverview();
+  loadTickets();
+  loadStatus();
+}
+
+function getBrowser() {
+  const ua = navigator.userAgent;
+  if (ua.includes('Chrome')) return 'Chrome';
+  if (ua.includes('Firefox')) return 'Firefox';
+  if (ua.includes('Safari')) return 'Safari';
+  if (ua.includes('Edge')) return 'Edge';
+  return 'Inconnu';
+}
+
+// ══════════════════════════════════════════
+//  OVERVIEW — données mock
+// ══════════════════════════════════════════
+function loadOverview() {
+  // KPIs
+  animateNumber('kpiVisits', 0, 3842);
+  animateNumber('kpiTickets', 0, 7);
+  animateNumber('kpiProjects', 0, 5);
+  document.getElementById('kpiUptime').textContent = '99.9%';
+
+  document.getElementById('kpiVisitsDelta').innerHTML = '↑ +12% vs semaine dernière';
+  document.getElementById('kpiTicketsDelta').innerHTML = '→ 2 nouveaux aujourd\'hui';
+  document.getElementById('kpiProjectsDelta').innerHTML = '↑ 1 ajouté ce mois';
+  document.getElementById('kpiUptimeDelta').innerHTML = '↑ Excellent';
+
+  // Chart: visites 7 jours
+  const labels = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  const data   = [412, 538, 490, 621, 703, 489, 589];
+  document.getElementById('chartTotal').textContent = 'Total: ' + data.reduce((a,b)=>a+b,0);
+
+  const ctxV = document.getElementById('chartVisits').getContext('2d');
+  if (window._chartVisits) window._chartVisits.destroy();
+  window._chartVisits = new Chart(ctxV, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: 'rgba(251,191,36,.25)',
+        borderColor: '#fbbf24',
+        borderWidth: 1,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: 'rgba(232,228,212,.5)', font: { family: 'Space Mono', size: 11 } } },
+        y: { grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: 'rgba(232,228,212,.5)', font: { family: 'Space Mono', size: 11 } } }
+      }
+    }
+  });
+
+  // Chart: sources
+  const ctxS = document.getElementById('chartSources').getContext('2d');
+  if (window._chartSources) window._chartSources.destroy();
+  window._chartSources = new Chart(ctxS, {
+    type: 'doughnut',
+    data: {
+      labels: ['Direct','GitHub','Google','Réseaux'],
+      datasets: [{
+        data: [40, 30, 20, 10],
+        backgroundColor: ['#fbbf24','rgba(251,191,36,.5)','rgba(251,191,36,.3)','rgba(251,191,36,.15)'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: 'rgba(232,228,212,.6)', font: { family: 'Space Mono', size: 10 }, padding: 12 } }
+      }
+    }
+  });
+
+  // Table pages
+  const pages = [
+    { name: '/', label: 'Accueil', views: 1842 },
+    { name: '/projects', label: 'Projets', views: 934 },
+    { name: '/contact', label: 'Contact', views: 521 },
+    { name: '/music', label: 'Musique', views: 310 },
+    { name: '/status', label: 'Status', views: 235 },
+  ];
+  const max = pages[0].views;
+  document.getElementById('tablePages').innerHTML = pages.map(p => `
+    <tr>
+      <td><code style="font-family:'Space Mono',monospace;font-size:.8rem;color:var(--accent)">${p.name}</code> <span style="color:var(--muted);font-size:.8rem">${p.label}</span></td>
+      <td>
+        <span class="page-views-num">${p.views.toLocaleString('fr-FR')}</span>
+        <div class="page-bar-wrap"><div class="page-bar" style="width:${(p.views/max*100).toFixed(1)}%"></div></div>
+      </td>
+      <td style="color:var(--success);font-size:.8rem">↑</td>
+    </tr>
+  `).join('');
+}
+
+function animateNumber(id, from, to) {
+  const el = document.getElementById(id);
+  const dur = 800, step = 16;
+  let current = from;
+  const increment = (to - from) / (dur / step);
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= to) { current = to; clearInterval(timer); }
+    el.textContent = Math.floor(current).toLocaleString('fr-FR');
+  }, step);
+}
+
+// ══════════════════════════════════════════
+//  TICKETS
+// ══════════════════════════════════════════
+const TICKETS = [
+  { id: 'TK-001', name: 'Lucas M.', email: 'lucas@example.com', type: 'Contact', date: '03/06/2025', status: 'open',    msg: 'Bonjour, je voudrais collaborer sur un projet web. Tu serais dispo pour en parler ?' },
+  { id: 'TK-002', name: 'Camille R.', email: 'camille@example.com', type: 'Projet', date: '01/06/2025', status: 'pending', msg: 'J\'ai besoin d\'un site vitrine pour mon association, est-ce que tu fais ça ?' },
+  { id: 'TK-003', name: 'Tom D.', email: 'tom@example.com', type: 'Bug', date: '28/05/2025', status: 'closed',  msg: 'Le formulaire de contact ne fonctionne pas sur mobile.' },
+  { id: 'TK-004', name: 'Sofia K.', email: 'sofia@example.com', type: 'Contact', date: '25/05/2025', status: 'open',    msg: 'Je cherche quelqu\'un pour m\'aider à déployer mon appli React sur Vercel.' },
+  { id: 'TK-005', name: 'Noah B.', email: 'noah@example.com', type: 'Projet', date: '20/05/2025', status: 'closed',  msg: 'Super portfolio ! Tu serais intéressé par un stage cet été ?' },
+];
+
+let currentFilter = 'all';
+
+function loadTickets() {
+  renderTickets();
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderTickets();
+    });
+  });
+
+  document.getElementById('ticketSearch').addEventListener('input', renderTickets);
+}
+
+function renderTickets() {
+  const query = document.getElementById('ticketSearch').value.toLowerCase();
+  const list  = document.getElementById('ticketsList');
+
+  const filtered = TICKETS.filter(t => {
+    const matchFilter = currentFilter === 'all' || t.status === currentFilter;
+    const matchSearch = !query || t.name.toLowerCase().includes(query) || t.msg.toLowerCase().includes(query) || t.id.toLowerCase().includes(query);
+    return matchFilter && matchSearch;
+  });
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="tickets-empty">Aucun ticket trouvé.</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(t => `
+    <div class="ticket-card" data-id="${t.id}" onclick="toggleTicket('${t.id}')">
+      <div class="ticket-head">
+        <span class="ticket-id">${t.id}</span>
+        <span class="ticket-name">${t.name}</span>
+        <span class="ticket-type">${t.type}</span>
+        <span class="ticket-status ${t.status}">${t.status === 'open' ? 'Ouvert' : t.status === 'pending' ? 'En attente' : 'Fermé'}</span>
+        <span class="ticket-date">${t.date}</span>
+      </div>
+      <div class="ticket-body">
+        <div class="ticket-msg">${t.msg}</div>
+        <div class="ticket-email">✉ ${t.email}</div>
+        <div class="ticket-actions">
+          <button class="t-btn t-btn-close" onclick="event.stopPropagation();setTicketStatus('${t.id}','closed')">✓ Fermer</button>
+          <button class="t-btn t-btn-pending" onclick="event.stopPropagation();setTicketStatus('${t.id}','pending')">⏳ En attente</button>
+          <button class="t-btn t-btn-del" onclick="event.stopPropagation();deleteTicket('${t.id}')">✕ Supprimer</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleTicket(id) {
+  const card = document.querySelector(`.ticket-card[data-id="${id}"]`);
+  if (card) card.classList.toggle('expanded');
+}
+
+function setTicketStatus(id, status) {
+  const t = TICKETS.find(t => t.id === id);
+  if (t) { t.status = status; renderTickets(); }
+}
+
+function deleteTicket(id) {
+  const idx = TICKETS.findIndex(t => t.id === id);
+  if (idx !== -1) { TICKETS.splice(idx, 1); renderTickets(); }
+}
+
+// ══════════════════════════════════════════
+//  STATUS
+// ══════════════════════════════════════════
+const SERVICES = [
+  { id: 'site',    emoji: '🌐', name: 'Site principal',   desc: 'yonnix.fr — page d\'accueil et navigation', status: 'operational' },
+  { id: 'api',     emoji: '⚙️', name: 'API',              desc: 'Endpoints de contact et données dynamiques', status: 'operational' },
+  { id: 'music',   emoji: '🎵', name: 'Musique',          desc: 'Lecteur audio et streaming', status: 'operational' },
+  { id: 'contact', emoji: '📬', name: 'Formulaire',       desc: 'Système de tickets et formulaire de contact', status: 'operational' },
+  { id: 'cdn',     emoji: '📦', name: 'CDN / Assets',     desc: 'Images, polices et ressources statiques', status: 'operational' },
+  { id: 'vercel',  emoji: '▲',  name: 'Vercel Deploy',    desc: 'Déploiement continu et builds automatiques', status: 'operational' },
+];
+
+const STATUS_LABELS = { operational: 'Opérationnel', degraded: 'Dégradé', down: 'Hors ligne', maintenance: 'Maintenance' };
+
+function loadStatus() {
+  renderStatus();
+  document.getElementById('statusSaveBtn').addEventListener('click', saveStatus);
+}
+
+function renderStatus() {
+  document.getElementById('statusGrid').innerHTML = SERVICES.map(s => `
+    <div class="status-service-card">
+      <div class="ssc-header">
+        <div class="ssc-name"><span class="ssc-emoji">${s.emoji}</span>${s.name}</div>
+        <span class="ssc-current ${s.status}" id="ssc-label-${s.id}">${STATUS_LABELS[s.status]}</span>
+      </div>
+      <div class="ssc-desc">${s.desc}</div>
+      <div class="ssc-actions">
+        <button class="status-btn op ${s.status==='operational'?'active-state':''}" onclick="setStatus('${s.id}','operational')">✓ OK</button>
+        <button class="status-btn deg ${s.status==='degraded'?'active-state':''}" onclick="setStatus('${s.id}','degraded')">⚠ Dégradé</button>
+        <button class="status-btn dn ${s.status==='down'?'active-state':''}" onclick="setStatus('${s.id}','down')">✕ Down</button>
+        <button class="status-btn mt ${s.status==='maintenance'?'active-state':''}" onclick="setStatus('${s.id}','maintenance')">🔧 Maintenance</button>
+      </div>
+    </div>
+  `).join('');
+  updateGlobalStatus();
+}
+
+function setStatus(id, status) {
+  const s = SERVICES.find(s => s.id === id);
+  if (s) { s.status = status; renderStatus(); }
+}
+
+function updateGlobalStatus() {
+  const statuses = SERVICES.map(s => s.status);
+  let global = 'operational', text = 'Tous les systèmes opérationnels';
+  if (statuses.includes('down'))        { global = 'down';        text = 'Panne majeure détectée'; }
+  else if (statuses.includes('degraded'))    { global = 'degraded';   text = 'Performances dégradées'; }
+  else if (statuses.includes('maintenance')) { global = 'maintenance'; text = 'Maintenance en cours'; }
+  document.getElementById('sgDot').className = 'sg-dot ' + global;
+  document.getElementById('sgText').textContent = text;
+}
+
+function saveStatus() {
+  const btn = document.getElementById('statusSaveBtn');
+  btn.textContent = '✓ Sauvegardé !';
+  btn.style.background = 'var(--success)';
+  setTimeout(() => {
+    btn.textContent = 'Sauvegarder les statuts';
+    btn.style.background = 'var(--accent)';
+  }, 2000);
+}
+</script>
+</body>
+</html>
