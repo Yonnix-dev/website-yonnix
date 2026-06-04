@@ -324,9 +324,6 @@ tr:hover td{background:rgba(251,191,36,.02)}
 
 <script>
 // ══════════════════════════════════════════
-//  CONFIG — change le mot de passe ici
-// ══════════════════════════════════════════
-// ══════════════════════════════════════════
 //  ELEMENTS
 // ══════════════════════════════════════════
 const loginScreen  = document.getElementById('loginScreen');
@@ -414,7 +411,6 @@ btnRefresh.addEventListener('click', () => {
 //  INIT DASHBOARD
 // ══════════════════════════════════════════
 function initDashboard() {
-  // Session info
   document.getElementById('sessionTime').textContent = new Date().toLocaleTimeString('fr-FR');
   document.getElementById('sessionBrowser').textContent = getBrowser();
   document.getElementById('sessionPlatform').textContent = navigator.platform || '—';
@@ -436,21 +432,19 @@ function getBrowser() {
 }
 
 // ══════════════════════════════════════════
-//  OVERVIEW — données mock
+//  OVERVIEW
 // ══════════════════════════════════════════
 function loadOverview() {
-  // KPIs
   animateNumber('kpiVisits', 0, 3842);
   animateNumber('kpiTickets', 0, 7);
   animateNumber('kpiProjects', 0, 5);
   document.getElementById('kpiUptime').textContent = '99.9%';
 
   document.getElementById('kpiVisitsDelta').innerHTML = '↑ +12% vs semaine dernière';
-  document.getElementById('kpiTicketsDelta').innerHTML = '→ 2 nouveaux aujourd\'hui';
+  document.getElementById('kpiTicketsDelta').innerHTML = "→ 2 nouveaux aujourd'hui";
   document.getElementById('kpiProjectsDelta').innerHTML = '↑ 1 ajouté ce mois';
   document.getElementById('kpiUptimeDelta').innerHTML = '↑ Excellent';
 
-  // Chart: visites 7 jours
   const labels = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
   const data   = [412, 538, 490, 621, 703, 489, 589];
   document.getElementById('chartTotal').textContent = 'Total: ' + data.reduce((a,b)=>a+b,0);
@@ -479,7 +473,6 @@ function loadOverview() {
     }
   });
 
-  // Chart: sources
   const ctxS = document.getElementById('chartSources').getContext('2d');
   if (window._chartSources) window._chartSources.destroy();
   window._chartSources = new Chart(ctxS, {
@@ -500,7 +493,6 @@ function loadOverview() {
     }
   });
 
-  // Table pages
   const pages = [
     { name: '/', label: 'Accueil', views: 1842 },
     { name: '/projects', label: 'Projets', views: 934 },
@@ -538,9 +530,9 @@ function animateNumber(id, from, to) {
 // ══════════════════════════════════════════
 const TICKETS = [
   { id: 'TK-001', name: 'Lucas M.', email: 'lucas@example.com', type: 'Contact', date: '03/06/2025', status: 'open',    msg: 'Bonjour, je voudrais collaborer sur un projet web. Tu serais dispo pour en parler ?' },
-  { id: 'TK-002', name: 'Camille R.', email: 'camille@example.com', type: 'Projet', date: '01/06/2025', status: 'pending', msg: 'J\'ai besoin d\'un site vitrine pour mon association, est-ce que tu fais ça ?' },
+  { id: 'TK-002', name: 'Camille R.', email: 'camille@example.com', type: 'Projet', date: '01/06/2025', status: 'pending', msg: "J'ai besoin d'un site vitrine pour mon association, est-ce que tu fais ça ?" },
   { id: 'TK-003', name: 'Tom D.', email: 'tom@example.com', type: 'Bug', date: '28/05/2025', status: 'closed',  msg: 'Le formulaire de contact ne fonctionne pas sur mobile.' },
-  { id: 'TK-004', name: 'Sofia K.', email: 'sofia@example.com', type: 'Contact', date: '25/05/2025', status: 'open',    msg: 'Je cherche quelqu\'un pour m\'aider à déployer mon appli React sur Vercel.' },
+  { id: 'TK-004', name: 'Sofia K.', email: 'sofia@example.com', type: 'Contact', date: '25/05/2025', status: 'open',    msg: "Je cherche quelqu'un pour m'aider à déployer mon appli React sur Vercel." },
   { id: 'TK-005', name: 'Noah B.', email: 'noah@example.com', type: 'Projet', date: '20/05/2025', status: 'closed',  msg: 'Super portfolio ! Tu serais intéressé par un stage cet été ?' },
 ];
 
@@ -553,7 +545,7 @@ async function loadTickets() {
     TICKETS.length = 0;
     TICKETS.push(...data);
   } catch(e) {
-    console.warn('Impossible de charger les tickets depuis l'API, mode local.');
+    console.warn("Impossible de charger les tickets depuis l'API, mode local.");
   }
   renderTickets();
 
@@ -639,7 +631,7 @@ async function deleteTicket(id) {
 //  STATUS
 // ══════════════════════════════════════════
 const SERVICES = [
-  { id: 'site',    emoji: '🌐', name: 'Site principal',   desc: 'yonnix.fr — page d\'accueil et navigation', status: 'operational' },
+  { id: 'site',    emoji: '🌐', name: 'Site principal',   desc: "yonnix.fr — page d'accueil et navigation", status: 'operational' },
   { id: 'api',     emoji: '⚙️', name: 'API',              desc: 'Endpoints de contact et données dynamiques', status: 'operational' },
   { id: 'music',   emoji: '🎵', name: 'Musique',          desc: 'Lecteur audio et streaming', status: 'operational' },
   { id: 'contact', emoji: '📬', name: 'Formulaire',       desc: 'Système de tickets et formulaire de contact', status: 'operational' },
