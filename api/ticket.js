@@ -1,11 +1,27 @@
 /**
- * api/ticket.js — Vercel Serverless Function
- * Relaie le formulaire vers Discord + rate limiting par IP
+ * api/ticket.js — Relaie le formulaire vers Discord + sauvegarde dans Redis
  *
- * Env var requise : DISCORD_WEBHOOK_URL
+ * Env vars requises : DISCORD_WEBHOOK_URL
  */
-
 import { checkRateLimit } from './ratelimit.js';
+import { Redis } from '@upstash/redis';
+
+const redis = Redis.fromEnv();
+const TICKETS_KEY = 'tickets_list';
+
+async function getTickets() {
+  const raw = await redis.get(TICKETS_KEY);
+  if (!raw) return [];
+  try { return typeof raw === 'string' ? JSON.parse(raw) : raw; }
+  catch { return []; }
+}
+
+function generateId(tickets) {
+  if (!tickets.length) return 'TK-001';
+  const nums = tickets.map(t => parseInt(t.id.replace('TK-', ''), 10)).filter(n => !isNaN(n));
+  const next = Math.max(...nums) + 1;
+  return 'TK-' + String(next).padStart(3, '0');
+}
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'https://website-yonnix.vercel.app');
@@ -26,9 +42,7 @@ export default async function handler(req, res) {
   res.setHeader('X-RateLimit-Remaining', rl.remaining);
   if (!rl.allowed) {
     res.setHeader('Retry-After', rl.retryAfter);
-    return res.status(429).json({
-      error: `Trop de requêtes. Réessaie dans ${rl.retryAfter}s.`
-    });
+    return res.status(429).json({ error: `Trop de requêtes. Réessaie dans ${rl.retryAfter}s.` });
   }
 
   const WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
@@ -39,19 +53,33 @@ export default async function handler(req, res) {
 
   const { name, discord, email, type, message } = req.body ?? {};
 
-  if (!name || !discord || !message) {
+  if (!name || !discord || !message)
     return res.status(400).json({ error: 'Champs requis manquants' });
-  }
-  if (message.length > 2000 || name.length > 100 || discord.length > 100) {
+  if (message.length > 2000 || name.length > 100 || discord.length > 100)
     return res.status(400).json({ error: 'Champ trop long' });
-  }
 
   const safe = (str = '') =>
     String(str).replace(/@(everyone|here)/gi, '[@$1]').slice(0, 1024);
 
+  // ── 1. Sauvegarder dans Redis ──────────────────────────────────────────
+  const tickets = await getTickets();
+  const newTicket = {
+    id:      generateId(tickets),
+    name:    safe(name),
+    discord: safe(discord),
+    email:   safe(email) || '',
+    type:    safe(type)  || 'Contact',
+    msg:     safe(message),
+    date:    new Date().toLocaleDateString('fr-FR'),
+    status:  'open',
+  };
+  tickets.unshift(newTicket); // plus récent en premier
+  await redis.set(TICKETS_KEY, JSON.stringify(tickets));
+
+  // ── 2. Envoyer sur Discord ─────────────────────────────────────────────
   const payload = {
     embeds: [{
-      title: '🎫 Nouveau Ticket',
+      title: `🎫 Nouveau Ticket — ${newTicket.id}`,
       color: 0xfbbf24,
       fields: [
         { name: '👤 Pseudo / Nom',  value: safe(name),    inline: true },
@@ -60,7 +88,7 @@ export default async function handler(req, res) {
         { name: '🛠️ Service',       value: safe(type)  || '_non renseigné_', inline: true  },
         { name: '📝 Message',       value: safe(message) },
       ],
-      footer: { text: `yonn_ix · IP: ${ip}` },
+      footer: { text: `yonn_ix · ${newTicket.id} · IP: ${ip}` },
       timestamp: new Date().toISOString(),
     }],
   };
@@ -71,16 +99,14 @@ export default async function handler(req, res) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-
     if (!response.ok) {
       const errorText = await response.text();
       console.error('[ticket] Discord error:', response.status, errorText);
-      return res.status(502).json({ error: 'Discord webhook failed' });
+      // On retourne quand même succès car le ticket est déjà sauvé dans Redis
     }
-
-    return res.status(200).json({ success: true });
   } catch (err) {
-    console.error('[ticket] Fetch error:', err);
-    return res.status(500).json({ error: 'Internal error' });
+    console.error('[ticket] Discord fetch error:', err);
   }
+
+  return res.status(200).json({ success: true, id: newTicket.id });
 }
