@@ -1,13 +1,10 @@
 /* ============================================================
    animations.css — Phase 1
    Scroll-driven animations natives + reveals clip-path +
-   morphing gradient @property + counter structure CSS
-   Repo : Yonnix-dev/website-yonnix
+   morphing gradient @property + will-change ciblé
    ============================================================ */
 
-/* ─────────────────────────────────────────
-   @property : gradient morphing animable
-───────────────────────────────────────── */
+/* ─── @property : gradient morphing animable ─── */
 @property --grad-angle {
   syntax: '<angle>';
   initial-value: 135deg;
@@ -16,40 +13,37 @@
 
 @property --grad-stop-1 {
   syntax: '<color>';
-  initial-value: #4f98a3;
+  initial-value: #fbbf24;
   inherits: false;
 }
 
 @property --grad-stop-2 {
   syntax: '<color>';
-  initial-value: #a86fdf;
+  initial-value: #f59e0b;
   inherits: false;
 }
 
 @property --grad-stop-3 {
   syntax: '<color>';
-  initial-value: #01696f;
+  initial-value: #fde68a;
   inherits: false;
 }
 
-/* ─────────────────────────────────────────
-   Reveal clip-path — fallback (visible)
-───────────────────────────────────────── */
+/* ─── Reveal clip-path — base fallback (visible par défaut sans support) ─── */
 .reveal,
 .reveal-left,
 .reveal-right,
-.reveal-scale {
+.reveal-scale,
+.reveal-up {
   opacity: 1;
   clip-path: inset(0 0 0 0);
+  transform: none;
 }
 
-/* ─────────────────────────────────────────
-   Scroll-driven animations
-   (animation-timeline: view())
-───────────────────────────────────────── */
+/* ─── Scroll-driven animations via animation-timeline: view() ─── */
 @supports (animation-timeline: scroll()) {
 
-  /* Reveal générique — masque qui s'ouvre du bas */
+  /* Reveal générique — clip-path bas vers haut */
   .reveal {
     clip-path: inset(100% 0 0 0);
     opacity: 0;
@@ -79,7 +73,7 @@
     will-change: clip-path, opacity;
   }
 
-  /* Reveal scale — hero badges, tags */
+  /* Reveal scale (hero badge, tags, petits éléments) */
   .reveal-scale {
     clip-path: inset(10% 10% 10% 10% round 12px);
     opacity: 0;
@@ -89,7 +83,17 @@
     will-change: clip-path, opacity;
   }
 
-  /* Parallax lent — bg layers */
+  /* Reveal up (simple translateY + opacity) */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: reveal-up-anim linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 55%;
+    will-change: opacity, transform;
+  }
+
+  /* ── Parallax subtil ── */
   .parallax-slow {
     animation: parallax-slow linear both;
     animation-timeline: view();
@@ -97,7 +101,6 @@
     will-change: transform;
   }
 
-  /* Parallax rapide — orbes, particules */
   .parallax-fast {
     animation: parallax-fast linear both;
     animation-timeline: view();
@@ -105,7 +108,7 @@
     will-change: transform;
   }
 
-  /* Fade-out sur exit scroll */
+  /* ── Fade-out au scroll exit ── */
   .fade-exit {
     animation: fade-out-exit linear both;
     animation-timeline: view();
@@ -113,18 +116,24 @@
     will-change: opacity;
   }
 
-  /* Barre de progression liée au scroll root */
+  /* ── Progress bar liée au scroll global ── */
   .scroll-progress {
     transform-origin: left center;
-    animation: scroll-progress linear both;
+    animation: scroll-progress-anim linear both;
     animation-timeline: scroll(root block);
     will-change: transform;
   }
+
+  /* ── Stagger delays pour grilles ── */
+  .stagger-1 { animation-delay: 60ms; }
+  .stagger-2 { animation-delay: 120ms; }
+  .stagger-3 { animation-delay: 180ms; }
+  .stagger-4 { animation-delay: 240ms; }
+  .stagger-5 { animation-delay: 300ms; }
+  .stagger-6 { animation-delay: 360ms; }
 }
 
-/* ─────────────────────────────────────────
-   Keyframes — clip-path reveals
-───────────────────────────────────────── */
+/* ─── Keyframes clip-path reveals ─── */
 @keyframes reveal-clip-up {
   from { clip-path: inset(100% 0 0 0); opacity: 0; }
   to   { clip-path: inset(0 0 0 0);    opacity: 1; }
@@ -145,14 +154,19 @@
   to   { clip-path: inset(0 0 0 0 round 0px);          opacity: 1; }
 }
 
+@keyframes reveal-up-anim {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes parallax-slow {
   from { transform: translateY(-30px); }
-  to   { transform: translateY(30px);  }
+  to   { transform: translateY(30px); }
 }
 
 @keyframes parallax-fast {
   from { transform: translateY(-60px); }
-  to   { transform: translateY(60px);  }
+  to   { transform: translateY(60px); }
 }
 
 @keyframes fade-out-exit {
@@ -160,20 +174,17 @@
   to   { opacity: 0; }
 }
 
-@keyframes scroll-progress {
+@keyframes scroll-progress-anim {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
 
-/* ─────────────────────────────────────────
-   Morphing gradient — @property animé
-   Usage : class="morph-gradient" sur un bg
-───────────────────────────────────────── */
+/* ─── Morphing gradient — @property animé (fond) ─── */
 .morph-gradient {
   --grad-angle:  135deg;
-  --grad-stop-1: #4f98a3;
-  --grad-stop-2: #a86fdf;
-  --grad-stop-3: #01696f;
+  --grad-stop-1: #fbbf24;
+  --grad-stop-2: #f59e0b;
+  --grad-stop-3: #fde68a;
   background: linear-gradient(
     var(--grad-angle),
     var(--grad-stop-1),
@@ -188,39 +199,36 @@
 @keyframes morph-gradient-anim {
   0% {
     --grad-angle:  135deg;
-    --grad-stop-1: #4f98a3;
-    --grad-stop-2: #a86fdf;
-    --grad-stop-3: #01696f;
+    --grad-stop-1: #fbbf24;
+    --grad-stop-2: #f59e0b;
+    --grad-stop-3: #fde68a;
   }
   33% {
     --grad-angle:  200deg;
-    --grad-stop-1: #a86fdf;
-    --grad-stop-2: #4f98a3;
-    --grad-stop-3: #5591c7;
+    --grad-stop-1: #fde68a;
+    --grad-stop-2: #fbbf24;
+    --grad-stop-3: #f59e0b;
   }
   66% {
     --grad-angle:  270deg;
-    --grad-stop-1: #5591c7;
-    --grad-stop-2: #01696f;
-    --grad-stop-3: #a86fdf;
+    --grad-stop-1: #f59e0b;
+    --grad-stop-2: #fde68a;
+    --grad-stop-3: #fbbf24;
   }
   100% {
     --grad-angle:  360deg;
-    --grad-stop-1: #01696f;
-    --grad-stop-2: #5591c7;
-    --grad-stop-3: #4f98a3;
+    --grad-stop-1: #fde68a;
+    --grad-stop-2: #fbbf24;
+    --grad-stop-3: #f59e0b;
   }
 }
 
-/* ─────────────────────────────────────────
-   Gradient text animé
-   Usage : class="gradient-text" sur h1/span
-───────────────────────────────────────── */
+/* ─── Gradient text animé ─── */
 .gradient-text {
   --grad-angle:  135deg;
-  --grad-stop-1: #4f98a3;
-  --grad-stop-2: #a86fdf;
-  --grad-stop-3: #6daa45;
+  --grad-stop-1: #fbbf24;
+  --grad-stop-2: rgba(255,255,255,.75);
+  --grad-stop-3: #f59e0b;
   background: linear-gradient(
     var(--grad-angle),
     var(--grad-stop-1),
@@ -236,14 +244,11 @@
   will-change: --grad-angle, --grad-stop-1;
 }
 
-/* ─────────────────────────────────────────
-   Counter animation — structure CSS
-   Le JS (Phase 2) déclenche .counter--active
-   via IntersectionObserver et ajoute/retire
-   .counter--tick à chaque incrément.
-
-   HTML : <span class="counter" data-target="42">0</span>
-───────────────────────────────────────── */
+/* ─── Counter animation — structure CSS ─── */
+/*
+   JS IntersectionObserver ajoute .counter--active sur l'élément.
+   <span class="counter" data-target="42">0</span>
+*/
 .counter {
   display: inline-block;
   transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
@@ -258,6 +263,7 @@
   transform: translateY(0);
 }
 
+/* Tick visuel à chaque incrément (ajouté/retiré par JS) */
 .counter--tick {
   animation: counter-tick 0.08s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -267,32 +273,37 @@
   100% { transform: translateY(0);   opacity: 1;   }
 }
 
-/* ─────────────────────────────────────────
-   Stagger delay helpers
-   Ajouter stagger-N aux enfants d'une grille
-   avec class reveal pour cascade
-───────────────────────────────────────── */
-.stagger-1 { animation-delay: 60ms; }
-.stagger-2 { animation-delay: 120ms; }
-.stagger-3 { animation-delay: 180ms; }
-.stagger-4 { animation-delay: 240ms; }
-.stagger-5 { animation-delay: 300ms; }
-.stagger-6 { animation-delay: 360ms; }
+/* ─── Section separator animé ─── */
+.section-line {
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent, #fbbf24), transparent);
+  animation: line-expand linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 60%;
+  will-change: width;
+}
 
-/* ─────────────────────────────────────────
-   Reduced motion — désactive tout
-───────────────────────────────────────── */
+@keyframes line-expand {
+  from { width: 0; opacity: 0; }
+  to   { width: 100%; opacity: 1; }
+}
+
+/* ─── Reduced motion — désactive absolument tout ─── */
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .reveal-left,
   .reveal-right,
   .reveal-scale,
+  .reveal-up,
   .parallax-slow,
   .parallax-fast,
   .fade-exit,
   .morph-gradient,
   .gradient-text,
-  .counter {
+  .counter,
+  .section-line,
+  .scroll-progress {
     animation: none !important;
     clip-path: none !important;
     opacity: 1 !important;
@@ -300,5 +311,6 @@
     will-change: auto !important;
     -webkit-text-fill-color: unset !important;
     background: revert !important;
+    width: 100% !important;
   }
 }
