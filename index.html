@@ -1554,7 +1554,7 @@ function showToast(type,title,msg,duration=5200){
           message:document.getElementById('ticketMessage').value
         })
       });
-      if(r.ok){showToast('success','Ticket envoyé ! 🎉','Je te répondrai très vite sur Discord.');form.reset()}
+      if(r.ok){showToast('success','Ticket envoyé ! 🎉','Je vous répondrai très vite.');form.reset()}
       else throw new Error();
     }catch{
       showToast('error','Erreur','Une erreur est survenue. Contacte-moi directement sur Discord.');
