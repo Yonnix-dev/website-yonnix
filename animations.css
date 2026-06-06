@@ -29,21 +29,18 @@
   inherits: false;
 }
 
-/* ─── Reveal clip-path — base fallback (visible par défaut sans support) ─── */
+/* ─── Reveal clip-path — fallback visible par défaut ─── */
 .reveal,
 .reveal-left,
 .reveal-right,
-.reveal-scale,
-.reveal-up {
+.reveal-scale {
   opacity: 1;
   clip-path: inset(0 0 0 0);
-  transform: none;
 }
 
 /* ─── Scroll-driven animations via animation-timeline: view() ─── */
 @supports (animation-timeline: scroll()) {
 
-  /* Reveal générique — clip-path bas vers haut */
   .reveal {
     clip-path: inset(100% 0 0 0);
     opacity: 0;
@@ -53,7 +50,6 @@
     will-change: clip-path, opacity;
   }
 
-  /* Reveal depuis la gauche */
   .reveal-left {
     clip-path: inset(0 100% 0 0);
     opacity: 0;
@@ -63,7 +59,6 @@
     will-change: clip-path, opacity;
   }
 
-  /* Reveal depuis la droite */
   .reveal-right {
     clip-path: inset(0 0 0 100%);
     opacity: 0;
@@ -73,7 +68,6 @@
     will-change: clip-path, opacity;
   }
 
-  /* Reveal scale (hero badge, tags, petits éléments) */
   .reveal-scale {
     clip-path: inset(10% 10% 10% 10% round 12px);
     opacity: 0;
@@ -83,17 +77,6 @@
     will-change: clip-path, opacity;
   }
 
-  /* Reveal up (simple translateY + opacity) */
-  .reveal-up {
-    opacity: 0;
-    transform: translateY(40px);
-    animation: reveal-up-anim linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 55%;
-    will-change: opacity, transform;
-  }
-
-  /* ── Parallax subtil ── */
   .parallax-slow {
     animation: parallax-slow linear both;
     animation-timeline: view();
@@ -108,7 +91,6 @@
     will-change: transform;
   }
 
-  /* ── Fade-out au scroll exit ── */
   .fade-exit {
     animation: fade-out-exit linear both;
     animation-timeline: view();
@@ -116,21 +98,12 @@
     will-change: opacity;
   }
 
-  /* ── Progress bar liée au scroll global ── */
   .scroll-progress {
     transform-origin: left center;
-    animation: scroll-progress-anim linear both;
+    animation: scroll-progress linear both;
     animation-timeline: scroll(root block);
     will-change: transform;
   }
-
-  /* ── Stagger delays pour grilles ── */
-  .stagger-1 { animation-delay: 60ms; }
-  .stagger-2 { animation-delay: 120ms; }
-  .stagger-3 { animation-delay: 180ms; }
-  .stagger-4 { animation-delay: 240ms; }
-  .stagger-5 { animation-delay: 300ms; }
-  .stagger-6 { animation-delay: 360ms; }
 }
 
 /* ─── Keyframes clip-path reveals ─── */
@@ -154,11 +127,6 @@
   to   { clip-path: inset(0 0 0 0 round 0px);          opacity: 1; }
 }
 
-@keyframes reveal-up-anim {
-  from { opacity: 0; transform: translateY(40px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 @keyframes parallax-slow {
   from { transform: translateY(-30px); }
   to   { transform: translateY(30px); }
@@ -174,12 +142,12 @@
   to   { opacity: 0; }
 }
 
-@keyframes scroll-progress-anim {
+@keyframes scroll-progress {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
 
-/* ─── Morphing gradient — @property animé (fond) ─── */
+/* ─── Morphing gradient — @property animé ─── */
 .morph-gradient {
   --grad-angle:  135deg;
   --grad-stop-1: #fbbf24;
@@ -217,8 +185,8 @@
   }
   100% {
     --grad-angle:  360deg;
-    --grad-stop-1: #fde68a;
-    --grad-stop-2: #fbbf24;
+    --grad-stop-1: #fbbf24;
+    --grad-stop-2: #fde68a;
     --grad-stop-3: #f59e0b;
   }
 }
@@ -244,11 +212,7 @@
   will-change: --grad-angle, --grad-stop-1;
 }
 
-/* ─── Counter animation — structure CSS ─── */
-/*
-   JS IntersectionObserver ajoute .counter--active sur l'élément.
-   <span class="counter" data-target="42">0</span>
-*/
+/* ─── Counter — structure CSS (JS IntersectionObserver le déclenche) ─── */
 .counter {
   display: inline-block;
   transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
@@ -263,7 +227,6 @@
   transform: translateY(0);
 }
 
-/* Tick visuel à chaque incrément (ajouté/retiré par JS) */
 .counter--tick {
   animation: counter-tick 0.08s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -273,37 +236,26 @@
   100% { transform: translateY(0);   opacity: 1;   }
 }
 
-/* ─── Section separator animé ─── */
-.section-line {
-  width: 0;
-  height: 1px;
-  background: linear-gradient(90deg, var(--accent, #fbbf24), transparent);
-  animation: line-expand linear both;
-  animation-timeline: view();
-  animation-range: entry 0% entry 60%;
-  will-change: width;
-}
+/* ─── Stagger delay helpers ─── */
+.stagger-1 { animation-delay: 60ms; }
+.stagger-2 { animation-delay: 120ms; }
+.stagger-3 { animation-delay: 180ms; }
+.stagger-4 { animation-delay: 240ms; }
+.stagger-5 { animation-delay: 300ms; }
+.stagger-6 { animation-delay: 360ms; }
 
-@keyframes line-expand {
-  from { width: 0; opacity: 0; }
-  to   { width: 100%; opacity: 1; }
-}
-
-/* ─── Reduced motion — désactive absolument tout ─── */
+/* ─── Reduced motion ─── */
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .reveal-left,
   .reveal-right,
   .reveal-scale,
-  .reveal-up,
   .parallax-slow,
   .parallax-fast,
   .fade-exit,
   .morph-gradient,
   .gradient-text,
-  .counter,
-  .section-line,
-  .scroll-progress {
+  .counter {
     animation: none !important;
     clip-path: none !important;
     opacity: 1 !important;
@@ -311,6 +263,5 @@
     will-change: auto !important;
     -webkit-text-fill-color: unset !important;
     background: revert !important;
-    width: 100% !important;
   }
 }
