@@ -1,0 +1,295 @@
+/* ============================================================
+   micro.css — Phase 5
+   Floating labels · Validation temps réel · Section transitions
+   Parallax multi-couches (grid + orbes + particules)
+   ============================================================ */
+
+/* ─── FLOATING LABEL ─── */
+/*
+  Usage HTML attendu :
+  <div class="form-group form-float">
+    <input type="text" id="ticketName" placeholder=" " required>
+    <label for="ticketName">Pseudo / Nom</label>
+  </div>
+  Le placeholder doit être " " (espace) pour que :placeholder-shown fonctionne.
+*/
+
+.form-float {
+  position: relative;
+  padding-top: var(--space-4, 1rem); /* espace pour le label flottant */
+}
+
+.form-float label {
+  position: absolute;
+  top: calc(var(--space-4, 1rem) + 14px);
+  left: 18px;
+  font-size: .92rem;
+  color: rgba(232,228,212,.45);
+  pointer-events: none;
+  transition:
+    top    200ms cubic-bezier(0.16, 1, 0.3, 1),
+    left   200ms cubic-bezier(0.16, 1, 0.3, 1),
+    font-size 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    color  200ms cubic-bezier(0.16, 1, 0.3, 1),
+    letter-spacing 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* override du style inline uppercase existant */
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: 'Space Grotesk', sans-serif;
+  z-index: 1;
+}
+
+/* État flottant : quand l'input est focus OU rempli (not placeholder-shown) */
+.form-float input:focus ~ label,
+.form-float input:not(:placeholder-shown) ~ label,
+.form-float textarea:focus ~ label,
+.form-float textarea:not(:placeholder-shown) ~ label {
+  top: 0;
+  left: 2px;
+  font-size: .63rem;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  color: #fbbf24;
+  font-family: 'Space Mono', monospace;
+}
+
+.form-float input:focus ~ label,
+.form-float textarea:focus ~ label {
+  color: #fde68a;
+}
+
+/* Ajustement input pour laisser la place au label flottant */
+.form-float input,
+.form-float textarea {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* ─── VALIDATION TEMPS RÉEL ─── */
+
+/* Input valide */
+.form-float input.input-valid,
+.form-float textarea.input-valid {
+  border-color: rgba(34, 197, 94, .55) !important;
+  box-shadow:
+    0 0 0 2px rgba(34, 197, 94, .10),
+    0 4px 16px rgba(34, 197, 94, .06) !important;
+}
+
+.form-float input.input-valid ~ label,
+.form-float textarea.input-valid ~ label {
+  color: #86efac;
+}
+
+/* Input invalide (erreur) */
+.form-float input.input-error,
+.form-float textarea.input-error {
+  border-color: rgba(239, 68, 68, .55) !important;
+  box-shadow:
+    0 0 0 2px rgba(239, 68, 68, .10),
+    0 4px 16px rgba(239, 68, 68, .06) !important;
+  animation: input-shake .35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.form-float input.input-error ~ label,
+.form-float textarea.input-error ~ label {
+  color: #fca5a5;
+}
+
+@keyframes input-shake {
+  10%, 90%  { transform: translateX(-2px); }
+  20%, 80%  { transform: translateX(3px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60%  { transform: translateX(4px); }
+  100%      { transform: translateX(0); }
+}
+
+/* Message d'erreur inline */
+.field-error {
+  font-size: .72rem;
+  color: #fca5a5;
+  margin-top: var(--space-1, .25rem);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease;
+  pointer-events: none;
+  display: block;
+  min-height: 1rem;
+}
+
+.field-error.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Icone check / error dans l'input */
+.input-icon {
+  position: absolute;
+  right: 14px;
+  top: calc(var(--space-4, 1rem) + 14px);
+  transform: translateY(-50%);
+  font-size: .9rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease, transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+  scale: 0.5;
+}
+
+.input-icon.show {
+  opacity: 1;
+  scale: 1;
+}
+
+/* ─── SECTION TRANSITIONS — lignes animées ─── */
+
+/* Séparateur entre sections avec ligne qui sweep de gauche à droite */
+.section-divider {
+  position: relative;
+  height: 1px;
+  overflow: hidden;
+  margin: 0;
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251, 191, 36, .18) 20%,
+    rgba(251, 191, 36, .45) 50%,
+    rgba(251, 191, 36, .18) 80%,
+    transparent 100%
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-divider.in-view::before {
+  transform: scaleX(1);
+}
+
+/* Trait animé en bas de section (optionnel, ajouté via .section-line) */
+.section-line {
+  display: block;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #fbbf24, #fde68a, transparent);
+  margin: var(--space-8, 2rem) 0 var(--space-12, 3rem);
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1) .2s;
+}
+
+.section-line.in-view {
+  width: 120px;
+}
+
+/* Section entry animation — slide-in avec mask */
+.section-enter {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity .9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform .9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-enter.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── PARALLAX MULTI-COUCHES ─── */
+/*
+  Vitesses différentes pour chaque couche :
+    .grid-bg      → vitesse lente (CSS animation déjà présent, on ajoute le parallax JS via --parallax-y)
+    .aurora-orb   → vitesse moyenne (contrôlé en JS)
+    .particle     → vitesse rapide (contrôlé en JS)
+
+  Le JS dans micro.js met à jour des CSS custom props sur chaque couche :
+    --parallax-y: Xpx
+  Ces props sont lues ici via transform.
+*/
+
+.grid-bg {
+  transform: translateY(var(--parallax-y, 0px));
+  transition: transform .05s linear;
+  will-change: transform;
+}
+
+.aurora {
+  transform: translateY(var(--parallax-y, 0px)) scale(1.05);
+  transition: transform .08s linear;
+  will-change: transform;
+}
+
+/* Les particles reçoivent un data-speed individuel en JS,
+   ici on prépare juste la propriété custom */
+.particle {
+  transform: translateY(var(--parallax-y, 0px));
+  will-change: transform;
+}
+
+/* ─── COUNTER ANIMATION (IntersectionObserver) ─── */
+
+/* Repris de animations.css mais adapté au contexte Phase 5 :
+   Le JS dans micro.js gère le comptage, le CSS la transition visuelle */
+.stat-number {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  transition:
+    opacity .4s cubic-bezier(0.16, 1, 0.3, 1),
+    transform .4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stat-number.counting {
+  opacity: .7;
+  transform: translateY(2px);
+}
+
+/* ─── SUBMIT BUTTON — état loading ─── */
+.form-submit.loading {
+  pointer-events: none;
+  opacity: .75;
+  filter: grayscale(.3);
+}
+
+.form-submit.loading::after {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(0,0,0,.3);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: btn-spin .7s linear infinite;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── REDUCED MOTION ─── */
+@media (prefers-reduced-motion: reduce) {
+  .form-float label,
+  .field-error,
+  .input-icon,
+  .section-divider::before,
+  .section-line,
+  .section-enter,
+  .stat-number,
+  .grid-bg,
+  .aurora,
+  .particle {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .form-float input.input-error { animation: none !important; }
+}
