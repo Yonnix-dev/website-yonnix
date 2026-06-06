@@ -134,6 +134,374 @@ tr:hover td{background:rgba(251,191,36,.02)}
 .t-btn-pending:hover{background:rgba(96,165,250,.2);border-color:#93c5fd}
 .tickets-empty{text-align:center;padding:60px 20px;color:var(--muted);font-family:'Space Mono',monospace;font-size:.85rem}
 
+/* ══════════════════════════════════════════
+   TICKET CREATE PANEL — PREMIUM
+══════════════════════════════════════════ */
+.ticket-create-wrap {
+  margin-bottom: 28px;
+}
+
+.ticket-create-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--muted);
+  font-size: .78rem;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: .08em;
+  cursor: pointer;
+  transition: border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease);
+}
+.ticket-create-toggle:hover {
+  border-color: rgba(251,191,36,.4);
+  color: var(--accent);
+  background: rgba(251,191,36,.04);
+}
+.ticket-create-toggle svg {
+  transition: transform .35s var(--ease);
+  flex-shrink: 0;
+}
+.ticket-create-toggle.open svg {
+  transform: rotate(45deg);
+}
+.ticket-create-toggle-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: .5;
+  margin-left: 2px;
+  transition: opacity .2s;
+}
+.ticket-create-toggle:hover .ticket-create-toggle-dot {
+  opacity: 1;
+}
+
+/* Panel container */
+.ticket-create-panel {
+  margin-top: 12px;
+  background: linear-gradient(145deg, rgba(18,16,10,.92) 0%, rgba(12,11,7,.96) 100%);
+  border: 1px solid rgba(251,191,36,.18);
+  border-radius: 10px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,.4),
+    0 12px 40px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(251,191,36,.07);
+
+  /* Animation collapsed → open */
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows .38s var(--ease),
+    opacity .3s var(--ease),
+    border-color .3s;
+}
+.ticket-create-panel.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  border-color: rgba(251,191,36,.28);
+}
+.ticket-create-inner {
+  overflow: hidden;
+}
+
+/* Panel header */
+.tcp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px 0;
+}
+.tcp-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tcp-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: rgba(251,191,36,.1);
+  border: 1px solid rgba(251,191,36,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.tcp-icon svg { color: var(--accent); }
+.tcp-title {
+  font-family: 'Space Mono', monospace;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.tcp-subtitle {
+  font-size: .72rem;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.tcp-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: .63rem;
+  padding: 3px 9px;
+  border-radius: 100px;
+  background: rgba(251,191,36,.08);
+  border: 1px solid rgba(251,191,36,.18);
+  color: rgba(251,191,36,.6);
+  letter-spacing: .06em;
+}
+
+/* Divider */
+.tcp-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(251,191,36,.12) 30%, rgba(251,191,36,.12) 70%, transparent);
+  margin: 20px 28px 0;
+}
+
+/* Form body */
+.tcp-form {
+  padding: 22px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Row layouts */
+.tcp-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media(max-width:600px) {
+  .tcp-row { grid-template-columns: 1fr; }
+}
+
+/* Field group */
+.tcp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.tcp-label {
+  font-family: 'Space Mono', monospace;
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: rgba(232,228,212,.45);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color .2s;
+}
+.tcp-label-required {
+  color: rgba(251,191,36,.5);
+  font-size: .6rem;
+}
+.tcp-field:focus-within .tcp-label {
+  color: rgba(251,191,36,.8);
+}
+
+/* Inputs & textarea */
+.tcp-input,
+.tcp-textarea {
+  width: 100%;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 7px;
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: .88rem;
+  padding: 11px 14px;
+  transition:
+    border-color .2s var(--ease),
+    box-shadow .2s var(--ease),
+    background .2s var(--ease);
+  outline: none;
+}
+.tcp-input::placeholder,
+.tcp-textarea::placeholder {
+  color: rgba(232,228,212,.22);
+}
+.tcp-input:hover,
+.tcp-textarea:hover {
+  border-color: rgba(251,191,36,.2);
+  background: rgba(255,255,255,.04);
+}
+.tcp-input:focus,
+.tcp-textarea:focus {
+  border-color: rgba(251,191,36,.5);
+  background: rgba(251,191,36,.03);
+  box-shadow:
+    0 0 0 3px rgba(251,191,36,.07),
+    0 1px 8px rgba(251,191,36,.06);
+}
+.tcp-input.error,
+.tcp-textarea.error {
+  border-color: rgba(239,68,68,.5);
+  box-shadow: 0 0 0 3px rgba(239,68,68,.07);
+}
+.tcp-textarea {
+  resize: vertical;
+  min-height: 92px;
+  line-height: 1.6;
+}
+
+/* Chips selector (type + priority) */
+.tcp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.tcp-chip {
+  padding: 6px 13px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+  color: rgba(232,228,212,.45);
+  font-size: .73rem;
+  font-family: 'Space Mono', monospace;
+  letter-spacing: .05em;
+  cursor: pointer;
+  transition:
+    border-color .18s var(--ease),
+    color .18s var(--ease),
+    background .18s var(--ease),
+    transform .15s var(--ease),
+    box-shadow .18s var(--ease);
+  user-select: none;
+}
+.tcp-chip:hover {
+  border-color: rgba(251,191,36,.3);
+  color: rgba(232,228,212,.8);
+  background: rgba(251,191,36,.05);
+  transform: translateY(-1px);
+}
+.tcp-chip.selected {
+  border-color: rgba(251,191,36,.55);
+  background: rgba(251,191,36,.1);
+  color: var(--accent);
+  box-shadow: 0 2px 10px rgba(251,191,36,.12);
+}
+.tcp-chip.selected:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(251,191,36,.18);
+}
+
+/* Priority chips coloring */
+.tcp-chip[data-priority="low"].selected  { border-color:rgba(34,197,94,.5); background:rgba(34,197,94,.08); color:var(--success); box-shadow:0 2px 10px rgba(34,197,94,.1); }
+.tcp-chip[data-priority="medium"].selected { border-color:rgba(251,191,36,.55); background:rgba(251,191,36,.1); color:var(--accent); }
+.tcp-chip[data-priority="high"].selected  { border-color:rgba(239,68,68,.5); background:rgba(239,68,68,.08); color:var(--error); box-shadow:0 2px 10px rgba(239,68,68,.1); }
+
+/* Helper text */
+.tcp-help {
+  font-size: .68rem;
+  color: rgba(232,228,212,.25);
+  margin-top: 2px;
+  font-family: 'Space Grotesk', sans-serif;
+  line-height: 1.5;
+}
+.tcp-error-msg {
+  font-size: .68rem;
+  color: #fca5a5;
+  margin-top: 2px;
+  display: none;
+}
+.tcp-error-msg.show { display: block; }
+
+/* Submit area */
+.tcp-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 6px;
+  flex-wrap: wrap;
+}
+.tcp-footer-hint {
+  font-size: .7rem;
+  color: rgba(232,228,212,.2);
+  font-family: 'Space Mono', monospace;
+}
+
+.tcp-submit {
+  position: relative;
+  padding: 12px 28px;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 7px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .04em;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform .2s var(--ease),
+    box-shadow .2s var(--ease),
+    background .2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.tcp-submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.tcp-submit:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 24px rgba(251,191,36,.3),
+    0 2px 6px rgba(251,191,36,.2);
+}
+.tcp-submit:hover::before { opacity: 1; }
+.tcp-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(251,191,36,.2);
+}
+.tcp-submit:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.tcp-submit-icon { flex-shrink: 0; transition: transform .2s var(--ease); }
+.tcp-submit:hover .tcp-submit-icon { transform: translateX(2px); }
+
+/* Success flash */
+.tcp-submit.success {
+  background: var(--success);
+  box-shadow: 0 8px 24px rgba(34,197,94,.25);
+}
+
+/* Ripple */
+.tcp-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0,0,0,.2);
+  transform: scale(0);
+  animation: ripple-anim .5s linear;
+  pointer-events: none;
+}
+@keyframes ripple-anim {
+  to { transform: scale(4); opacity: 0; }
+}
+
 /* STATUS */
 .status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;margin-bottom:32px}
 .status-service-card{background:var(--surface);border:1px solid var(--border);padding:28px;animation:fade-up .4s var(--ease) both;transition:border-color .3s,background .3s}
@@ -174,6 +542,7 @@ tr:hover td{background:rgba(251,191,36,.02)}
 /* ANIMATIONS */
 @keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes ticket-in{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 </style>
 </head>
 <body>
@@ -289,6 +658,108 @@ tr:hover td{background:rgba(251,191,36,.02)}
 
     <!-- TAB: TICKETS -->
     <div class="tab-content" id="tab-tickets">
+
+      <!-- ═══ PANEL CRÉATION TICKET PREMIUM ═══ -->
+      <div class="ticket-create-wrap">
+        <button class="ticket-create-toggle" id="tcToggle" aria-expanded="false" aria-controls="tcPanel">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Créer un ticket
+          <span class="ticket-create-toggle-dot"></span>
+        </button>
+
+        <div class="ticket-create-panel" id="tcPanel" role="region" aria-label="Formulaire de création de ticket">
+          <div class="ticket-create-inner">
+
+            <!-- Header -->
+            <div class="tcp-header">
+              <div class="tcp-header-left">
+                <div class="tcp-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
+                </div>
+                <div>
+                  <div class="tcp-title">Nouveau ticket</div>
+                  <div class="tcp-subtitle">Créer manuellement depuis l'admin</div>
+                </div>
+              </div>
+              <span class="tcp-badge">ADMIN</span>
+            </div>
+
+            <div class="tcp-divider"></div>
+
+            <!-- Form -->
+            <form class="tcp-form" id="tcForm" novalidate autocomplete="off">
+
+              <!-- Row 1 : Nom + Email -->
+              <div class="tcp-row">
+                <div class="tcp-field">
+                  <label class="tcp-label" for="tcName">
+                    Nom
+                    <span class="tcp-label-required">*</span>
+                  </label>
+                  <input class="tcp-input" type="text" id="tcName" placeholder="Prénom Nom" maxlength="80" required>
+                  <span class="tcp-error-msg" id="tcNameErr">Nom requis.</span>
+                </div>
+                <div class="tcp-field">
+                  <label class="tcp-label" for="tcEmail">
+                    Email
+                    <span class="tcp-label-required">*</span>
+                  </label>
+                  <input class="tcp-input" type="email" id="tcEmail" placeholder="email@exemple.com" maxlength="120" required>
+                  <span class="tcp-error-msg" id="tcEmailErr">Email invalide.</span>
+                </div>
+              </div>
+
+              <!-- Type -->
+              <div class="tcp-field">
+                <label class="tcp-label">
+                  Type
+                  <span class="tcp-label-required">*</span>
+                </label>
+                <div class="tcp-chips" id="tcTypeChips" role="group" aria-label="Type de ticket">
+                  <button type="button" class="tcp-chip selected" data-type="Contact">Contact</button>
+                  <button type="button" class="tcp-chip" data-type="Projet">Projet</button>
+                  <button type="button" class="tcp-chip" data-type="Bug">Bug</button>
+                  <button type="button" class="tcp-chip" data-type="Demande">Demande</button>
+                  <button type="button" class="tcp-chip" data-type="Autre">Autre</button>
+                </div>
+              </div>
+
+              <!-- Priority -->
+              <div class="tcp-field">
+                <label class="tcp-label">Priorité</label>
+                <div class="tcp-chips" id="tcPriorityChips" role="group" aria-label="Priorité du ticket">
+                  <button type="button" class="tcp-chip selected" data-priority="medium">Normale</button>
+                  <button type="button" class="tcp-chip" data-priority="low">Basse</button>
+                  <button type="button" class="tcp-chip" data-priority="high">Haute</button>
+                </div>
+              </div>
+
+              <!-- Message -->
+              <div class="tcp-field">
+                <label class="tcp-label" for="tcMsg">
+                  Message
+                  <span class="tcp-label-required">*</span>
+                </label>
+                <textarea class="tcp-textarea" id="tcMsg" placeholder="Décris la demande ou le problème en détail..." maxlength="2000" required rows="4"></textarea>
+                <div class="tcp-help" id="tcMsgCount">0 / 2000 caractères</div>
+                <span class="tcp-error-msg" id="tcMsgErr">Message requis.</span>
+              </div>
+
+              <!-- Footer -->
+              <div class="tcp-footer">
+                <span class="tcp-footer-hint">* Champs obligatoires</span>
+                <button type="submit" class="tcp-submit" id="tcSubmit">
+                  <svg class="tcp-submit-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  Créer le ticket
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- ═══ FIN PANEL CRÉATION ═══ -->
+
       <div class="tickets-header">
         <div class="ticket-filters">
           <button class="filter-btn active" data-filter="all">Tous</button>
@@ -537,6 +1008,7 @@ const TICKETS = [
 ];
 
 let currentFilter = 'all';
+let ticketCounter = TICKETS.length;
 
 async function loadTickets() {
   try {
@@ -544,6 +1016,7 @@ async function loadTickets() {
     const data = await res.json();
     TICKETS.length = 0;
     TICKETS.push(...data);
+    ticketCounter = TICKETS.length;
   } catch(e) {
     console.warn("Impossible de charger les tickets depuis l'API, mode local.");
   }
@@ -559,6 +1032,7 @@ async function loadTickets() {
   });
 
   document.getElementById('ticketSearch').addEventListener('input', renderTickets);
+  initCreatePanel();
 }
 
 function renderTickets() {
@@ -625,6 +1099,178 @@ async function deleteTicket(id) {
   } catch(e) { console.warn('API indisponible, suppression locale uniquement.'); }
   const idx = TICKETS.findIndex(t => t.id === id);
   if (idx !== -1) { TICKETS.splice(idx, 1); renderTickets(); }
+}
+
+// ══════════════════════════════════════════
+//  TICKET CREATE PANEL
+// ══════════════════════════════════════════
+function initCreatePanel() {
+  const toggle = document.getElementById('tcToggle');
+  const panel  = document.getElementById('tcPanel');
+  const form   = document.getElementById('tcForm');
+
+  // Toggle open/close
+  toggle.addEventListener('click', () => {
+    const isOpen = panel.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen);
+    if (isOpen) {
+      setTimeout(() => document.getElementById('tcName').focus(), 320);
+    }
+  });
+
+  // Chips — Type
+  document.querySelectorAll('#tcTypeChips .tcp-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#tcTypeChips .tcp-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+    });
+  });
+
+  // Chips — Priority
+  document.querySelectorAll('#tcPriorityChips .tcp-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#tcPriorityChips .tcp-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+    });
+  });
+
+  // Char counter
+  const msgArea  = document.getElementById('tcMsg');
+  const msgCount = document.getElementById('tcMsgCount');
+  msgArea.addEventListener('input', () => {
+    msgCount.textContent = msgArea.value.length + ' / 2000 caractères';
+  });
+
+  // Submit
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validateCreateForm()) return;
+
+    const nameVal  = document.getElementById('tcName').value.trim();
+    const emailVal = document.getElementById('tcEmail').value.trim();
+    const typeVal  = document.querySelector('#tcTypeChips .tcp-chip.selected')?.dataset.type || 'Contact';
+    const msgVal   = msgArea.value.trim();
+    const now      = new Date();
+    const dateStr  = now.toLocaleDateString('fr-FR');
+
+    ticketCounter++;
+    const newId = 'TK-' + String(ticketCounter).padStart(3, '0');
+
+    const newTicket = {
+      id: newId,
+      name: nameVal,
+      email: emailVal,
+      type: typeVal,
+      date: dateStr,
+      status: 'open',
+      msg: msgVal
+    };
+
+    // Try API
+    try {
+      await fetch('/api/tickets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newTicket)
+      });
+    } catch(err) {
+      console.warn('API indisponible, ajout local uniquement.');
+    }
+
+    TICKETS.unshift(newTicket);
+
+    // Success state on button
+    const submitBtn = document.getElementById('tcSubmit');
+    submitBtn.disabled = true;
+    submitBtn.classList.add('success');
+    submitBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Ticket créé !`;
+
+    // Reset form after delay
+    setTimeout(() => {
+      form.reset();
+      msgCount.textContent = '0 / 2000 caractères';
+      // Re-select defaults
+      document.querySelectorAll('#tcTypeChips .tcp-chip').forEach(c => c.classList.remove('selected'));
+      document.querySelector('#tcTypeChips .tcp-chip[data-type="Contact"]').classList.add('selected');
+      document.querySelectorAll('#tcPriorityChips .tcp-chip').forEach(c => c.classList.remove('selected'));
+      document.querySelector('#tcPriorityChips .tcp-chip[data-priority="medium"]').classList.add('selected');
+
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('success');
+      submitBtn.innerHTML = `<svg class="tcp-submit-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Créer le ticket`;
+
+      // Close panel
+      panel.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+
+      // Refresh list
+      renderTickets();
+
+      // Animate first card in
+      setTimeout(() => {
+        const first = document.querySelector('.ticket-card');
+        if (first) first.style.animation = 'ticket-in .35s cubic-bezier(0.16,1,0.3,1) both';
+      }, 50);
+    }, 1200);
+  });
+
+  // Ripple on submit
+  document.getElementById('tcSubmit').addEventListener('click', function(e) {
+    const btn = this;
+    const r = document.createElement('span');
+    const d = Math.max(btn.offsetWidth, btn.offsetHeight);
+    const rect = btn.getBoundingClientRect();
+    r.className = 'tcp-ripple';
+    r.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - rect.left - d/2}px;top:${e.clientY - rect.top - d/2}px`;
+    btn.appendChild(r);
+    r.addEventListener('animationend', () => r.remove());
+  });
+}
+
+function validateCreateForm() {
+  let valid = true;
+
+  const nameEl  = document.getElementById('tcName');
+  const emailEl = document.getElementById('tcEmail');
+  const msgEl   = document.getElementById('tcMsg');
+  const nameErr = document.getElementById('tcNameErr');
+  const emailErr = document.getElementById('tcEmailErr');
+  const msgErr  = document.getElementById('tcMsgErr');
+
+  // Reset
+  [nameEl, emailEl, msgEl].forEach(el => el.classList.remove('error'));
+  [nameErr, emailErr, msgErr].forEach(el => el.classList.remove('show'));
+
+  if (!nameEl.value.trim()) {
+    nameEl.classList.add('error');
+    nameErr.classList.add('show');
+    valid = false;
+  }
+
+  const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRx.test(emailEl.value.trim())) {
+    emailEl.classList.add('error');
+    emailErr.classList.add('show');
+    valid = false;
+  }
+
+  if (!msgEl.value.trim()) {
+    msgEl.classList.add('error');
+    msgErr.classList.add('show');
+    valid = false;
+  }
+
+  // Clear error on input
+  [nameEl, emailEl, msgEl].forEach(el => {
+    el.addEventListener('input', () => {
+      el.classList.remove('error');
+      document.getElementById(el.id + 'Err')?.classList.remove('show');
+    }, { once: true });
+  });
+
+  return valid;
 }
 
 // ══════════════════════════════════════════
