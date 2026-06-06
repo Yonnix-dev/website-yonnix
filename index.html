@@ -19,6 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<!-- Phase 1 : animations CSS scroll-driven -->
+<link rel="stylesheet" href="/animations.css">
 
 <style>
 /* ── ANIMATED GRADIENT PROPERTY ── */
@@ -208,20 +210,37 @@ button{cursor:none;font-family:inherit}
   100%{transform:translateY(-10vh) scale(1) rotate(360deg);opacity:0}
 }
 
-/* ── NAV ── */
+/* ═══════════════════════════════════════════
+   PHASE 3 — NAV AMÉLIORÉE
+   blur dynamique + indicateur glissant
+═══════════════════════════════════════════ */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:900;
   padding:18px 44px;
   display:flex;align-items:center;justify-content:space-between;
-  backdrop-filter:blur(28px) saturate(200%);
-  -webkit-backdrop-filter:blur(28px) saturate(200%);
-  background:rgba(0,0,0,.5);
-  border-bottom:1px solid var(--border);
+  /* blur de base léger */
+  backdrop-filter:blur(8px) saturate(140%);
+  -webkit-backdrop-filter:blur(8px) saturate(140%);
+  background:rgba(0,0,0,.18);
+  border-bottom:1px solid transparent;
   translate:0 -100%;
   animation:nav-in .8s var(--ease) 1.7s forwards;
+  transition:
+    background .4s var(--ease),
+    border-color .4s var(--ease),
+    backdrop-filter .4s var(--ease),
+    box-shadow .4s var(--ease);
 }
 @keyframes nav-in{to{translate:0 0}}
-nav.scrolled{background:rgba(0,0,0,.72);border-bottom-color:rgba(251,191,36,.18)}
+
+/* Blur renforcé au scroll */
+nav.scrolled{
+  backdrop-filter:blur(32px) saturate(220%);
+  -webkit-backdrop-filter:blur(32px) saturate(220%);
+  background:rgba(0,0,0,.68);
+  border-bottom-color:rgba(251,191,36,.16);
+  box-shadow:0 8px 40px rgba(0,0,0,.5);
+}
 
 .nav-logo{
   font-family:'Space Mono',monospace;
@@ -236,22 +255,40 @@ nav.scrolled{background:rgba(0,0,0,.72);border-bottom-color:rgba(251,191,36,.18)
 }
 .nav-logo:hover::after{transform:scaleX(1)}
 
-.nav-links{display:flex;gap:36px;align-items:center}
+/* Conteneur links + indicateur glissant */
+.nav-links{
+  display:flex;gap:36px;align-items:center;
+  position:relative;
+}
+
+/* Indicateur de section actif — glisse sous le lien actif */
+.nav-indicator{
+  position:absolute;
+  bottom:-6px;
+  height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent3));
+  border-radius:2px;
+  transition:
+    left .45s var(--ease),
+    width .45s var(--ease),
+    opacity .3s;
+  opacity:0;
+  pointer-events:none;
+  box-shadow:0 0 10px rgba(251,191,36,.5);
+}
+
 .nav-links a{
   font-size:.75rem;text-transform:uppercase;letter-spacing:.18em;
   color:var(--muted);position:relative;
   transition:color .25s var(--ease);padding:4px 0;
 }
-.nav-links a::before{
-  content:'';position:absolute;bottom:-2px;left:0;width:100%;height:1px;
-  background:var(--accent);transform:scaleX(0);transform-origin:right;
-  transition:transform .35s var(--ease);
-}
 .nav-links a:hover{color:var(--text)}
-.nav-links a:hover::before{transform:scaleX(1);transform-origin:left}
 .nav-links a.active{color:var(--accent)}
 
-/* ── HERO ── */
+/* ═══════════════════════════════════════════
+   PHASE 3 — HERO AMÉLIORÉ
+   gradient text animé + SplitType letters
+═══════════════════════════════════════════ */
 .hero{
   position:relative;z-index:2;
   min-height:100vh;
@@ -288,6 +325,20 @@ nav.scrolled{background:rgba(0,0,0,.72);border-bottom-color:rgba(251,191,36,.18)
   top:50%;left:50%;transform:translate(-50%,-50%);
   animation-duration:90s;animation-direction:reverse;
 }
+/* Décoration géométrique supplémentaire — coins */
+.hero-deco-corner{
+  position:absolute;
+  width:60px;height:60px;
+  border-color:rgba(251,191,36,.18);
+  border-style:solid;
+  opacity:0;
+  animation:fade-up .6s var(--ease) 2.4s forwards;
+}
+.hero-deco-corner.tl{top:10%;left:5%;border-width:1px 0 0 1px}
+.hero-deco-corner.tr{top:10%;right:5%;border-width:1px 1px 0 0}
+.hero-deco-corner.bl{bottom:15%;left:5%;border-width:0 0 1px 1px}
+.hero-deco-corner.br{bottom:15%;right:5%;border-width:0 1px 1px 0}
+
 .hero-deco-dot{
   position:absolute;width:3px;height:3px;border-radius:50%;background:var(--accent);
   animation:deco-pulse 3s ease-in-out infinite;
@@ -309,7 +360,7 @@ nav.scrolled{background:rgba(0,0,0,.72);border-bottom-color:rgba(251,191,36,.18)
   content:'';display:block;width:32px;height:1px;background:rgba(251,191,36,.45);
 }
 
-/* HERO TITLE — per-letter animation */
+/* ── HERO TITLE — lettres SplitType animées ── */
 .hero-title{
   font-size:clamp(5rem,17vw,15rem);
   font-weight:700;line-height:.88;letter-spacing:-.05em;
@@ -317,6 +368,8 @@ nav.scrolled{background:rgba(0,0,0,.72);border-bottom-color:rgba(251,191,36,.18)
   white-space:nowrap;
   position:relative;
 }
+
+/* Chaque .char est une lettre individuelle */
 .hero-title .char{
   display:inline-block;
   opacity:0;
@@ -326,15 +379,34 @@ nav.scrolled{background:rgba(0,0,0,.72);border-bottom-color:rgba(251,191,36,.18)
 @keyframes char-in{
   to{opacity:1;transform:translateY(0) skewY(0deg)}
 }
+
+/* Lettres avec gradient animé morphing */
 .hero-title .char.gradient{
-  background:linear-gradient(135deg,var(--accent) 0%,rgba(255,255,255,.7) 40%,var(--accent2) 80%,var(--accent) 100%);
-  background-size:200% 200%;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:char-in .7s var(--ease) forwards, gradient-shift 7s ease-in-out 2.5s infinite;
+  background:linear-gradient(
+    135deg,
+    var(--accent) 0%,
+    rgba(255,255,255,.75) 40%,
+    var(--accent2) 75%,
+    var(--accent) 100%
+  );
+  background-size:300% 300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  /* char-in + gradient-shift en cascade */
+  animation:
+    char-in .7s var(--ease) forwards,
+    gradient-shift 7s ease-in-out 2.5s infinite;
 }
 @keyframes gradient-shift{
   0%,100%{background-position:0% 50%}
   50%{background-position:100% 50%}
+}
+
+/* Le underscore séparateur — quasi transparent */
+.hero-title .char.separator{
+  color:rgba(232,228,212,.14);
+  -webkit-text-fill-color:rgba(232,228,212,.14);
 }
 
 .hero-sub{
@@ -820,6 +892,7 @@ footer::before{
   .toast-container{bottom:16px;right:16px;left:16px}
   .toast{min-width:unset}
   .services-grid{grid-template-columns:1fr}
+  .hero-deco-corner{display:none}
 }
 @media(max-width:480px){
   .hero-title{white-space:normal;font-size:clamp(3rem,18vw,5.5rem);letter-spacing:-.03em}
@@ -860,19 +933,21 @@ footer::before{
 <!-- TOAST -->
 <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
 
-<!-- NAV -->
+<!-- ═══ NAV PHASE 3 ═══ -->
 <nav id="nav">
-  <div class="nav-logo">yonn_ix</div>
-  <div class="nav-links">
-    <a href="#reseaux">Réseaux</a>
-    <a href="#services">Services</a>
-    <a href="#contact">Contact</a>
-    <a href="#discord">Discord</a>
+  <a href="#" class="nav-logo">yonn_ix</a>
+  <div class="nav-links" id="navLinks">
+    <!-- Indicateur glissant -->
+    <span class="nav-indicator" id="navIndicator"></span>
+    <a href="#reseaux" data-nav>Réseaux</a>
+    <a href="#services" data-nav>Services</a>
+    <a href="#contact" data-nav>Contact</a>
+    <a href="#discord" data-nav>Discord</a>
     <a href="/status" style="color:var(--faint)">Status</a>
   </div>
 </nav>
 
-<!-- ══ HERO ══ -->
+<!-- ═══ HERO PHASE 3 ═══ -->
 <section class="hero">
   <div class="hero-deco">
     <div class="hero-deco-line"></div>
@@ -883,14 +958,26 @@ footer::before{
     <div class="hero-deco-dot"></div>
     <div class="hero-deco-dot"></div>
     <div class="hero-deco-dot"></div>
+    <!-- Coins géométriques -->
+    <div class="hero-deco-corner tl"></div>
+    <div class="hero-deco-corner tr"></div>
+    <div class="hero-deco-corner bl"></div>
+    <div class="hero-deco-corner br"></div>
   </div>
 
   <div id="discord-status-container" class="discord-status-hero"></div>
 
   <p class="hero-eyebrow">Creator · Developer · Community Builder</p>
 
+  <!-- Titre SplitType lettre par lettre avec gradient animé -->
   <h1 class="hero-title" id="heroTitle">
-    <span class="char gradient" style="animation-delay:1.70s">y</span><span class="char gradient" style="animation-delay:1.78s">o</span><span class="char gradient" style="animation-delay:1.86s">n</span><span class="char gradient" style="animation-delay:1.94s">n</span><span class="char" style="animation-delay:2.00s;color:rgba(232,228,212,.14)">_</span><span class="char gradient" style="animation-delay:2.07s">i</span><span class="char gradient" style="animation-delay:2.14s">x</span>
+    <span class="char gradient" style="animation-delay:1.70s">y</span><span
+    class="char gradient" style="animation-delay:1.78s">o</span><span
+    class="char gradient" style="animation-delay:1.86s">n</span><span
+    class="char gradient" style="animation-delay:1.94s">n</span><span
+    class="char separator" style="animation-delay:2.00s">_</span><span
+    class="char gradient" style="animation-delay:2.07s">i</span><span
+    class="char gradient" style="animation-delay:2.14s">x</span>
   </h1>
 
   <p class="hero-sub">
@@ -1118,27 +1205,54 @@ footer::before{
   },{passive:true});
 })();
 
-/* ── NAV SCROLLED + ACTIVE ── */
+/* ═══════════════════════════════════
+   PHASE 3 — NAV : blur + indicateur glissant
+═══════════════════════════════════ */
 (function(){
-  const nav=document.getElementById('nav');
-  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60),{passive:true});
-  const links=document.querySelectorAll('.nav-links a[href^="#"]');
-  new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        links.forEach(l=>l.classList.remove('active'));
-        const a=document.querySelector('.nav-links a[href="#'+e.target.id+'"]');
-        if(a)a.classList.add('active');
+  const nav = document.getElementById('nav');
+  const indicator = document.getElementById('navIndicator');
+  const links = document.querySelectorAll('.nav-links a[data-nav]');
+  const navLinksEl = document.getElementById('navLinks');
+
+  /* Blur dynamique au scroll */
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, {passive: true});
+
+  /* Positionne l'indicateur sous un lien donné */
+  function moveIndicator(link) {
+    if (!link) { indicator.style.opacity = '0'; return; }
+    const navRect = navLinksEl.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    indicator.style.left  = (linkRect.left - navRect.left) + 'px';
+    indicator.style.width = linkRect.width + 'px';
+    indicator.style.opacity = '1';
+  }
+
+  /* Hover : indicateur temporaire */
+  links.forEach(link => {
+    link.addEventListener('mouseenter', () => moveIndicator(link));
+  });
+  navLinksEl.addEventListener('mouseleave', () => {
+    /* Revient sur le lien actif */
+    const active = document.querySelector('.nav-links a.active');
+    moveIndicator(active || null);
+  });
+
+  /* IntersectionObserver : section active */
+  document.querySelectorAll('section[id]').forEach(section => {
+    new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector('.nav-links a[href="#' + section.id + '"]');
+        if (active) {
+          active.classList.add('active');
+          moveIndicator(active);
+        } else {
+          indicator.style.opacity = '0';
+        }
       }
-    });
-  },{threshold:.4}).observe&&document.querySelectorAll('section[id]').forEach(s=>{
-    new IntersectionObserver(entries=>{
-      if(entries[0].isIntersecting){
-        links.forEach(l=>l.classList.remove('active'));
-        const a=document.querySelector('.nav-links a[href="#'+s.id+'"]');
-        if(a)a.classList.add('active');
-      }
-    },{threshold:.4}).observe(s);
+    }, {threshold: 0.4}).observe(section);
   });
 })();
 
