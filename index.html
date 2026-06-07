@@ -789,11 +789,15 @@ section{position:relative;z-index:2;padding:130px 24px}
   font-family:'Space Mono',monospace;
   transition:color .25s,letter-spacing .25s;
 
-  /* fix chevauchement anciennes règles */
+  /* fix chevauchement et alignement */
   position:static;
   top:auto;
   left:auto;
   transform:none;
+
+  /* réserve la hauteur d’un label sur 2 lignes pour aligner les inputs */
+  display:block;
+  min-height:1.8em;
 }
 .form-group:focus-within label{color:var(--accent3);letter-spacing:.22em}
 .form-group input,
