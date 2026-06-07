@@ -782,8 +782,18 @@ section{position:relative;z-index:2;padding:130px 24px}
 .form-group{display:flex;flex-direction:column;gap:10px;position:relative}
 .form-group.full{grid-column:1/-1}
 .form-group label{
-  font-size:.68rem;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);
-  font-family:'Space Mono',monospace;transition:color .25s,letter-spacing .25s;
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  color:var(--accent);
+  font-family:'Space Mono',monospace;
+  transition:color .25s,letter-spacing .25s;
+
+  /* fix chevauchement anciennes règles */
+  position:static;
+  top:auto;
+  left:auto;
+  transform:none;
 }
 .form-group:focus-within label{color:var(--accent3);letter-spacing:.22em}
 .form-group input,
