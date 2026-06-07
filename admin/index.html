@@ -134,159 +134,240 @@ tr:hover td{background:rgba(251,191,36,.02)}
 .t-btn-pending:hover{background:rgba(96,165,250,.2);border-color:#93c5fd}
 .tickets-empty{text-align:center;padding:60px 20px;color:var(--muted);font-family:'Space Mono',monospace;font-size:.85rem}
 
-/* ══════════════════════════════════════════
-   TICKET CREATE PANEL — PREMIUM
-══════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   TICKET CREATE PANEL — PREMIUM v2
+   Studio-grade · Dark · Élégant · Fluide
+══════════════════════════════════════════════════════════════ */
+
 .ticket-create-wrap {
   margin-bottom: 28px;
 }
 
+/* ── Toggle button ── */
 .ticket-create-toggle {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 18px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  color: var(--muted);
-  font-size: .78rem;
+  gap: 9px;
+  padding: 9px 18px 9px 12px;
+  background: rgba(251,191,36,.03);
+  border: 1px solid rgba(251,191,36,.15);
+  border-radius: 8px;
+  color: rgba(232,228,212,.5);
+  font-size: .75rem;
   font-family: 'Space Mono', monospace;
-  letter-spacing: .08em;
+  letter-spacing: .09em;
   cursor: pointer;
-  transition: border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease);
+  transition:
+    border-color .22s var(--ease),
+    color .22s var(--ease),
+    background .22s var(--ease),
+    box-shadow .22s var(--ease);
 }
 .ticket-create-toggle:hover {
-  border-color: rgba(251,191,36,.4);
+  border-color: rgba(251,191,36,.36);
   color: var(--accent);
-  background: rgba(251,191,36,.04);
+  background: rgba(251,191,36,.06);
+  box-shadow: 0 4px 18px rgba(251,191,36,.08);
+}
+.ticket-create-toggle.open {
+  border-color: rgba(251,191,36,.32);
+  color: var(--accent);
+  background: rgba(251,191,36,.055);
+}
+
+/* Icône encadrée dans le toggle */
+.ticket-create-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: rgba(251,191,36,.1);
+  border: 1px solid rgba(251,191,36,.2);
+  flex-shrink: 0;
+  transition: background .22s var(--ease), border-color .22s var(--ease), box-shadow .22s var(--ease);
+}
+.ticket-create-toggle:hover .ticket-create-toggle-icon,
+.ticket-create-toggle.open .ticket-create-toggle-icon {
+  background: rgba(251,191,36,.16);
+  border-color: rgba(251,191,36,.35);
+  box-shadow: 0 0 8px rgba(251,191,36,.12) inset;
 }
 .ticket-create-toggle svg {
-  transition: transform .35s var(--ease);
+  transition: transform .38s var(--ease);
   flex-shrink: 0;
+  color: var(--accent);
 }
 .ticket-create-toggle.open svg {
   transform: rotate(45deg);
 }
+
+/* Dot animé */
 .ticket-create-toggle-dot {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--accent);
-  opacity: .5;
+  opacity: .35;
   margin-left: 2px;
-  transition: opacity .2s;
+  flex-shrink: 0;
+  transition: opacity .2s, transform .25s var(--ease);
 }
-.ticket-create-toggle:hover .ticket-create-toggle-dot {
+.ticket-create-toggle:hover .ticket-create-toggle-dot,
+.ticket-create-toggle.open .ticket-create-toggle-dot {
   opacity: 1;
+  transform: scale(1.3);
 }
 
-/* Panel container */
+/* ── Panel container ── */
 .ticket-create-panel {
-  margin-top: 12px;
-  background: linear-gradient(145deg, rgba(18,16,10,.92) 0%, rgba(12,11,7,.96) 100%);
-  border: 1px solid rgba(251,191,36,.18);
-  border-radius: 10px;
+  position: relative;
+  margin-top: 10px;
+  background:
+    linear-gradient(150deg,
+      rgba(22,20,13,.97) 0%,
+      rgba(13,11,7,.99) 100%);
+  border: 1px solid rgba(251,191,36,.14);
+  border-radius: 12px;
   overflow: hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow:
-    0 2px 4px rgba(0,0,0,.4),
-    0 12px 40px rgba(0,0,0,.5),
-    inset 0 1px 0 rgba(251,191,36,.07);
 
-  /* Animation collapsed → open */
+  /* Ambiance lumineuse en coins */
+  --panel-glow: rgba(251,191,36,.045);
+}
+.ticket-create-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 40% at 100% 0%, var(--panel-glow) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 30% at 0% 100%, rgba(251,191,36,.03) 0%, transparent 60%);
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+/* Animation collapse → open via grid-rows + translate */
+.ticket-create-panel {
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
+  transform: translateY(-8px);
   transition:
-    grid-template-rows .38s var(--ease),
-    opacity .3s var(--ease),
-    border-color .3s;
+    grid-template-rows .4s var(--ease),
+    opacity .32s var(--ease),
+    transform .32s var(--ease),
+    border-color .3s,
+    box-shadow .3s;
 }
 .ticket-create-panel.open {
   grid-template-rows: 1fr;
   opacity: 1;
-  border-color: rgba(251,191,36,.28);
+  transform: translateY(0);
+  border-color: rgba(251,191,36,.24);
+  box-shadow:
+    0 0 0 1px rgba(251,191,36,.05) inset,
+    0 2px 4px rgba(0,0,0,.5),
+    0 10px 36px rgba(0,0,0,.6),
+    0 28px 72px rgba(0,0,0,.38),
+    0 0 96px rgba(251,191,36,.035);
 }
 .ticket-create-inner {
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
-/* Panel header */
+/* ── Header ── */
 .tcp-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22px 28px 0;
+  padding: 24px 28px 0;
+  gap: 12px;
 }
 .tcp-header-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 .tcp-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  background: rgba(251,191,36,.1);
-  border: 1px solid rgba(251,191,36,.2);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(251,191,36,.07);
+  border: 1px solid rgba(251,191,36,.18);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow:
+    0 2px 8px rgba(251,191,36,.07),
+    inset 0 1px 0 rgba(251,191,36,.1),
+    inset 0 0 12px rgba(251,191,36,.04);
 }
 .tcp-icon svg { color: var(--accent); }
 .tcp-title {
   font-family: 'Space Mono', monospace;
-  font-size: .75rem;
+  font-size: .77rem;
   font-weight: 700;
   color: var(--text);
   letter-spacing: .08em;
   text-transform: uppercase;
+  line-height: 1.2;
 }
 .tcp-subtitle {
-  font-size: .72rem;
-  color: var(--muted);
-  margin-top: 1px;
+  font-size: .7rem;
+  color: rgba(232,228,212,.32);
+  margin-top: 2px;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: .01em;
 }
 .tcp-badge {
   font-family: 'Space Mono', monospace;
-  font-size: .63rem;
-  padding: 3px 9px;
+  font-size: .58rem;
+  padding: 4px 10px;
   border-radius: 100px;
-  background: rgba(251,191,36,.08);
-  border: 1px solid rgba(251,191,36,.18);
-  color: rgba(251,191,36,.6);
-  letter-spacing: .06em;
+  background: rgba(251,191,36,.06);
+  border: 1px solid rgba(251,191,36,.15);
+  color: rgba(251,191,36,.5);
+  letter-spacing: .12em;
+  flex-shrink: 0;
 }
 
-/* Divider */
+/* ── Divider ── */
 .tcp-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(251,191,36,.12) 30%, rgba(251,191,36,.12) 70%, transparent);
-  margin: 20px 28px 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(251,191,36,.09) 18%,
+    rgba(251,191,36,.13) 50%,
+    rgba(251,191,36,.09) 82%,
+    transparent 100%
+  );
+  margin: 22px 28px 0;
 }
 
-/* Form body */
+/* ── Form body ── */
 .tcp-form {
   padding: 22px 28px 28px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
-/* Row layouts */
+/* Row layout */
 .tcp-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 16px;
 }
 @media(max-width:600px) {
   .tcp-row { grid-template-columns: 1fr; }
 }
 
-/* Field group */
+/* ── Field group ── */
 .tcp-field {
   display: flex;
   flex-direction: column;
@@ -294,208 +375,242 @@ tr:hover td{background:rgba(251,191,36,.02)}
 }
 .tcp-label {
   font-family: 'Space Mono', monospace;
-  font-size: .65rem;
+  font-size: .62rem;
   text-transform: uppercase;
-  letter-spacing: .16em;
-  color: rgba(232,228,212,.45);
+  letter-spacing: .17em;
+  color: rgba(232,228,212,.37);
   display: flex;
   align-items: center;
   gap: 5px;
-  transition: color .2s;
+  transition: color .22s var(--ease);
+  user-select: none;
 }
 .tcp-label-required {
-  color: rgba(251,191,36,.5);
-  font-size: .6rem;
+  color: rgba(251,191,36,.42);
+  font-size: .56rem;
+  line-height: 1;
+  transition: color .22s var(--ease);
 }
 .tcp-field:focus-within .tcp-label {
-  color: rgba(251,191,36,.8);
+  color: rgba(251,191,36,.78);
+}
+.tcp-field:focus-within .tcp-label-required {
+  color: rgba(251,191,36,.72);
 }
 
-/* Inputs & textarea */
+/* ── Inputs & Textarea ── */
 .tcp-input,
 .tcp-textarea {
   width: 100%;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: 7px;
+  background: rgba(255,255,255,.022);
+  border: 1px solid rgba(255,255,255,.055);
+  border-radius: 8px;
   color: var(--text);
   font-family: 'Space Grotesk', sans-serif;
-  font-size: .88rem;
-  padding: 11px 14px;
-  transition:
-    border-color .2s var(--ease),
-    box-shadow .2s var(--ease),
-    background .2s var(--ease);
+  font-size: .875rem;
+  padding: 12px 15px;
   outline: none;
+  transition:
+    border-color .22s var(--ease),
+    background .22s var(--ease),
+    box-shadow .22s var(--ease);
 }
 .tcp-input::placeholder,
 .tcp-textarea::placeholder {
-  color: rgba(232,228,212,.22);
+  color: rgba(232,228,212,.17);
 }
 .tcp-input:hover,
 .tcp-textarea:hover {
   border-color: rgba(251,191,36,.2);
-  background: rgba(255,255,255,.04);
+  background: rgba(255,255,255,.032);
 }
 .tcp-input:focus,
 .tcp-textarea:focus {
-  border-color: rgba(251,191,36,.5);
-  background: rgba(251,191,36,.03);
+  border-color: rgba(251,191,36,.48);
+  background: rgba(251,191,36,.022);
   box-shadow:
     0 0 0 3px rgba(251,191,36,.07),
-    0 1px 8px rgba(251,191,36,.06);
+    0 1px 10px rgba(251,191,36,.055),
+    inset 0 1px 0 rgba(251,191,36,.045);
 }
 .tcp-input.error,
 .tcp-textarea.error {
-  border-color: rgba(239,68,68,.5);
+  border-color: rgba(239,68,68,.48);
   box-shadow: 0 0 0 3px rgba(239,68,68,.07);
 }
 .tcp-textarea {
   resize: vertical;
-  min-height: 92px;
-  line-height: 1.6;
+  min-height: 100px;
+  line-height: 1.65;
 }
 
-/* Chips selector (type + priority) */
+/* ── Chips ── */
 .tcp-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 6px;
 }
 .tcp-chip {
-  padding: 6px 13px;
+  padding: 6px 14px;
   border-radius: 100px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.03);
-  color: rgba(232,228,212,.45);
-  font-size: .73rem;
+  border: 1px solid rgba(255,255,255,.065);
+  background: rgba(255,255,255,.022);
+  color: rgba(232,228,212,.37);
+  font-size: .71rem;
   font-family: 'Space Mono', monospace;
-  letter-spacing: .05em;
+  letter-spacing: .06em;
   cursor: pointer;
   transition:
     border-color .18s var(--ease),
     color .18s var(--ease),
     background .18s var(--ease),
-    transform .15s var(--ease),
+    transform .18s var(--ease),
     box-shadow .18s var(--ease);
   user-select: none;
+  outline: none;
 }
 .tcp-chip:hover {
-  border-color: rgba(251,191,36,.3);
-  color: rgba(232,228,212,.8);
-  background: rgba(251,191,36,.05);
+  border-color: rgba(251,191,36,.28);
+  color: rgba(232,228,212,.75);
+  background: rgba(251,191,36,.055);
   transform: translateY(-1px);
 }
+.tcp-chip:active {
+  transform: translateY(0) scale(.97);
+  transition-duration: .1s;
+}
+.tcp-chip:focus-visible {
+  outline: 2px solid rgba(251,191,36,.5);
+  outline-offset: 2px;
+}
 .tcp-chip.selected {
-  border-color: rgba(251,191,36,.55);
-  background: rgba(251,191,36,.1);
+  border-color: rgba(251,191,36,.52);
+  background: rgba(251,191,36,.09);
   color: var(--accent);
-  box-shadow: 0 2px 10px rgba(251,191,36,.12);
+  box-shadow: 0 2px 12px rgba(251,191,36,.1), inset 0 1px 0 rgba(251,191,36,.06);
 }
 .tcp-chip.selected:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(251,191,36,.18);
+  box-shadow: 0 4px 18px rgba(251,191,36,.16);
 }
 
-/* Priority chips coloring */
-.tcp-chip[data-priority="low"].selected  { border-color:rgba(34,197,94,.5); background:rgba(34,197,94,.08); color:var(--success); box-shadow:0 2px 10px rgba(34,197,94,.1); }
-.tcp-chip[data-priority="medium"].selected { border-color:rgba(251,191,36,.55); background:rgba(251,191,36,.1); color:var(--accent); }
-.tcp-chip[data-priority="high"].selected  { border-color:rgba(239,68,68,.5); background:rgba(239,68,68,.08); color:var(--error); box-shadow:0 2px 10px rgba(239,68,68,.1); }
+/* Priority chip colors */
+.tcp-chip[data-priority="low"].selected  { border-color:rgba(34,197,94,.45);  background:rgba(34,197,94,.075); color:var(--success); box-shadow:0 2px 12px rgba(34,197,94,.1); }
+.tcp-chip[data-priority="medium"].selected { border-color:rgba(251,191,36,.52); background:rgba(251,191,36,.09);  color:var(--accent); }
+.tcp-chip[data-priority="high"].selected { border-color:rgba(239,68,68,.45);  background:rgba(239,68,68,.075); color:var(--error);   box-shadow:0 2px 12px rgba(239,68,68,.1); }
 
-/* Helper text */
+/* ── Helper & error ── */
 .tcp-help {
-  font-size: .68rem;
-  color: rgba(232,228,212,.25);
-  margin-top: 2px;
+  font-size: .67rem;
+  color: rgba(232,228,212,.2);
   font-family: 'Space Grotesk', sans-serif;
   line-height: 1.5;
+  transition: color .2s;
+}
+.tcp-field:focus-within .tcp-help {
+  color: rgba(232,228,212,.3);
 }
 .tcp-error-msg {
-  font-size: .68rem;
+  font-size: .67rem;
   color: #fca5a5;
-  margin-top: 2px;
   display: none;
+  animation: tcp-err-in .2s var(--ease) both;
 }
 .tcp-error-msg.show { display: block; }
+@keyframes tcp-err-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-/* Submit area */
+/* ── Footer ── */
 .tcp-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding-top: 6px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.038);
   flex-wrap: wrap;
 }
 .tcp-footer-hint {
-  font-size: .7rem;
-  color: rgba(232,228,212,.2);
+  font-size: .62rem;
+  color: rgba(232,228,212,.17);
   font-family: 'Space Mono', monospace;
+  letter-spacing: .06em;
 }
 
+/* ── Submit button ── */
 .tcp-submit {
   position: relative;
-  padding: 12px 28px;
+  padding: 11px 26px;
   background: var(--accent);
-  color: #000;
+  color: #080700;
   border: none;
-  border-radius: 7px;
+  border-radius: 8px;
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: .88rem;
+  font-size: .85rem;
   letter-spacing: .04em;
   cursor: pointer;
   overflow: hidden;
-  transition:
-    transform .2s var(--ease),
-    box-shadow .2s var(--ease),
-    background .2s;
   display: flex;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
+  transition:
+    transform .22s var(--ease),
+    box-shadow .22s var(--ease),
+    background .22s;
+  box-shadow:
+    0 2px 8px rgba(251,191,36,.2),
+    inset 0 1px 0 rgba(255,255,255,.22);
 }
+/* Gloss overlay */
 .tcp-submit::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,.15) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(255,255,255,.2) 0%, transparent 52%);
   opacity: 0;
-  transition: opacity .2s;
+  transition: opacity .22s;
+  border-radius: inherit;
 }
 .tcp-submit:hover {
   transform: translateY(-2px);
   box-shadow:
-    0 8px 24px rgba(251,191,36,.3),
-    0 2px 6px rgba(251,191,36,.2);
+    0 6px 22px rgba(251,191,36,.3),
+    0 2px 6px rgba(251,191,36,.22),
+    inset 0 1px 0 rgba(255,255,255,.22);
 }
 .tcp-submit:hover::before { opacity: 1; }
 .tcp-submit:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(251,191,36,.2);
+  transform: translateY(0) scale(.98);
+  box-shadow: 0 2px 8px rgba(251,191,36,.15), inset 0 1px 0 rgba(255,255,255,.15);
+  transition-duration: .1s;
 }
 .tcp-submit:disabled {
-  opacity: .5;
+  opacity: .44;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
-.tcp-submit-icon { flex-shrink: 0; transition: transform .2s var(--ease); }
-.tcp-submit:hover .tcp-submit-icon { transform: translateX(2px); }
-
-/* Success flash */
+.tcp-submit-icon {
+  flex-shrink: 0;
+  transition: transform .22s var(--ease);
+}
+.tcp-submit:not(:disabled):hover .tcp-submit-icon { transform: translateX(3px); }
 .tcp-submit.success {
   background: var(--success);
-  box-shadow: 0 8px 24px rgba(34,197,94,.25);
+  box-shadow: 0 6px 24px rgba(34,197,94,.26);
 }
 
-/* Ripple */
+/* ── Ripple ── */
 .tcp-ripple {
   position: absolute;
   border-radius: 50%;
-  background: rgba(0,0,0,.2);
+  background: rgba(0,0,0,.18);
   transform: scale(0);
-  animation: ripple-anim .5s linear;
+  animation: ripple-anim .55s linear;
   pointer-events: none;
 }
 @keyframes ripple-anim {
@@ -659,10 +774,12 @@ tr:hover td{background:rgba(251,191,36,.02)}
     <!-- TAB: TICKETS -->
     <div class="tab-content" id="tab-tickets">
 
-      <!-- ═══ PANEL CRÉATION TICKET PREMIUM ═══ -->
+      <!-- ═══ PANEL CRÉATION TICKET PREMIUM v2 ═══ -->
       <div class="ticket-create-wrap">
         <button class="ticket-create-toggle" id="tcToggle" aria-expanded="false" aria-controls="tcPanel">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span class="ticket-create-toggle-icon">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </span>
           Créer un ticket
           <span class="ticket-create-toggle-dot"></span>
         </button>
@@ -674,7 +791,7 @@ tr:hover td{background:rgba(251,191,36,.02)}
             <div class="tcp-header">
               <div class="tcp-header-left">
                 <div class="tcp-icon">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
                 </div>
                 <div>
                   <div class="tcp-title">Nouveau ticket</div>
@@ -1115,7 +1232,7 @@ function initCreatePanel() {
     toggle.classList.toggle('open', isOpen);
     toggle.setAttribute('aria-expanded', isOpen);
     if (isOpen) {
-      setTimeout(() => document.getElementById('tcName').focus(), 320);
+      setTimeout(() => document.getElementById('tcName').focus(), 340);
     }
   });
 
