@@ -1,1 +1,626 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — yonn_ix</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#000;
+      --surface:#0b0b0b;
+      --surface2:#111;
+      --border:rgba(251,191,36,.15);
+      --border-soft:rgba(251,191,36,.08);
+      --text:#e8e4d4;
+      --muted:rgba(232,228,212,.55);
+      --accent:#fbbf24;
+      --accent2:#f59e0b;
+      --danger:#f97373;
+      --radius:10px;
+      --radius-sm:6px;
+      --ease:cubic-bezier(0.16,1,0.3,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-family:'Space Grotesk',sans-serif;-webkit-font-smoothing:antialiased;background:#000;color:var(--text)}
+    body{
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top,#111,#000),
+        radial-gradient(circle at 120% 0,#1a0f00,#000);
+      color:var(--text);
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:40px 16px 60px;
+    }
+    a{text-decoration:none;color:inherit}
+
+    .shell{
+      width:100%;
+      max-width:1120px;
+    }
+    .top-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:28px;
+      gap:12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-family:'Space Mono',monospace;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.7rem;
+      color:var(--muted);
+    }
+    .brand span{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,.3);
+      background:rgba(0,0,0,.8);
+      color:var(--accent);
+    }
+    .brand small{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,.12);
+      background:rgba(0,0,0,.7);
+      color:var(--muted);
+    }
+    .back-link{
+      font-family:'Space Mono',monospace;
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,.2);
+      background:rgba(0,0,0,.7);
+      color:rgba(232,228,212,.7);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease),color .25s var(--ease);
+    }
+    .back-link:hover{
+      border-color:var(--accent);
+      background:rgba(251,191,36,.08);
+      transform:translateY(-2px);
+      color:var(--accent);
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:280px minmax(0,1fr);
+      gap:18px;
+    }
+    @media(max-width:900px){
+      .layout{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:rgba(0,0,0,.8);
+      border-radius:var(--radius);
+      border:1px solid rgba(251,191,36,.17);
+      box-shadow:0 24px 60px rgba(0,0,0,.6);
+      padding:20px 18px;
+    }
+
+    /* LOGIN */
+    .card-login h2{
+      font-size:1rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      font-family:'Space Mono',monospace;
+      margin-bottom:16px;
+      color:var(--accent);
+    }
+    .field{
+      margin-bottom:14px;
+    }
+    .field label{
+      display:block;
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-family:'Space Mono',monospace;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .field input{
+      width:100%;
+      padding:10px 11px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(251,191,36,.25);
+      background:#050505;
+      color:var(--text);
+      font-size:.9rem;
+      font-family:inherit;
+      outline:none;
+      transition:border-color .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease);
+    }
+    .field input:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 1px rgba(251,191,36,.35);
+      background:#020202;
+    }
+    .hint{
+      font-size:.78rem;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 18px;
+      border-radius:999px;
+      border:1px solid transparent;
+      font-size:.82rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-family:'Space Mono',monospace;
+      cursor:pointer;
+      transition:background .25s var(--ease),border-color .25s var(--ease),transform .2s var(--ease),box-shadow .25s var(--ease),color .25s var(--ease);
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#000;
+      border-color:var(--accent2);
+      box-shadow:0 18px 40px rgba(251,191,36,.35);
+      width:100%;
+      justify-content:center;
+      margin-top:6px;
+    }
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 24px 60px rgba(251,191,36,.4);
+    }
+    .btn-ghost{
+      background:transparent;
+      color:var(--muted);
+      border-color:rgba(251,191,36,.25);
+    }
+    .btn-ghost:hover{
+      color:var(--accent);
+      border-color:var(--accent);
+      background:rgba(251,191,36,.08);
+      transform:translateY(-1px);
+    }
+    .status{
+      margin-top:8px;
+      font-size:.78rem;
+    }
+    .status.ok{color:#22c55e}
+    .status.error{color:var(--danger)}
+
+    /* PANEL */
+    .card-panel{
+      min-height:320px;
+    }
+    .panel-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:10px;
+      margin-bottom:14px;
+    }
+    .panel-header h1{
+      font-size:1.35rem;
+      letter-spacing:-.03em;
+    }
+    .panel-header p{
+      font-size:.78rem;
+      color:var(--muted);
+      max-width:34ch;
+    }
+    .pill-status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,.25);
+      background:rgba(0,0,0,.8);
+      font-size:.72rem;
+      font-family:'Space Mono',monospace;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      color:var(--muted);
+    }
+    .pill-dot{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:#22c55e;
+      box-shadow:0 0 12px rgba(34,197,94,.8);
+    }
+
+    .tickets-empty{
+      font-size:.86rem;
+      color:var(--muted);
+      padding:16px 0;
+    }
+
+    .tickets-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.82rem;
+      margin-top:6px;
+    }
+    .tickets-table thead{
+      background:rgba(251,191,36,.06);
+    }
+    .tickets-table th,
+    .tickets-table td{
+      padding:8px 10px;
+      border-bottom:1px solid rgba(251,191,36,.16);
+      vertical-align:top;
+    }
+    .tickets-table th{
+      text-align:left;
+      font-family:'Space Mono',monospace;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.7rem;
+      color:rgba(232,228,212,.7);
+      white-space:nowrap;
+    }
+    .tickets-table tbody tr:hover{
+      background:rgba(251,191,36,.03);
+    }
+    .badge-status{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,.18);
+      font-size:.7rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-family:'Space Mono',monospace;
+    }
+    .badge-status[data-status="open"]{
+      color:#22c55e;
+      border-color:rgba(34,197,94,.5);
+      background:rgba(22,163,74,.08);
+    }
+    .badge-status[data-status="pending"]{
+      color:#eab308;
+      border-color:rgba(234,179,8,.6);
+      background:rgba(202,138,4,.1);
+    }
+    .badge-status[data-status="closed"]{
+      color:#f97373;
+      border-color:rgba(248,113,113,.6);
+      background:rgba(127,29,29,.25);
+    }
+    .badge-status-dot{
+      width:6px;height:6px;border-radius:50%;background:currentColor;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+    }
+    .actions select{
+      background:#050505;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,.25);
+      color:var(--text);
+      padding:5px 9px;
+      font-size:.78rem;
+      font-family:'Space Mono',monospace;
+      outline:none;
+    }
+    .btn-mini{
+      padding:5px 9px;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,.25);
+      background:rgba(0,0,0,.9);
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-family:'Space Mono',monospace;
+      cursor:pointer;
+      color:var(--muted);
+      transition:background .2s var(--ease),border-color .2s var(--ease),color .2s var(--ease),transform .15s var(--ease);
+    }
+    .btn-mini:hover{
+      background:rgba(251,191,36,.09);
+      border-color:var(--accent);
+      color:var(--accent);
+      transform:translateY(-1px);
+    }
+    .btn-mini.danger:hover{
+      border-color:var(--danger);
+      color:var(--danger);
+      background:rgba(248,113,113,.08);
+    }
+
+    .small{
+      font-size:.76rem;
+      color:var(--muted);
+    }
+    .ticket-meta{
+      font-size:.74rem;
+      color:var(--muted);
+      margin-top:4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="top-bar">
+      <div class="brand">
+        <span>yonn_ix</span>
+        <small>Panel admin</small>
+      </div>
+      <a href="/" class="back-link">
+        <span>←</span>
+        <span>Retour au site</span>
+      </a>
+    </header>
+
+    <main class="layout">
+      <!-- Colonne login -->
+      <section class="card card-login">
+        <h2>Connexion</h2>
+        <p class="small" style="margin-bottom:14px">
+          Saisis le mot de passe admin pour déverrouiller le panel et gérer les tickets.
+        </p>
+
+        <form id="login-form">
+          <div class="field">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" autocomplete="current-password" required>
+            <p class="hint">Protège ce lien, ce panel n'est pas indexé publiquement.</p>
+          </div>
+          <button type="submit" class="btn btn-primary">Se connecter</button>
+        </form>
+
+        <button id="logout-btn" class="btn btn-ghost" style="margin-top:10px; display:none;">
+          Se déconnecter
+        </button>
+
+        <p id="login-status" class="status"></p>
+      </section>
+
+      <!-- Colonne panel -->
+      <section class="card card-panel" id="panel" style="opacity:.35; pointer-events:none;">
+        <div class="panel-header">
+          <div>
+            <h1>Tickets de contact</h1>
+            <p id="panel-sub">Connecte-toi pour charger les derniers tickets.</p>
+          </div>
+          <div class="pill-status" id="pill-connection">
+            <span class="pill-dot"></span>
+            <span id="pill-text">Verrouillé</span>
+          </div>
+        </div>
+
+        <div id="tickets-container">
+          <p class="tickets-empty">
+            Panel verrouillé. Connecte-toi à gauche pour afficher et gérer les tickets reçus depuis ton formulaire de contact.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+    const loginForm = document.getElementById('login-form');
+    const passwordInput = document.getElementById('password');
+    const loginStatus = document.getElementById('login-status');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    const panel = document.getElementById('panel');
+    const panelSub = document.getElementById('panel-sub');
+    const ticketsContainer = document.getElementById('tickets-container');
+    const pillText = document.getElementById('pill-text');
+
+    const STORAGE_KEY = 'yonnix_admin_ok';
+
+    function setPanelLocked(locked){
+      if(locked){
+        panel.style.opacity = '.35';
+        panel.style.pointerEvents = 'none';
+        pillText.textContent = 'Verrouillé';
+        panelSub.textContent = 'Connecte-toi pour charger les derniers tickets.';
+        ticketsContainer.innerHTML =
+          '<p class="tickets-empty">Panel verrouillé. Connecte-toi à gauche pour afficher et gérer les tickets reçus.</p>';
+        logoutBtn.style.display = 'none';
+      }else{
+        panel.style.opacity = '1';
+        panel.style.pointerEvents = 'auto';
+        pillText.textContent = 'Connecté';
+        logoutBtn.style.display = 'inline-flex';
+        fetchTickets();
+      }
+    }
+
+    async function login(password){
+      try{
+        const res = await fetch(API_BASE + '/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+        const data = await res.json().catch(() => ({}));
+        return res.ok && data.ok;
+      }catch(e){
+        console.error(e);
+        return false;
+      }
+    }
+
+    async function fetchTickets(){
+      panelSub.textContent = 'Chargement des tickets...';
+      ticketsContainer.innerHTML = '<p class="tickets-empty">Chargement…</p>';
+
+      try{
+        const res = await fetch(API_BASE + '/tickets');
+        const tickets = await res.json();
+
+        if(!Array.isArray(tickets) || tickets.length === 0){
+          ticketsContainer.innerHTML =
+            '<p class="tickets-empty">Aucun ticket pour le moment. Dès qu’un visiteur envoie le formulaire, il apparaîtra ici.</p>';
+          panelSub.textContent = 'Aucun ticket pour le moment.';
+          return;
+        }
+
+        panelSub.textContent = tickets.length + ' ticket(s) chargé(s).';
+
+        const rows = tickets.map(t => {
+          const created = t.createdAt ? new Date(t.createdAt).toLocaleString('fr-FR') : '—';
+          return `
+            <tr data-id="${t.id}">
+              <td>
+                <div class="badge-status" data-status="${t.status || 'open'}">
+                  <span class="badge-status-dot"></span>
+                  <span>${(t.status || 'open').toUpperCase()}</span>
+                </div>
+              </td>
+              <td>
+                <strong>${t.email || '—'}</strong>
+                <div class="ticket-meta">
+                  ${t.service || 'Service non précisé'}
+                </div>
+              </td>
+              <td>
+                <div class="small">${(t.message || '').replace(/</g,'&lt;')}</div>
+                <div class="ticket-meta">Créé : ${created}</div>
+              </td>
+              <td>
+                <div class="actions">
+                  <select class="status-select">
+                    <option value="open"   ${t.status === 'open'   ? 'selected' : ''}>Ouvert</option>
+                    <option value="pending"${t.status === 'pending'? 'selected' : ''}>En cours</option>
+                    <option value="closed" ${t.status === 'closed' ? 'selected' : ''}>Fermé</option>
+                  </select>
+                  <button type="button" class="btn-mini btn-update">Mettre à jour</button>
+                  <button type="button" class="btn-mini danger btn-delete">Supprimer</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        ticketsContainer.innerHTML = `
+          <table class="tickets-table">
+            <thead>
+              <tr>
+                <th>Statut</th>
+                <th>Contact</th>
+                <th>Message</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+
+        bindTicketActions();
+      }catch(e){
+        console.error(e);
+        ticketsContainer.innerHTML =
+          '<p class="tickets-empty">Erreur de chargement des tickets. Vérifie l’API /api/tickets.</p>';
+        panelSub.textContent = 'Erreur lors du chargement des tickets.';
+      }
+    }
+
+    function bindTicketActions(){
+      ticketsContainer.querySelectorAll('.btn-update').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const tr = btn.closest('tr');
+          const id = tr.dataset.id;
+          const select = tr.querySelector('.status-select');
+          const status = select.value;
+          try{
+            const res = await fetch(API_BASE + '/tickets', {
+              method: 'PATCH',
+              headers: { 'Content-Type':'application/json' },
+              body: JSON.stringify({ id, status })
+            });
+            if(res.ok){
+              const badge = tr.querySelector('.badge-status');
+              badge.dataset.status = status;
+            }
+          }catch(e){ console.error(e); }
+        });
+      });
+
+      ticketsContainer.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const tr = btn.closest('tr');
+          const id = tr.dataset.id;
+          if(!confirm('Supprimer ce ticket ?')) return;
+          try{
+            const res = await fetch(API_BASE + '/tickets', {
+              method: 'DELETE',
+              headers: { 'Content-Type':'application/json' },
+              body: JSON.stringify({ id })
+            });
+            if(res.ok){
+              tr.remove();
+            }
+          }catch(e){ console.error(e); }
+        });
+      });
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pwd = passwordInput.value.trim();
+      if(!pwd) return;
+
+      loginStatus.textContent = 'Vérification…';
+      loginStatus.className = 'status';
+
+      const ok = await login(pwd);
+      if(ok){
+        loginStatus.textContent = 'Connecté.';
+        loginStatus.className = 'status ok';
+        localStorage.setItem(STORAGE_KEY, '1');
+        setPanelLocked(false);
+      }else{
+        loginStatus.textContent = 'Mot de passe incorrect.';
+        loginStatus.className = 'status error';
+        setPanelLocked(true);
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem(STORAGE_KEY);
+      passwordInput.value = '';
+      loginStatus.textContent = 'Déconnecté.';
+      loginStatus.className = 'status';
+      setPanelLocked(true);
+    });
+
+    // Auto-login si déjà validé dans ce navigateur
+    (function init(){
+      const ok = localStorage.getItem(STORAGE_KEY) === '1';
+      setPanelLocked(!ok);
+      if(ok){
+        loginStatus.textContent = 'Session admin restaurée.';
+        loginStatus.className = 'status ok';
+      }
+    })();
+  </script>
+</body>
+</html>
