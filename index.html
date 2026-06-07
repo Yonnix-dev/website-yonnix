@@ -766,7 +766,7 @@ section{position:relative;z-index:2;padding:130px 24px}
 
 /* ── FORM ── */
 .form-wrap{
-  background:var(--surface);border:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));border:1px solid rgba(251,191,36,.16);
   padding:64px;margin-top:3px;border-radius:var(--radius);
   transition:border-color .35s var(--ease),box-shadow .35s var(--ease);
   position:relative;overflow:hidden;
@@ -777,7 +777,7 @@ section{position:relative;z-index:2;padding:130px 24px}
   background:linear-gradient(90deg,transparent,rgba(251,191,36,.18),transparent);
 }
 .form-wrap:hover{border-color:rgba(251,191,36,.2);box-shadow:0 0 80px rgba(251,191,36,.04)}
-.form-title{font-size:1.9rem;font-weight:700;margin-bottom:44px;letter-spacing:-.03em}
+.form-title{font-size:2.2rem;font-weight:700;margin-bottom:12px;letter-spacing:-.03em;text-align:center}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .form-group{display:flex;flex-direction:column;gap:10px;position:relative}
 .form-group.full{grid-column:1/-1}
@@ -1272,7 +1272,7 @@ footer::after{
     </div>
 
     <div class="form-wrap reveal" id="contact">
-      <h3 class="form-title">Ouvrir un ticket 🎫</h3>
+      <h3 class="form-title">Ouvrir un ticket 🎫</h3><p style="text-align:center;color:var(--muted);margin-bottom:36px">Décris ton projet et reçois une réponse rapidement.</p>
       <form id="ticketForm">
         <div class="form-grid">
           <div class="form-group">
