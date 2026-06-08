@@ -21,169 +21,177 @@
   <link rel="stylesheet" href="/micro.css">
 
   <style>
+    /* angle animé pour le gradient global */
+    @property --grad-angle {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg;
+    }
+
     /* ══ HERO MON TRAVAIL ══ */
-.work-hero{
-  position:relative;
-  overflow:hidden;
-  padding:140px 24px 80px;
-}
-.work-hero-bg{
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at 0% 0%,rgba(251,191,36,.13),transparent 60%),
-    radial-gradient(circle at 100% 10%,rgba(96,165,250,.12),transparent 60%),
-    radial-gradient(circle at 50% 100%,rgba(251,191,36,.04),transparent 60%);
-  opacity:.9;
-  pointer-events:none;
-  filter:blur(26px);
-}
-.work-hero-inner{
-  position:relative;
-  max-width:1120px;
-  margin:0 auto;
-  display:grid;
-  grid-template-columns:minmax(0,1.3fr) minmax(280px,.9fr);
-  gap:36px;
-  align-items:flex-end;
-}
-.work-hero-header{
-  animation:work-fade-up .8s var(--ease) .05s both;
-}
-.work-hero-label{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  font-family:'Space Mono',monospace;
-  font-size:.68rem;
-  text-transform:uppercase;
-  letter-spacing:.28em;
-  color:var(--accent);
-  margin-bottom:18px;
-}
-.work-hero-label::before{
-  content:'';
-  width:40px;
-  height:1px;
-  background:linear-gradient(90deg,var(--accent),transparent);
-}
-.work-hero-title{
-  font-size:clamp(2.4rem,5vw,3.6rem);
-  letter-spacing:-.04em;
-  line-height:1.02;
-  margin:0 0 18px;
-}
-.work-hero-title span{
-  background:linear-gradient(135deg,var(--text),var(--accent));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.work-hero-text{
-  max-width:46ch;
-  font-size:.98rem;
-  color:var(--muted);
-  line-height:1.9;
-}
-.work-hero-chips{
-  margin-top:22px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.chip{
-  font-size:.75rem;
-  font-family:'Space Mono',monospace;
-  text-transform:uppercase;
-  letter-spacing:.16em;
-  padding:7px 14px;
-  border-radius:999px;
-  border:1px solid rgba(251,191,36,.28);
-  background:rgba(0,0,0,.75);
-  color:rgba(232,228,212,.8);
-  position:relative;
-  overflow:hidden;
-  cursor:default;
-}
-.chip::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(120deg,transparent 0%,rgba(251,191,36,.34) 50%,transparent 100%);
-  opacity:0;
-  transform:translateX(-120%);
-  transition:opacity .45s var(--ease),transform .45s var(--ease);
-}
-.chip:hover::after{
-  opacity:1;
-  transform:translateX(120%);
-}
+    .work-hero{
+      position:relative;
+      overflow:hidden;
+      padding:140px 24px 80px;
+    }
+    .work-hero-bg{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 0% 0%,rgba(251,191,36,.13),transparent 60%),
+        radial-gradient(circle at 100% 10%,rgba(96,165,250,.12),transparent 60%),
+        radial-gradient(circle at 50% 100%,rgba(251,191,36,.04),transparent 60%);
+      opacity:.9;
+      pointer-events:none;
+      filter:blur(26px);
+    }
+    .work-hero-inner{
+      position:relative;
+      max-width:1120px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:minmax(0,1.3fr) minmax(280px,.9fr);
+      gap:36px;
+      align-items:flex-end;
+    }
+    .work-hero-header{
+      animation:work-fade-up .8s var(--ease) .05s both;
+    }
+    .work-hero-label{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-family:'Space Mono',monospace;
+      font-size:.68rem;
+      text-transform:uppercase;
+      letter-spacing:.28em;
+      color:var(--accent);
+      margin-bottom:18px;
+    }
+    .work-hero-label::before{
+      content:'';
+      width:40px;
+      height:1px;
+      background:linear-gradient(90deg,var(--accent),transparent);
+    }
+    .work-hero-title{
+      font-size:clamp(2.4rem,5vw,3.6rem);
+      letter-spacing:-.04em;
+      line-height:1.02;
+      margin:0 0 18px;
+    }
+    .work-hero-title span{
+      background:linear-gradient(135deg,var(--text),var(--accent));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .work-hero-text{
+      max-width:46ch;
+      font-size:.98rem;
+      color:var(--muted);
+      line-height:1.9;
+    }
+    .work-hero-chips{
+      margin-top:22px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .chip{
+      font-size:.75rem;
+      font-family:'Space Mono',monospace;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      padding:7px 14px;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,.28);
+      background:rgba(0,0,0,.75);
+      color:rgba(232,228,212,.8);
+      position:relative;
+      overflow:hidden;
+      cursor:default;
+    }
+    .chip::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg,transparent 0%,rgba(251,191,36,.34) 50%,transparent 100%);
+      opacity:0;
+      transform:translateX(-120%);
+      transition:opacity .45s var(--ease),transform .45s var(--ease);
+    }
+    .chip:hover::after{
+      opacity:1;
+      transform:translateX(120%);
+    }
 
-/* stats */
-.work-hero-stats{
-  display:grid;
-  gap:10px;
-  animation:work-fade-up .9s var(--ease) .18s both;
-}
-.work-stat-card{
-  position:relative;
-  padding:16px 18px;
-  border-radius:12px;
-  border:1px solid rgba(251,191,36,.18);
-  background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,.9));
-  box-shadow:0 16px 40px rgba(0,0,0,.6);
-  overflow:hidden;
-}
-.work-stat-card::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle at 0% 0%,rgba(251,191,36,.18),transparent 60%);
-  opacity:.6;
-  pointer-events:none;
-  mix-blend-mode:soft-light;
-}
-.work-stat-label{
-  font-family:'Space Mono',monospace;
-  font-size:.68rem;
-  text-transform:uppercase;
-  letter-spacing:.22em;
-  color:rgba(232,228,212,.68);
-  margin-bottom:6px;
-}
-.work-stat-value{
-  font-size:1.4rem;
-  font-weight:700;
-  letter-spacing:-.02em;
-}
-.work-stat-hint{
-  margin-top:4px;
-  font-size:.8rem;
-  color:var(--muted);
-}
+    /* stats hero */
+    .work-hero-stats{
+      display:grid;
+      gap:10px;
+      animation:work-fade-up .9s var(--ease) .18s both;
+    }
+    .work-stat-card{
+      position:relative;
+      padding:16px 18px;
+      border-radius:12px;
+      border:1px solid rgba(251,191,36,.18);
+      background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,.9));
+      box-shadow:0 16px 40px rgba(0,0,0,.6);
+      overflow:hidden;
+    }
+    .work-stat-card::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 0% 0%,rgba(251,191,36,.18),transparent 60%);
+      opacity:.6;
+      pointer-events:none;
+      mix-blend-mode:soft-light;
+    }
+    .work-stat-label{
+      font-family:'Space Mono',monospace;
+      font-size:.68rem;
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      color:rgba(232,228,212,.68);
+      margin-bottom:6px;
+    }
+    .work-stat-value{
+      font-size:1.4rem;
+      font-weight:700;
+      letter-spacing:-.02em;
+    }
+    .work-stat-hint{
+      margin-top:4px;
+      font-size:.8rem;
+      color:var(--muted);
+    }
 
-/* petite animation d’arrivée */
-@keyframes work-fade-up{
-  from{opacity:0;transform:translateY(26px)}
-  to{opacity:1;transform:translateY(0)}
-}
+    /* anim entrée hero */
+    @keyframes work-fade-up{
+      from{opacity:0;transform:translateY(26px)}
+      to{opacity:1;transform:translateY(0)}
+    }
 
-/* responsive */
-@media(max-width:900px){
-  .work-hero{padding:110px 18px 60px}
-  .work-hero-inner{
-    grid-template-columns:1fr;
-    align-items:flex-start;
-  }
-  .work-hero-stats{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-  }
-}
-@media(max-width:640px){
-  .work-hero-stats{
-    grid-template-columns:1fr;
-  }
-}
+    /* responsive hero */
+    @media(max-width:900px){
+      .work-hero{padding:110px 18px 60px}
+      .work-hero-inner{
+        grid-template-columns:1fr;
+        align-items:flex-start;
+      }
+      .work-hero-stats{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+    }
+    @media(max-width:640px){
+      .work-hero-stats{
+        grid-template-columns:1fr;
+      }
+    }
+
     :root {
       --bg:#000000;
       --surface:#060606;
@@ -200,22 +208,95 @@
       --radius:6px;
       --radius-lg:12px;
     }
+
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
     body{
       font-family:'Space Grotesk',sans-serif;
-      background:radial-gradient(circle at top,#111,#000);
+      background:#020202;
       color:var(--text);
       min-height:100vh;
       overflow-x:hidden;
+      position:relative;
     }
+    /* couche aurora */
+    body::before{
+      content:'';
+      position:fixed;
+      inset:-25%;
+      z-index:-2;
+      background:conic-gradient(
+        from var(--grad-angle),
+        rgba(251,191,36,.12),
+        rgba(96,165,250,.10),
+        rgba(253,224,71,.08),
+        rgba(251,191,36,.14),
+        rgba(251,113,133,.12),
+        rgba(251,191,36,.12)
+      );
+      filter:blur(80px);
+      opacity:.85;
+      pointer-events:none;
+      animation:spin-bg 26s linear infinite;
+    }
+    /* couche grille */
+    body::after{
+      content:'';
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(251,191,36,.04) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(251,191,36,.04) 1px,transparent 1px);
+      background-size:80px 80px;
+      opacity:.28;
+      mix-blend-mode:soft-light;
+      animation:grid-shift 18s linear infinite;
+    }
+    @keyframes spin-bg{
+      from{ --grad-angle: 0deg; }
+      to  { --grad-angle: 360deg; }
+    }
+    @keyframes grid-shift{
+      from{ background-position:0 0,0 0; }
+      to  { background-position:80px 80px,80px 80px; }
+    }
+
     a{text-decoration:none;color:inherit}
     img{display:block;max-width:100%}
 
     .page-shell{
+      position:relative;
       max-width:1120px;
-      margin:0 auto;
-      padding:40px 20px 80px;
+      margin:40px auto 80px;
+      padding:32px 28px 48px;
+      border-radius:24px;
+      background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
+      border:1px solid rgba(251,191,36,.18);
+      box-shadow:0 30px 80px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.7);
+      backdrop-filter:blur(26px) saturate(160%);
+      -webkit-backdrop-filter:blur(26px) saturate(160%);
+      overflow:hidden;
+    }
+    .page-shell::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:8%;
+      right:8%;
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(251,191,36,.5),transparent);
+      opacity:.8;
+    }
+
+    @media(max-width:768px){
+      .page-shell{
+        margin:24px auto 48px;
+        padding:24px 16px 32px;
+        border-radius:18px;
+      }
     }
 
     .page-top{
@@ -264,68 +345,6 @@
       transform:translateY(-2px);
     }
 
-    .hero-work{
-      margin-top:40px;
-      display:grid;
-      grid-template-columns:minmax(0,1.35fr) minmax(0,.9fr);
-      gap:40px;
-      align-items:flex-end;
-    }
-    .hero-eyebrow{
-      font-family:'Space Mono',monospace;
-      font-size:.7rem;
-      text-transform:uppercase;
-      letter-spacing:.3em;
-      color:var(--accent);
-      margin-bottom:18px;
-    }
-    .hero-title{
-      font-size:clamp(2.4rem,4.4vw,3.6rem);
-      font-weight:700;
-      letter-spacing:-.04em;
-      line-height:1.05;
-      margin-bottom:20px;
-    }
-    .hero-title span{
-      background:linear-gradient(135deg,var(--text),var(--accent));
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      background-clip:text;
-    }
-    .hero-lead{
-      color:var(--muted);
-      font-size:.96rem;
-      line-height:1.9;
-      max-width:46ch;
-    }
-
-    .hero-aside{
-      display:flex;
-      flex-direction:column;
-      align-items:flex-end;
-      gap:16px;
-      text-align:right;
-    }
-    .hero-tagline{
-      font-size:.82rem;
-      color:var(--muted);
-      max-width:32ch;
-    }
-    .hero-pills{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      gap:8px;
-    }
-    .hero-pill{
-      padding:6px 12px;
-      border-radius:999px;
-      border:1px solid rgba(251,191,36,.16);
-      background:rgba(0,0,0,.7);
-      font-size:.72rem;
-      color:var(--faint);
-    }
-
     .section-label{
       font-family:'Space Mono',monospace;
       font-size:.64rem;
@@ -335,7 +354,7 @@
       display:flex;
       align-items:center;
       gap:14px;
-      margin:60px 0 18px;
+      margin:20px 0 18px;
     }
     .section-label::before{
       content:'';
@@ -676,16 +695,13 @@
     .preview-event .mock-pill:nth-child(4){right:18px;bottom:18px;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.12)}
 
     @media(max-width:900px){
-      .hero-work{grid-template-columns:1fr;align-items:flex-start}
-      .hero-aside{align-items:flex-start;text-align:left}
+      .page-top{flex-direction:column-reverse;align-items:flex-start}
       .work-proof{grid-template-columns:1fr}
       .work-category-inner{padding:22px}
       .work-cat-header{flex-direction:column;align-items:flex-start}
       .work-cat-note{text-align:left;max-width:48ch;margin-top:8px}
     }
     @media(max-width:640px){
-      .page-top{flex-direction:column-reverse;align-items:flex-start}
-      .hero-work{gap:26px}
       .work-grid{grid-template-columns:1fr}
       .work-card{min-height:240px;padding:18px}
       .work-tag{text-align:left;margin-top:8px}
@@ -706,50 +722,50 @@
     </header>
 
     <main>
-<section class="work-hero">
-  <div class="work-hero-bg"></div>
+      <section class="work-hero">
+        <div class="work-hero-bg"></div>
 
-  <div class="work-hero-inner">
-    <div class="work-hero-header">
-      <div class="work-hero-label">Mon travail</div>
-      <h1 class="work-hero-title">
-        Des projets<br>
-        <span>qui parlent d’eux‑mêmes</span>
-      </h1>
-      <p class="work-hero-text">
-        Une sélection de cas concrets pour montrer ce que je peux faire&nbsp;:
-        sites vitrine, boutiques en ligne, portfolios, dashboards, pages pour artistes
-        et bien plus. Tout est pensé pour être <strong>clair</strong>, <strong>lisible</strong> et <strong>efficace</strong>.
-      </p>
+        <div class="work-hero-inner">
+          <div class="work-hero-header">
+            <div class="work-hero-label">Mon travail</div>
+            <h1 class="work-hero-title">
+              Des projets<br>
+              <span>qui parlent d’eux‑mêmes</span>
+            </h1>
+            <p class="work-hero-text">
+              Une sélection de cas concrets pour montrer ce que je peux faire&nbsp;:
+              sites vitrine, boutiques en ligne, portfolios, dashboards, pages pour artistes
+              et bien plus. Tout est pensé pour être <strong>clair</strong>, <strong>lisible</strong> et <strong>efficace</strong>.
+            </p>
 
-      <div class="work-hero-chips">
-        <span class="chip">Sites vitrine</span>
-        <span class="chip">E‑commerce</span>
-        <span class="chip">Portfolios</span>
-        <span class="chip">Dashboards</span>
-        <span class="chip">Artistes / Musique</span>
-      </div>
-    </div>
+            <div class="work-hero-chips">
+              <span class="chip">Sites vitrine</span>
+              <span class="chip">E‑commerce</span>
+              <span class="chip">Portfolios</span>
+              <span class="chip">Dashboards</span>
+              <span class="chip">Artistes / Musique</span>
+            </div>
+          </div>
 
-    <div class="work-hero-stats">
-      <div class="work-stat-card">
-        <p class="work-stat-label">Types de projets</p>
-        <p class="work-stat-value">10+</p>
-        <p class="work-stat-hint">Vitrine, shop, portfolio, SaaS, événementiel…</p>
-      </div>
-      <div class="work-stat-card">
-        <p class="work-stat-label">Objectif</p>
-        <p class="work-stat-value">Impact</p>
-        <p class="work-stat-hint">Design propre, contenu clair, action évidente.</p>
-      </div>
-      <div class="work-stat-card">
-        <p class="work-stat-label">Approche</p>
-        <p class="work-stat-value">Sur mesure</p>
-        <p class="work-stat-hint">Chaque projet est adapté au contexte.</p>
-      </div>
-    </div>
-  </div>
-</section>
+          <div class="work-hero-stats">
+            <div class="work-stat-card">
+              <p class="work-stat-label">Types de projets</p>
+              <p class="work-stat-value">10+</p>
+              <p class="work-stat-hint">Vitrine, shop, portfolio, SaaS, événementiel…</p>
+            </div>
+            <div class="work-stat-card">
+              <p class="work-stat-label">Objectif</p>
+              <p class="work-stat-value">Impact</p>
+              <p class="work-stat-hint">Design propre, contenu clair, action évidente.</p>
+            </div>
+            <div class="work-stat-card">
+              <p class="work-stat-label">Approche</p>
+              <p class="work-stat-value">Sur mesure</p>
+              <p class="work-stat-hint">Chaque projet est adapté au contexte.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <p class="section-label">Catégories de projets</p>
 
