@@ -21,6 +21,169 @@
   <link rel="stylesheet" href="/micro.css">
 
   <style>
+    /* ══ HERO MON TRAVAIL ══ */
+.work-hero{
+  position:relative;
+  overflow:hidden;
+  padding:140px 24px 80px;
+}
+.work-hero-bg{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 0% 0%,rgba(251,191,36,.13),transparent 60%),
+    radial-gradient(circle at 100% 10%,rgba(96,165,250,.12),transparent 60%),
+    radial-gradient(circle at 50% 100%,rgba(251,191,36,.04),transparent 60%);
+  opacity:.9;
+  pointer-events:none;
+  filter:blur(26px);
+}
+.work-hero-inner{
+  position:relative;
+  max-width:1120px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,1.3fr) minmax(280px,.9fr);
+  gap:36px;
+  align-items:flex-end;
+}
+.work-hero-header{
+  animation:work-fade-up .8s var(--ease) .05s both;
+}
+.work-hero-label{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Space Mono',monospace;
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.28em;
+  color:var(--accent);
+  margin-bottom:18px;
+}
+.work-hero-label::before{
+  content:'';
+  width:40px;
+  height:1px;
+  background:linear-gradient(90deg,var(--accent),transparent);
+}
+.work-hero-title{
+  font-size:clamp(2.4rem,5vw,3.6rem);
+  letter-spacing:-.04em;
+  line-height:1.02;
+  margin:0 0 18px;
+}
+.work-hero-title span{
+  background:linear-gradient(135deg,var(--text),var(--accent));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.work-hero-text{
+  max-width:46ch;
+  font-size:.98rem;
+  color:var(--muted);
+  line-height:1.9;
+}
+.work-hero-chips{
+  margin-top:22px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.chip{
+  font-size:.75rem;
+  font-family:'Space Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  padding:7px 14px;
+  border-radius:999px;
+  border:1px solid rgba(251,191,36,.28);
+  background:rgba(0,0,0,.75);
+  color:rgba(232,228,212,.8);
+  position:relative;
+  overflow:hidden;
+  cursor:default;
+}
+.chip::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent 0%,rgba(251,191,36,.34) 50%,transparent 100%);
+  opacity:0;
+  transform:translateX(-120%);
+  transition:opacity .45s var(--ease),transform .45s var(--ease);
+}
+.chip:hover::after{
+  opacity:1;
+  transform:translateX(120%);
+}
+
+/* stats */
+.work-hero-stats{
+  display:grid;
+  gap:10px;
+  animation:work-fade-up .9s var(--ease) .18s both;
+}
+.work-stat-card{
+  position:relative;
+  padding:16px 18px;
+  border-radius:12px;
+  border:1px solid rgba(251,191,36,.18);
+  background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,.9));
+  box-shadow:0 16px 40px rgba(0,0,0,.6);
+  overflow:hidden;
+}
+.work-stat-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 0% 0%,rgba(251,191,36,.18),transparent 60%);
+  opacity:.6;
+  pointer-events:none;
+  mix-blend-mode:soft-light;
+}
+.work-stat-label{
+  font-family:'Space Mono',monospace;
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.22em;
+  color:rgba(232,228,212,.68);
+  margin-bottom:6px;
+}
+.work-stat-value{
+  font-size:1.4rem;
+  font-weight:700;
+  letter-spacing:-.02em;
+}
+.work-stat-hint{
+  margin-top:4px;
+  font-size:.8rem;
+  color:var(--muted);
+}
+
+/* petite animation d’arrivée */
+@keyframes work-fade-up{
+  from{opacity:0;transform:translateY(26px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* responsive */
+@media(max-width:900px){
+  .work-hero{padding:110px 18px 60px}
+  .work-hero-inner{
+    grid-template-columns:1fr;
+    align-items:flex-start;
+  }
+  .work-hero-stats{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+@media(max-width:640px){
+  .work-hero-stats{
+    grid-template-columns:1fr;
+  }
+}
     :root {
       --bg:#000000;
       --surface:#060606;
@@ -543,29 +706,50 @@
     </header>
 
     <main>
-      <section class="hero-work">
-        <div>
-          <p class="hero-eyebrow">Galerie d'exemples</p>
-          <h1 class="hero-title">Un aperçu de <span>ce que je peux faire</span></h1>
-          <p class="hero-lead">
-            Cette page présente des exemples de types de sites que je peux créer pour toi ou ton projet&nbsp;:
-            vitrine, boutique, portfolio, SaaS, musique, food, événements…
-            Chaque carte est marquée comme <strong>Exemple</strong> pour montrer des directions possibles.
-          </p>
-        </div>
-        <aside class="hero-aside">
-          <p class="hero-tagline">
-            Tu as une idée précise ou seulement une vibe générale&nbsp;? On peut partir d'un de ces formats,
-            l'adapter et le pousser beaucoup plus loin.
-          </p>
-          <div class="hero-pills">
-            <span class="hero-pill">Design + dev</span>
-            <span class="hero-pill">Mobile first</span>
-            <span class="hero-pill">Performance</span>
-            <span class="hero-pill">Brand friendly</span>
-          </div>
-        </aside>
-      </section>
+<section class="work-hero">
+  <div class="work-hero-bg"></div>
+
+  <div class="work-hero-inner">
+    <div class="work-hero-header">
+      <div class="work-hero-label">Mon travail</div>
+      <h1 class="work-hero-title">
+        Des projets<br>
+        <span>qui parlent d’eux‑mêmes</span>
+      </h1>
+      <p class="work-hero-text">
+        Une sélection de cas concrets pour montrer ce que je peux faire&nbsp;:
+        sites vitrine, boutiques en ligne, portfolios, dashboards, pages pour artistes
+        et bien plus. Tout est pensé pour être <strong>clair</strong>, <strong>lisible</strong> et <strong>efficace</strong>.
+      </p>
+
+      <div class="work-hero-chips">
+        <span class="chip">Sites vitrine</span>
+        <span class="chip">E‑commerce</span>
+        <span class="chip">Portfolios</span>
+        <span class="chip">Dashboards</span>
+        <span class="chip">Artistes / Musique</span>
+      </div>
+    </div>
+
+    <div class="work-hero-stats">
+      <div class="work-stat-card">
+        <p class="work-stat-label">Types de projets</p>
+        <p class="work-stat-value">10+</p>
+        <p class="work-stat-hint">Vitrine, shop, portfolio, SaaS, événementiel…</p>
+      </div>
+      <div class="work-stat-card">
+        <p class="work-stat-label">Objectif</p>
+        <p class="work-stat-value">Impact</p>
+        <p class="work-stat-hint">Design propre, contenu clair, action évidente.</p>
+      </div>
+      <div class="work-stat-card">
+        <p class="work-stat-label">Approche</p>
+        <p class="work-stat-value">Sur mesure</p>
+        <p class="work-stat-hint">Chaque projet est adapté au contexte.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
       <p class="section-label">Catégories de projets</p>
 
