@@ -136,486 +136,71 @@ tr:hover td{background:rgba(251,191,36,.02)}
 
 /* ══════════════════════════════════════════════════════════════
    TICKET CREATE PANEL — PREMIUM v2
-   Studio-grade · Dark · Élégant · Fluide
 ══════════════════════════════════════════════════════════════ */
-
-.ticket-create-wrap {
-  margin-bottom: 28px;
-}
-
-/* ── Toggle button ── */
-.ticket-create-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 9px 18px 9px 12px;
-  background: rgba(251,191,36,.03);
-  border: 1px solid rgba(251,191,36,.15);
-  border-radius: 8px;
-  color: rgba(232,228,212,.5);
-  font-size: .75rem;
-  font-family: 'Space Mono', monospace;
-  letter-spacing: .09em;
-  cursor: pointer;
-  transition:
-    border-color .22s var(--ease),
-    color .22s var(--ease),
-    background .22s var(--ease),
-    box-shadow .22s var(--ease);
-}
-.ticket-create-toggle:hover {
-  border-color: rgba(251,191,36,.36);
-  color: var(--accent);
-  background: rgba(251,191,36,.06);
-  box-shadow: 0 4px 18px rgba(251,191,36,.08);
-}
-.ticket-create-toggle.open {
-  border-color: rgba(251,191,36,.32);
-  color: var(--accent);
-  background: rgba(251,191,36,.055);
-}
-
-/* Icône encadrée dans le toggle */
-.ticket-create-toggle-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  background: rgba(251,191,36,.1);
-  border: 1px solid rgba(251,191,36,.2);
-  flex-shrink: 0;
-  transition: background .22s var(--ease), border-color .22s var(--ease), box-shadow .22s var(--ease);
-}
-.ticket-create-toggle:hover .ticket-create-toggle-icon,
-.ticket-create-toggle.open .ticket-create-toggle-icon {
-  background: rgba(251,191,36,.16);
-  border-color: rgba(251,191,36,.35);
-  box-shadow: 0 0 8px rgba(251,191,36,.12) inset;
-}
-.ticket-create-toggle svg {
-  transition: transform .38s var(--ease);
-  flex-shrink: 0;
-  color: var(--accent);
-}
-.ticket-create-toggle.open svg {
-  transform: rotate(45deg);
-}
-
-/* Dot animé */
-.ticket-create-toggle-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--accent);
-  opacity: .35;
-  margin-left: 2px;
-  flex-shrink: 0;
-  transition: opacity .2s, transform .25s var(--ease);
-}
-.ticket-create-toggle:hover .ticket-create-toggle-dot,
-.ticket-create-toggle.open .ticket-create-toggle-dot {
-  opacity: 1;
-  transform: scale(1.3);
-}
-
-/* ── Panel container ── */
-.ticket-create-panel {
-  position: relative;
-  margin-top: 10px;
-  background:
-    linear-gradient(150deg,
-      rgba(22,20,13,.97) 0%,
-      rgba(13,11,7,.99) 100%);
-  border: 1px solid rgba(251,191,36,.14);
-  border-radius: 12px;
-  overflow: hidden;
-
-  /* Ambiance lumineuse en coins */
-  --panel-glow: rgba(251,191,36,.045);
-}
-.ticket-create-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 55% 40% at 100% 0%, var(--panel-glow) 0%, transparent 65%),
-    radial-gradient(ellipse 35% 30% at 0% 100%, rgba(251,191,36,.03) 0%, transparent 60%);
-  pointer-events: none;
-  border-radius: inherit;
-  z-index: 0;
-}
-
-/* Animation collapse → open via grid-rows + translate */
-.ticket-create-panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transform: translateY(-8px);
-  transition:
-    grid-template-rows .4s var(--ease),
-    opacity .32s var(--ease),
-    transform .32s var(--ease),
-    border-color .3s,
-    box-shadow .3s;
-}
-.ticket-create-panel.open {
-  grid-template-rows: 1fr;
-  opacity: 1;
-  transform: translateY(0);
-  border-color: rgba(251,191,36,.24);
-  box-shadow:
-    0 0 0 1px rgba(251,191,36,.05) inset,
-    0 2px 4px rgba(0,0,0,.5),
-    0 10px 36px rgba(0,0,0,.6),
-    0 28px 72px rgba(0,0,0,.38),
-    0 0 96px rgba(251,191,36,.035);
-}
-.ticket-create-inner {
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-}
-
-/* ── Header ── */
-.tcp-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px 28px 0;
-  gap: 12px;
-}
-.tcp-header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.tcp-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: rgba(251,191,36,.07);
-  border: 1px solid rgba(251,191,36,.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow:
-    0 2px 8px rgba(251,191,36,.07),
-    inset 0 1px 0 rgba(251,191,36,.1),
-    inset 0 0 12px rgba(251,191,36,.04);
-}
-.tcp-icon svg { color: var(--accent); }
-.tcp-title {
-  font-family: 'Space Mono', monospace;
-  font-size: .77rem;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  line-height: 1.2;
-}
-.tcp-subtitle {
-  font-size: .7rem;
-  color: rgba(232,228,212,.32);
-  margin-top: 2px;
-  font-family: 'Space Grotesk', sans-serif;
-  letter-spacing: .01em;
-}
-.tcp-badge {
-  font-family: 'Space Mono', monospace;
-  font-size: .58rem;
-  padding: 4px 10px;
-  border-radius: 100px;
-  background: rgba(251,191,36,.06);
-  border: 1px solid rgba(251,191,36,.15);
-  color: rgba(251,191,36,.5);
-  letter-spacing: .12em;
-  flex-shrink: 0;
-}
-
-/* ── Divider ── */
-.tcp-divider {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(251,191,36,.09) 18%,
-    rgba(251,191,36,.13) 50%,
-    rgba(251,191,36,.09) 82%,
-    transparent 100%
-  );
-  margin: 22px 28px 0;
-}
-
-/* ── Form body ── */
-.tcp-form {
-  padding: 22px 28px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Row layout */
-.tcp-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-@media(max-width:600px) {
-  .tcp-row { grid-template-columns: 1fr; }
-}
-
-/* ── Field group ── */
-.tcp-field {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-.tcp-label {
-  font-family: 'Space Mono', monospace;
-  font-size: .62rem;
-  text-transform: uppercase;
-  letter-spacing: .17em;
-  color: rgba(232,228,212,.37);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: color .22s var(--ease);
-  user-select: none;
-}
-.tcp-label-required {
-  color: rgba(251,191,36,.42);
-  font-size: .56rem;
-  line-height: 1;
-  transition: color .22s var(--ease);
-}
-.tcp-field:focus-within .tcp-label {
-  color: rgba(251,191,36,.78);
-}
-.tcp-field:focus-within .tcp-label-required {
-  color: rgba(251,191,36,.72);
-}
-
-/* ── Inputs & Textarea ── */
-.tcp-input,
-.tcp-textarea {
-  width: 100%;
-  background: rgba(255,255,255,.022);
-  border: 1px solid rgba(255,255,255,.055);
-  border-radius: 8px;
-  color: var(--text);
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: .875rem;
-  padding: 12px 15px;
-  outline: none;
-  transition:
-    border-color .22s var(--ease),
-    background .22s var(--ease),
-    box-shadow .22s var(--ease);
-}
-.tcp-input::placeholder,
-.tcp-textarea::placeholder {
-  color: rgba(232,228,212,.17);
-}
-.tcp-input:hover,
-.tcp-textarea:hover {
-  border-color: rgba(251,191,36,.2);
-  background: rgba(255,255,255,.032);
-}
-.tcp-input:focus,
-.tcp-textarea:focus {
-  border-color: rgba(251,191,36,.48);
-  background: rgba(251,191,36,.022);
-  box-shadow:
-    0 0 0 3px rgba(251,191,36,.07),
-    0 1px 10px rgba(251,191,36,.055),
-    inset 0 1px 0 rgba(251,191,36,.045);
-}
-.tcp-input.error,
-.tcp-textarea.error {
-  border-color: rgba(239,68,68,.48);
-  box-shadow: 0 0 0 3px rgba(239,68,68,.07);
-}
-.tcp-textarea {
-  resize: vertical;
-  min-height: 100px;
-  line-height: 1.65;
-}
-
-/* ── Chips ── */
-.tcp-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.tcp-chip {
-  padding: 6px 14px;
-  border-radius: 100px;
-  border: 1px solid rgba(255,255,255,.065);
-  background: rgba(255,255,255,.022);
-  color: rgba(232,228,212,.37);
-  font-size: .71rem;
-  font-family: 'Space Mono', monospace;
-  letter-spacing: .06em;
-  cursor: pointer;
-  transition:
-    border-color .18s var(--ease),
-    color .18s var(--ease),
-    background .18s var(--ease),
-    transform .18s var(--ease),
-    box-shadow .18s var(--ease);
-  user-select: none;
-  outline: none;
-}
-.tcp-chip:hover {
-  border-color: rgba(251,191,36,.28);
-  color: rgba(232,228,212,.75);
-  background: rgba(251,191,36,.055);
-  transform: translateY(-1px);
-}
-.tcp-chip:active {
-  transform: translateY(0) scale(.97);
-  transition-duration: .1s;
-}
-.tcp-chip:focus-visible {
-  outline: 2px solid rgba(251,191,36,.5);
-  outline-offset: 2px;
-}
-.tcp-chip.selected {
-  border-color: rgba(251,191,36,.52);
-  background: rgba(251,191,36,.09);
-  color: var(--accent);
-  box-shadow: 0 2px 12px rgba(251,191,36,.1), inset 0 1px 0 rgba(251,191,36,.06);
-}
-.tcp-chip.selected:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 18px rgba(251,191,36,.16);
-}
-
-/* Priority chip colors */
-.tcp-chip[data-priority="low"].selected  { border-color:rgba(34,197,94,.45);  background:rgba(34,197,94,.075); color:var(--success); box-shadow:0 2px 12px rgba(34,197,94,.1); }
-.tcp-chip[data-priority="medium"].selected { border-color:rgba(251,191,36,.52); background:rgba(251,191,36,.09);  color:var(--accent); }
-.tcp-chip[data-priority="high"].selected { border-color:rgba(239,68,68,.45);  background:rgba(239,68,68,.075); color:var(--error);   box-shadow:0 2px 12px rgba(239,68,68,.1); }
-
-/* ── Helper & error ── */
-.tcp-help {
-  font-size: .67rem;
-  color: rgba(232,228,212,.2);
-  font-family: 'Space Grotesk', sans-serif;
-  line-height: 1.5;
-  transition: color .2s;
-}
-.tcp-field:focus-within .tcp-help {
-  color: rgba(232,228,212,.3);
-}
-.tcp-error-msg {
-  font-size: .67rem;
-  color: #fca5a5;
-  display: none;
-  animation: tcp-err-in .2s var(--ease) both;
-}
-.tcp-error-msg.show { display: block; }
-@keyframes tcp-err-in {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Footer ── */
-.tcp-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255,255,255,.038);
-  flex-wrap: wrap;
-}
-.tcp-footer-hint {
-  font-size: .62rem;
-  color: rgba(232,228,212,.17);
-  font-family: 'Space Mono', monospace;
-  letter-spacing: .06em;
-}
-
-/* ── Submit button ── */
-.tcp-submit {
-  position: relative;
-  padding: 11px 26px;
-  background: var(--accent);
-  color: #080700;
-  border: none;
-  border-radius: 8px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: .85rem;
-  letter-spacing: .04em;
-  cursor: pointer;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-  transition:
-    transform .22s var(--ease),
-    box-shadow .22s var(--ease),
-    background .22s;
-  box-shadow:
-    0 2px 8px rgba(251,191,36,.2),
-    inset 0 1px 0 rgba(255,255,255,.22);
-}
-/* Gloss overlay */
-.tcp-submit::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,.2) 0%, transparent 52%);
-  opacity: 0;
-  transition: opacity .22s;
-  border-radius: inherit;
-}
-.tcp-submit:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 6px 22px rgba(251,191,36,.3),
-    0 2px 6px rgba(251,191,36,.22),
-    inset 0 1px 0 rgba(255,255,255,.22);
-}
-.tcp-submit:hover::before { opacity: 1; }
-.tcp-submit:active {
-  transform: translateY(0) scale(.98);
-  box-shadow: 0 2px 8px rgba(251,191,36,.15), inset 0 1px 0 rgba(255,255,255,.15);
-  transition-duration: .1s;
-}
-.tcp-submit:disabled {
-  opacity: .44;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-.tcp-submit-icon {
-  flex-shrink: 0;
-  transition: transform .22s var(--ease);
-}
-.tcp-submit:not(:disabled):hover .tcp-submit-icon { transform: translateX(3px); }
-.tcp-submit.success {
-  background: var(--success);
-  box-shadow: 0 6px 24px rgba(34,197,94,.26);
-}
-
-/* ── Ripple ── */
-.tcp-ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(0,0,0,.18);
-  transform: scale(0);
-  animation: ripple-anim .55s linear;
-  pointer-events: none;
-}
-@keyframes ripple-anim {
-  to { transform: scale(4); opacity: 0; }
-}
+.ticket-create-wrap{margin-bottom:28px}
+.ticket-create-toggle{display:inline-flex;align-items:center;gap:9px;padding:9px 18px 9px 12px;background:rgba(251,191,36,.03);border:1px solid rgba(251,191,36,.15);border-radius:8px;color:rgba(232,228,212,.5);font-size:.75rem;font-family:'Space Mono',monospace;letter-spacing:.09em;cursor:pointer;transition:border-color .22s var(--ease),color .22s var(--ease),background .22s var(--ease),box-shadow .22s var(--ease)}
+.ticket-create-toggle:hover{border-color:rgba(251,191,36,.36);color:var(--accent);background:rgba(251,191,36,.06);box-shadow:0 4px 18px rgba(251,191,36,.08)}
+.ticket-create-toggle.open{border-color:rgba(251,191,36,.32);color:var(--accent);background:rgba(251,191,36,.055)}
+.ticket-create-toggle-icon{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:5px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);flex-shrink:0;transition:background .22s var(--ease),border-color .22s var(--ease),box-shadow .22s var(--ease)}
+.ticket-create-toggle:hover .ticket-create-toggle-icon,.ticket-create-toggle.open .ticket-create-toggle-icon{background:rgba(251,191,36,.16);border-color:rgba(251,191,36,.35);box-shadow:0 0 8px rgba(251,191,36,.12) inset}
+.ticket-create-toggle svg{transition:transform .38s var(--ease);flex-shrink:0;color:var(--accent)}
+.ticket-create-toggle.open svg{transform:rotate(45deg)}
+.ticket-create-toggle-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:.35;margin-left:2px;flex-shrink:0;transition:opacity .2s,transform .25s var(--ease)}
+.ticket-create-toggle:hover .ticket-create-toggle-dot,.ticket-create-toggle.open .ticket-create-toggle-dot{opacity:1;transform:scale(1.3)}
+.ticket-create-panel{position:relative;margin-top:10px;background:linear-gradient(150deg,rgba(22,20,13,.97) 0%,rgba(13,11,7,.99) 100%);border:1px solid rgba(251,191,36,.14);border-radius:12px;overflow:hidden;--panel-glow:rgba(251,191,36,.045);display:grid;grid-template-rows:0fr;opacity:0;transform:translateY(-8px);transition:grid-template-rows .4s var(--ease),opacity .32s var(--ease),transform .32s var(--ease),border-color .3s,box-shadow .3s}
+.ticket-create-panel::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 40% at 100% 0%,var(--panel-glow) 0%,transparent 65%),radial-gradient(ellipse 35% 30% at 0% 100%,rgba(251,191,36,.03) 0%,transparent 60%);pointer-events:none;border-radius:inherit;z-index:0}
+.ticket-create-panel.open{grid-template-rows:1fr;opacity:1;transform:translateY(0);border-color:rgba(251,191,36,.24);box-shadow:0 0 0 1px rgba(251,191,36,.05) inset,0 2px 4px rgba(0,0,0,.5),0 10px 36px rgba(0,0,0,.6),0 28px 72px rgba(0,0,0,.38),0 0 96px rgba(251,191,36,.035)}
+.ticket-create-inner{overflow:hidden;position:relative;z-index:1}
+.tcp-header{display:flex;align-items:center;justify-content:space-between;padding:24px 28px 0;gap:12px}
+.tcp-header-left{display:flex;align-items:center;gap:12px}
+.tcp-icon{width:36px;height:36px;border-radius:8px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(251,191,36,.07),inset 0 1px 0 rgba(251,191,36,.1),inset 0 0 12px rgba(251,191,36,.04)}
+.tcp-icon svg{color:var(--accent)}
+.tcp-title{font-family:'Space Mono',monospace;font-size:.77rem;font-weight:700;color:var(--text);letter-spacing:.08em;text-transform:uppercase;line-height:1.2}
+.tcp-subtitle{font-size:.7rem;color:rgba(232,228,212,.32);margin-top:2px;font-family:'Space Grotesk',sans-serif;letter-spacing:.01em}
+.tcp-badge{font-family:'Space Mono',monospace;font-size:.58rem;padding:4px 10px;border-radius:100px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15);color:rgba(251,191,36,.5);letter-spacing:.12em;flex-shrink:0}
+.tcp-divider{height:1px;background:linear-gradient(90deg,transparent 0%,rgba(251,191,36,.09) 18%,rgba(251,191,36,.13) 50%,rgba(251,191,36,.09) 82%,transparent 100%);margin:22px 28px 0}
+.tcp-form{padding:22px 28px 28px;display:flex;flex-direction:column;gap:20px}
+.tcp-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.tcp-row{grid-template-columns:1fr}}
+.tcp-field{display:flex;flex-direction:column;gap:7px}
+.tcp-label{font-family:'Space Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.17em;color:rgba(232,228,212,.37);display:flex;align-items:center;gap:5px;transition:color .22s var(--ease);user-select:none}
+.tcp-label-required{color:rgba(251,191,36,.42);font-size:.56rem;line-height:1;transition:color .22s var(--ease)}
+.tcp-field:focus-within .tcp-label{color:rgba(251,191,36,.78)}
+.tcp-field:focus-within .tcp-label-required{color:rgba(251,191,36,.72)}
+.tcp-input,.tcp-textarea{width:100%;background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.055);border-radius:8px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:.875rem;padding:12px 15px;outline:none;transition:border-color .22s var(--ease),background .22s var(--ease),box-shadow .22s var(--ease)}
+.tcp-input::placeholder,.tcp-textarea::placeholder{color:rgba(232,228,212,.17)}
+.tcp-input:hover,.tcp-textarea:hover{border-color:rgba(251,191,36,.2);background:rgba(255,255,255,.032)}
+.tcp-input:focus,.tcp-textarea:focus{border-color:rgba(251,191,36,.48);background:rgba(251,191,36,.022);box-shadow:0 0 0 3px rgba(251,191,36,.07),0 1px 10px rgba(251,191,36,.055),inset 0 1px 0 rgba(251,191,36,.045)}
+.tcp-input.error,.tcp-textarea.error{border-color:rgba(239,68,68,.48);box-shadow:0 0 0 3px rgba(239,68,68,.07)}
+.tcp-textarea{resize:vertical;min-height:100px;line-height:1.65}
+.tcp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.tcp-chip{padding:6px 14px;border-radius:100px;border:1px solid rgba(255,255,255,.065);background:rgba(255,255,255,.022);color:rgba(232,228,212,.37);font-size:.71rem;font-family:'Space Mono',monospace;letter-spacing:.06em;cursor:pointer;transition:border-color .18s var(--ease),color .18s var(--ease),background .18s var(--ease),transform .18s var(--ease),box-shadow .18s var(--ease);user-select:none;outline:none}
+.tcp-chip:hover{border-color:rgba(251,191,36,.28);color:rgba(232,228,212,.75);background:rgba(251,191,36,.055);transform:translateY(-1px)}
+.tcp-chip:active{transform:translateY(0) scale(.97);transition-duration:.1s}
+.tcp-chip:focus-visible{outline:2px solid rgba(251,191,36,.5);outline-offset:2px}
+.tcp-chip.selected{border-color:rgba(251,191,36,.52);background:rgba(251,191,36,.09);color:var(--accent);box-shadow:0 2px 12px rgba(251,191,36,.1),inset 0 1px 0 rgba(251,191,36,.06)}
+.tcp-chip.selected:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(251,191,36,.16)}
+.tcp-chip[data-priority="low"].selected{border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.075);color:var(--success);box-shadow:0 2px 12px rgba(34,197,94,.1)}
+.tcp-chip[data-priority="medium"].selected{border-color:rgba(251,191,36,.52);background:rgba(251,191,36,.09);color:var(--accent)}
+.tcp-chip[data-priority="high"].selected{border-color:rgba(239,68,68,.45);background:rgba(239,68,68,.075);color:var(--error);box-shadow:0 2px 12px rgba(239,68,68,.1)}
+.tcp-help{font-size:.67rem;color:rgba(232,228,212,.2);font-family:'Space Grotesk',sans-serif;line-height:1.5;transition:color .2s}
+.tcp-field:focus-within .tcp-help{color:rgba(232,228,212,.3)}
+.tcp-error-msg{font-size:.67rem;color:#fca5a5;display:none;animation:tcp-err-in .2s var(--ease) both}
+.tcp-error-msg.show{display:block}
+@keyframes tcp-err-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.tcp-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:16px;border-top:1px solid rgba(255,255,255,.038);flex-wrap:wrap}
+.tcp-footer-hint{font-size:.62rem;color:rgba(232,228,212,.17);font-family:'Space Mono',monospace;letter-spacing:.06em}
+.tcp-submit{position:relative;padding:11px 26px;background:var(--accent);color:#080700;border:none;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;letter-spacing:.04em;cursor:pointer;overflow:hidden;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:transform .22s var(--ease),box-shadow .22s var(--ease),background .22s;box-shadow:0 2px 8px rgba(251,191,36,.2),inset 0 1px 0 rgba(255,255,255,.22)}
+.tcp-submit::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,transparent 52%);opacity:0;transition:opacity .22s;border-radius:inherit}
+.tcp-submit:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(251,191,36,.3),0 2px 6px rgba(251,191,36,.22),inset 0 1px 0 rgba(255,255,255,.22)}
+.tcp-submit:hover::before{opacity:1}
+.tcp-submit:active{transform:translateY(0) scale(.98);box-shadow:0 2px 8px rgba(251,191,36,.15),inset 0 1px 0 rgba(255,255,255,.15);transition-duration:.1s}
+.tcp-submit:disabled{opacity:.44;cursor:not-allowed;transform:none;box-shadow:none}
+.tcp-submit-icon{flex-shrink:0;transition:transform .22s var(--ease)}
+.tcp-submit:not(:disabled):hover .tcp-submit-icon{transform:translateX(3px)}
+.tcp-submit.success{background:var(--success);box-shadow:0 6px 24px rgba(34,197,94,.26)}
+.tcp-ripple{position:absolute;border-radius:50%;background:rgba(0,0,0,.18);transform:scale(0);animation:ripple-anim .55s linear;pointer-events:none}
+@keyframes ripple-anim{to{transform:scale(4);opacity:0}}
 
 /* STATUS */
 .status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px;margin-bottom:32px}
@@ -774,7 +359,7 @@ tr:hover td{background:rgba(251,191,36,.02)}
     <!-- TAB: TICKETS -->
     <div class="tab-content" id="tab-tickets">
 
-      <!-- ═══ PANEL CRÉATION TICKET PREMIUM v2 ═══ -->
+      <!-- PANEL CREATION TICKET -->
       <div class="ticket-create-wrap">
         <button class="ticket-create-toggle" id="tcToggle" aria-expanded="false" aria-controls="tcPanel">
           <span class="ticket-create-toggle-icon">
@@ -875,7 +460,6 @@ tr:hover td{background:rgba(251,191,36,.02)}
           </div>
         </div>
       </div>
-      <!-- ═══ FIN PANEL CRÉATION ═══ -->
 
       <div class="tickets-header">
         <div class="ticket-filters">
@@ -911,9 +495,7 @@ tr:hover td{background:rgba(251,191,36,.02)}
 </div>
 
 <script>
-// ══════════════════════════════════════════
-//  ELEMENTS
-// ══════════════════════════════════════════
+// ELEMENTS
 const loginScreen  = document.getElementById('loginScreen');
 const dashboard    = document.getElementById('dashboard');
 const pwdInput     = document.getElementById('pwdInput');
@@ -921,13 +503,14 @@ const btnLogin     = document.getElementById('btnLogin');
 const loginError   = document.getElementById('loginError');
 const btnLogout    = document.getElementById('btnLogout');
 const btnRefresh   = document.getElementById('btnRefresh');
+let adminToken = null; // token en mémoire pour /api/stats
 
-// ══════════════════════════════════════════
-//  LOGIN
-// ══════════════════════════════════════════
+// LOGIN
 async function doLogin() {
   const val = pwdInput.value.trim();
   if (!val) { pwdInput.focus(); return; }
+
+  adminToken = val; // stocke le mdp pour les appels /api/stats
 
   btnLogin.disabled = true;
   btnLogin.textContent = 'Vérification...';
@@ -950,21 +533,21 @@ async function doLogin() {
       pwdInput.focus();
       btnLogin.disabled = false;
       btnLogin.textContent = 'Accéder';
+      adminToken = null;
     }
   } catch {
     loginError.textContent = 'Erreur réseau.';
     loginError.classList.add('show');
     btnLogin.disabled = false;
     btnLogin.textContent = 'Accéder';
+    adminToken = null;
   }
 }
 
 btnLogin.addEventListener('click', doLogin);
 pwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
-// ══════════════════════════════════════════
-//  LOGOUT
-// ══════════════════════════════════════════
+// LOGOUT
 btnLogout.addEventListener('click', () => {
   dashboard.style.display   = 'none';
   loginScreen.style.display = 'flex';
@@ -972,11 +555,10 @@ btnLogout.addEventListener('click', () => {
   loginError.classList.remove('show');
   btnLogin.disabled = false;
   btnLogin.textContent = 'Accéder';
+  adminToken = null;
 });
 
-// ══════════════════════════════════════════
-//  TABS
-// ══════════════════════════════════════════
+// TABS
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -987,17 +569,13 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// ══════════════════════════════════════════
-//  REFRESH
-// ══════════════════════════════════════════
+// REFRESH
 btnRefresh.addEventListener('click', () => {
   loadOverview();
   document.getElementById('lastUpdated').textContent = 'Mis à jour à ' + new Date().toLocaleTimeString('fr-FR');
 });
 
-// ══════════════════════════════════════════
-//  INIT DASHBOARD
-// ══════════════════════════════════════════
+// INIT DASHBOARD
 function initDashboard() {
   document.getElementById('sessionTime').textContent = new Date().toLocaleTimeString('fr-FR');
   document.getElementById('sessionBrowser').textContent = getBrowser();
@@ -1008,6 +586,12 @@ function initDashboard() {
   loadOverview();
   loadTickets();
   loadStatus();
+
+  // auto refresh toutes les 60s
+  setInterval(() => {
+    loadOverview();
+    document.getElementById('lastUpdated').textContent = 'Mis à jour à ' + new Date().toLocaleTimeString('fr-FR');
+  }, 60000);
 }
 
 function getBrowser() {
@@ -1019,10 +603,151 @@ function getBrowser() {
   return 'Inconnu';
 }
 
-// ══════════════════════════════════════════
-//  OVERVIEW
-// ══════════════════════════════════════════
-function loadOverview() {
+// OVERVIEW — tente d'utiliser /api/stats, sinon fallback sur valeurs locales
+async function loadOverview() {
+  // si pas encore loggé correctement, on garde le fallback
+  if (!adminToken) {
+    fallbackFakeOverview();
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/stats', {
+      headers: {
+        'Authorization': 'Bearer ' + adminToken
+      }
+    });
+
+    if (!res.ok) {
+      console.warn('Stats API error', res.status);
+      fallbackFakeOverview();
+      return;
+    }
+
+    const stats = await res.json();
+
+    // 1) KPI visites totales (30 jours)
+    let totalVisits = null;
+    const last30 = stats.last30days;
+    if (last30) {
+      const arr = last30.metrics || last30.series || last30.data || [];
+      if (Array.isArray(arr)) {
+        totalVisits = arr.reduce((sum, m) => {
+          const v = m.value ?? m.visits ?? m.views ?? 0;
+          return sum + (typeof v === 'number' ? v : 0);
+        }, 0);
+      }
+    }
+
+    if (totalVisits == null) {
+      // backend pas vraiment configuré → fallback pour tout
+      fallbackFakeOverview();
+      return;
+    }
+
+    animateNumber('kpiVisits', 0, totalVisits);
+    document.getElementById('kpiVisitsDelta').textContent = '';
+
+    // pour l'instant, on laisse tickets/projets/uptime neutres (tu pourras les brancher plus tard)
+    animateNumber('kpiTickets', 0, 0);
+    animateNumber('kpiProjects', 0, 0);
+    document.getElementById('kpiUptime').textContent = '—';
+    document.getElementById('kpiTicketsDelta').textContent = '';
+    document.getElementById('kpiProjectsDelta').textContent = '';
+    document.getElementById('kpiUptimeDelta').textContent = '';
+
+    // 2) Courbe visites / 7 jours
+    const last7 = stats.last7days;
+    if (last7) {
+      const arr7 = last7.metrics || last7.series || last7.data || [];
+      if (Array.isArray(arr7) && arr7.length) {
+        const labels = [];
+        const data = [];
+        const today = new Date();
+        const len = arr7.length;
+        for (let i = 0; i < len; i++) {
+          const d = new Date(today);
+          d.setDate(d.getDate() - (len - 1 - i));
+          labels.push(d.toLocaleDateString('fr-FR', { weekday: 'short' }));
+          const v = arr7[i].value ?? arr7[i].visits ?? arr7[i].views ?? 0;
+          data.push(typeof v === 'number' ? v : 0);
+        }
+
+        document.getElementById('chartTotal').textContent =
+          'Total: ' + data.reduce((a, b) => a + b, 0).toLocaleString('fr-FR');
+
+        const ctxV = document.getElementById('chartVisits').getContext('2d');
+        if (window._chartVisits) window._chartVisits.destroy();
+        window._chartVisits = new Chart(ctxV, {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [{
+              data,
+              backgroundColor: 'rgba(251,191,36,.25)',
+              borderColor: '#fbbf24',
+              borderWidth: 1,
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: {
+                grid: { color: 'rgba(255,255,255,.05)' },
+                ticks: { color: 'rgba(232,228,212,.5)', font: { family: 'Space Mono', size: 11 } }
+              },
+              y: {
+                grid: { color: 'rgba(255,255,255,.05)' },
+                ticks: { color: 'rgba(232,228,212,.5)', font: { family: 'Space Mono', size: 11 } }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    // 3) Top pages
+    const pagesData = stats.topPages;
+    if (pagesData && Array.isArray(pagesData.pages) && pagesData.pages.length) {
+      const pages = pagesData.pages;
+      const maxViews = pages.reduce((max, p) => {
+        const v = p.visits ?? p.views ?? 0;
+        return v > max ? v : max;
+      }, 0) || 1;
+
+      document.getElementById('tablePages').innerHTML = pages.map(p => {
+        const views = p.visits ?? p.views ?? 0;
+        const path = p.path || p.url || p.page || '/';
+        return `
+          <tr>
+            <td>
+              <code style="font-family:'Space Mono',monospace;font-size:.8rem;color:var(--accent)">${path}</code>
+            </td>
+            <td>
+              <span class="page-views-num">${views.toLocaleString('fr-FR')}</span>
+              <div class="page-bar-wrap">
+                <div class="page-bar" style="width:${(views / maxViews * 100).toFixed(1)}%"></div>
+              </div>
+            </td>
+            <td style="color:var(--success);font-size:.8rem">↑</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // le graphique des sources reste pour l'instant celui du fallback (à construire quand tu ajouteras /api/sources)
+
+  } catch (err) {
+    console.error('Erreur loadOverview', err);
+    fallbackFakeOverview();
+  }
+}
+
+// fallback original pour garder quelque chose même sans config Vercel
+function fallbackFakeOverview() {
   animateNumber('kpiVisits', 0, 3842);
   animateNumber('kpiTickets', 0, 7);
   animateNumber('kpiProjects', 0, 5);
@@ -1113,9 +838,7 @@ function animateNumber(id, from, to) {
   }, step);
 }
 
-// ══════════════════════════════════════════
-//  TICKETS
-// ══════════════════════════════════════════
+// TICKETS
 const TICKETS = [
   { id: 'TK-001', name: 'Lucas M.', email: 'lucas@example.com', type: 'Contact', date: '03/06/2025', status: 'open',    msg: 'Bonjour, je voudrais collaborer sur un projet web. Tu serais dispo pour en parler ?' },
   { id: 'TK-002', name: 'Camille R.', email: 'camille@example.com', type: 'Projet', date: '01/06/2025', status: 'pending', msg: "J'ai besoin d'un site vitrine pour mon association, est-ce que tu fais ça ?" },
@@ -1218,9 +941,7 @@ async function deleteTicket(id) {
   if (idx !== -1) { TICKETS.splice(idx, 1); renderTickets(); }
 }
 
-// ══════════════════════════════════════════
-//  TICKET CREATE PANEL
-// ══════════════════════════════════════════
+// TICKET CREATE PANEL
 function initCreatePanel() {
   const toggle = document.getElementById('tcToggle');
   const panel  = document.getElementById('tcPanel');
@@ -1390,9 +1111,7 @@ function validateCreateForm() {
   return valid;
 }
 
-// ══════════════════════════════════════════
-//  STATUS
-// ══════════════════════════════════════════
+// STATUS
 const SERVICES = [
   { id: 'site',    emoji: '🌐', name: 'Site principal',   desc: "yonnix.fr — page d'accueil et navigation", status: 'operational' },
   { id: 'api',     emoji: '⚙️', name: 'API',              desc: 'Endpoints de contact et données dynamiques', status: 'operational' },
