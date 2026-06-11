@@ -1,5 +1,14 @@
 {
+  "name": "website-yonnix",
+  "version": "1.0.0",
+  "scripts": {
+    "build:speed-insights": "esbuild speed-insights.js --bundle --format=iife --outfile=speed-insights.bundle.js --minify"
+  },
   "dependencies": {
-    "@upstash/redis": "^1.34.0"
+    "@upstash/redis": "^1.34.0",
+    "@vercel/speed-insights": "^2.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
   }
 }
